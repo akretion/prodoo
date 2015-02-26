@@ -1,0 +1,77 @@
+<html doctype="html">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link type="text/scss" href="coupe.scss">
+    <link type="text/scss" href="assemblage_chariot.scss">
+    <link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row big-list">
+        <div class="col-md-5 col-no-padding">
+          <ul class="nav nav-pills nav-justified">
+            <li id="todo" role="presentation" class="active no-radius"><a href="#">Order to do</a></li>
+            <li id="done" role="presentation" class="no-radius" ><a href="#">Order done</a></li>
+          </ul>
+          <ul class="list-group">
+            <li class="list-group-item list-link no-radius">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link active">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link">
+              Lorem ipsum
+            </li>
+            <li class="list-group-item list-link no-radius">
+              Lorem ipsum
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-7 text-center">
+          <div style="display:inline-block">
+          <!-- this inline block is just to align button to the barcode -->
+            <h3>Opération Lorem ipsum</h3>
+            <p class="code-bar">
+              *412341234123*
+            </p>
+            <div class="pull-right">
+              <button class="btn btn-warning">Annuler</button>
+              <button class="btn btn-success todo">OK</button>
+              <button class="btn btn-info done hide">Refaire</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="bower_components/sass.link.js/dist/sass.link.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/js/collapse.js"></script>
+    <script src="bower_components/bootstrap/js/tab.js"></script>
+    <script src="bower_components/bootstrap/js/modal.js"></script>
+    <script type="application/javascript">
+    $('#todo').click(function () {
+      $('.todo').removeClass('hide');
+      $('.done').addClass('hide');
+      $('.nav-pills li').removeClass('active');
+      $(this).addClass('active');
+    })
+    $('#done').click(function () {
+      $('.done').removeClass('hide');
+      $('.todo').addClass('hide');
+      $('.nav-pills li').removeClass('active');
+      $(this).addClass('active');
+    })
+    </script>
+  </body>
+</html>
