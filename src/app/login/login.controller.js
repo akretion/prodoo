@@ -2,8 +2,8 @@
 
 angular.module('prodapps')
   .controller('LoginCtrl', function ($scope) {
-    $scope.login = function (loginForm) {
-      alert('login');
-      loginForm.loginInput.$error.doesntExist = true;
+    $scope.login = function () {
+      console.log($scope.bucheUsername);
+      console.log($scope.buchePassword);
     }
   })
