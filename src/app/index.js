@@ -13,6 +13,13 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         templateUrl: 'app/login/login.html',
         controller: 'LoginCtrl'
 	});
+    $stateProvider.state('cut', {
+        url: '/cut',
+        templateUrl: 'app/cut/cut.html',
+        controller: 'CutCtrl'
+    });
+
+
     $urlRouterProvider.otherwise('/');
 	})
 .run(function ($rootScope, $cookies, $state) {

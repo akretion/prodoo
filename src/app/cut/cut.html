@@ -1,0 +1,62 @@
+<div class="container-fluid">
+<style>
+	.list-group.active {
+		display:none;
+	}
+</style>
+<div class="row big-list">
+	<div class="col-md-5 col-no-padding">
+	  <ul class="nav nav-pills nav-justified">
+		<li id="todo" role="presentation" class="tab active no-radius">
+			<a data-toggle="tab" ng-click="current.filter={status:'toDo'}">Order to do</a>
+		</li>
+		<li id="done" role="presentation" class="tab no-radius">
+			<a data-toggle="tab" ng-click="current.filter={status:'done'}">Order done</a>
+		</li>
+	  </ul>
+	  <ul class="list-group tab " id="showList1">
+	  	<li ng-repeat="item in list | filter: current.filter" class="list-group-item list-link"  ng-click="current.item = item">
+	  		{{ item.title }}
+	  	</li>
+	  </ul>
+	</div>
+	<div class="col-md-7" style="position:relative">
+	  <h1>Détails</h1>
+	  <p>
+		<div class="well">
+		  <h3>Opération {{ current.item.title }}</h3>
+		  <div ng-bind-html="current.item.long"></div>
+		</div>
+	  </p>
+	  <div class="btn-bottom pull-right">
+		<button class="btn btn-info" ng-show="current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="current.item.status= 'toDo'">Relancer</button>
+		<button class="btn btn-info" ng-show="current.item.status == 'done'">Réimprimer</button>
+		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal">OK</button>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="casier-modal">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h2 class="modal-title">N° de Casier</h2>
+		  </div>
+		  <div class="modal-body text-center">
+			<div class="row">
+			  <div class="container-fluid">
+				<div class="col-md-6 col-md-offset-3">
+				  <input class="form-control input-lg" type="text"/>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+			<button type="button" class="btn btn-info" ng-click="print(current.item)">Réimprimer</button>
+			<button type="button" class="btn btn-primary" ng-click="do(current.item)" data-dismiss="modal">OK</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+ </div>
