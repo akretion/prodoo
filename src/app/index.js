@@ -19,16 +19,14 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         controller: 'CutCtrl'
     });
 
-
-    $urlRouterProvider.otherwise('/');
+   $urlRouterProvider.otherwise('/');
 	})
-.run(function ($rootScope, $cookies, $state) {
+.run(function ($rootScope, $state, jsonRpc) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 		if (toState.name === 'login')
 			return;
-console.log($cookies.session_id) 
-		//if (jsonRpc.isLoggedin()) {
-		if (!$cookies.session_id) {
+
+		if (jsonRpc.isLoggedIn()) {
 			console.log('not logged in');
 			event.preventDefault();
 			$state.go('login');
