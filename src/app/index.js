@@ -12,14 +12,14 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         url: '/login',
         templateUrl: 'app/login/login.html',
         controller: 'LoginCtrl'
-	});
+  	});
     $urlRouterProvider.otherwise('/');
 	})
-.run(function ($rootScope, $state) {
+.run(function ($rootScope, $state, jsonRpc) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 		if (toState.name === 'login')
 			return;
-console.log($cookies.session_id) 
+
 		if (jsonRpc.isLoggedIn()) {
 			console.log('not logged in');
 			event.preventDefault();
