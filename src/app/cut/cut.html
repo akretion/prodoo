@@ -19,7 +19,7 @@
 		</li>
 	  </ul>
 	  <ul class="list-group tab " id="showList1">
-	  	<li ng-repeat="item in list | filter: current.filter" class="list-group-item list-link"  ng-click="current.item = item">
+	  	<li ng-repeat="item in list | filter: current.filter" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">
 	  		{{ item.title }}
 	  	</li>
 	  </ul>
