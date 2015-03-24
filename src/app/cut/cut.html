@@ -3,6 +3,10 @@
 	.list-group.active {
 		display:none;
 	}
+	.modal-footer .btn.modal-btn-center {
+		margin-left: 28%;
+		margin-right: 28%;
+	}
 </style>
 <div class="row big-list">
 	<div class="col-md-5 col-no-padding">
@@ -53,8 +57,8 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
-			<button type="button" class="btn btn-info" ng-click="print(current.item)">Réimprimer</button>
-			<button type="button" class="btn btn-primary" ng-click="do(current.item)" data-dismiss="modal">OK</button>
+			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(current.item)">Réimprimer</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="do(current.item)">OK</button>
 		  </div>
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
