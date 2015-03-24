@@ -5,16 +5,16 @@ angular.module('prodapps')
   console.log('Cut ctrl');
 
   	$scope.list = [];
-		  	$scope.list = [{'id': 'a'}, {'id': 'b'}];
+	$scope.list = [{'id': 'a'}, {'id': 'b'}];
 
   	$scope.fetchList = function () {
   		console.log('fetchList');
   		
   		jsonRpc.syncDataImport('mrp.production.workcenter.line', 'prodoo', [],50).then(function () {
-		  	//$scope.list = [{'id': 'a'}, {'id': 'b'}];
+		  	$scope.list = [{'id': 'a'}, {'id': 'b'}];
   		},function (a) {
   			console.log('Une erreur est survenue', a);
   		});
   	};
-  	$scope.fetchList();
+  //	$scope.fetchList();
   });
