@@ -31,7 +31,7 @@
 	  <div class="btn-bottom pull-right">
 		<button class="btn btn-info" ng-show="current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="current.item.status= 'toDo'">Relancer</button>
 		<button class="btn btn-info" ng-show="current.item.status == 'done'">Réimprimer</button>
-		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal">OK</button>
+		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal" ng-click="print(current.item)">OK</button>
 	  </div>
 	</div>
 
