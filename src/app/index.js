@@ -26,7 +26,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 		if (toState.name === 'login')
 			return;
 
-		if (jsonRpc.isLoggedIn()) {
+		if (!jsonRpc.isLoggedIn()) {
 			console.log('not logged in');
 			event.preventDefault();
 			$state.go('login');
