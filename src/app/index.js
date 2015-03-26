@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'mgcrea.ngStrap','buche', 'odoo'])
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider) {
     $stateProvider
       .state('home', {
         url: '/',
@@ -20,6 +20,10 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
     });
 
    $urlRouterProvider.otherwise('/');
+
+   if (prodoo.server)
+     jsonRpcProvider.odooRpc.odoo_server = prodoo.server;
+
 	})
 .run(function ($rootScope, $state, jsonRpc) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
