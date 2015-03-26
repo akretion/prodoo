@@ -11,7 +11,13 @@ angular.module('prodapps')
   	$scope.fetchList = function () {
   		console.log('fetchList');
   		
-  		$scope.list = jsonRpc.syncImportObject('mrp.production.workcenter.line', 'prodoo', [],50);
+        $scope.list = jsonRpc.syncImportObject({
+            model: 'mrp.production.workcenter.line',
+            func_key: 'prodoo',
+            domain: [],
+            limit: 50,
+            interval: 1000
+        });
     console.log($scope.list);
     }      
   	$scope.fetchList();
