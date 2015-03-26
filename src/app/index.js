@@ -23,6 +23,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 
    if (prodoo.server)
      jsonRpcProvider.odooRpc.odoo_server = prodoo.server;
+   jsonRpcProvider.odooRpc.interceptors.push(function (a) { console.log('Et BIM !!!', a);});
 
 	})
 .run(function ($rootScope, $state, jsonRpc) {
