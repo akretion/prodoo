@@ -9,18 +9,22 @@
 	}
 </style>
 <div class="row big-list">
+	<input ng-model="workcenter">
+</div>
+<div class="row big-list">
+
 	<div class="col-md-5 col-no-padding">
 	  <ul class="nav nav-pills nav-justified">
 		<li id="todo" role="presentation" class="tab active no-radius">
-			<a data-toggle="tab" ng-click="current.filter={status:'toDo'}">Order to do</a>
+			<a data-toggle="tab" ng-click="current.filter={state:'draft'}">Order to do</a>
 		</li>
 		<li id="done" role="presentation" class="tab no-radius">
-			<a data-toggle="tab" ng-click="current.filter={status:'done'}">Order done</a>
+			<a data-toggle="tab" ng-click="current.filter={state:'done'}">Order done</a>
 		</li>
 	  </ul>
-	  <ul class="list-group tab " id="showList1">
-	  	<li ng-repeat="item in list | filter: current.filter" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">
-	  		{{ item.title }}
+	  <ul class="list-group tab " >
+	  	<li ng-repeat="item in data | filter: current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">
+{{ item.lot_number }} {{ item.name}} 
 	  	</li>
 	  </ul>
 	</div>
@@ -28,8 +32,10 @@
 	  <h1>Détails</h1>
 	  <p>
 		<div class="well">
-		  <h3>Opération {{ current.item.title }}</h3>
-		  <div ng-bind-html="current.item.long"></div>
+		  <h3>Opération {{ current.item.name}}</h3>
+		<p>State: {{ current.item.state}} </p>
+		  <p>{{ current.item.label }}</p>
+		  <div ng-bind-html="current.item.description"></div>
 		</div>
 	  </p>
 	  <div class="btn-bottom pull-right">
