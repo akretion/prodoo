@@ -14,7 +14,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         controller: 'LoginCtrl'
 	});
     $stateProvider.state('cut', {
-        url: '/cut',
+        url: '/cut/{workcenter:int}',
         templateUrl: 'app/cut/cut.html',
         controller: 'CutCtrl'
     });
