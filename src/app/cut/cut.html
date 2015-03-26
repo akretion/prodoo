@@ -7,6 +7,9 @@
 		margin-left: 28%;
 		margin-right: 28%;
 	}
+	.draft { 
+		color: #ccc;
+	}
 </style>
 <div class="row big-list">
 	<input ng-model="workcenter">
@@ -28,7 +31,7 @@
 	  	</li>
 	  </ul>
 	</div>
-	<div class="col-md-7" style="position:relative">
+	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[current.item.state=='done']">
 	  <h1>Détails</h1>
 	  <p>
 		<div class="well">
