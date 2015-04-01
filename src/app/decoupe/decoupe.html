@@ -41,29 +41,4 @@
 		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal" ng-click="print(current.item)">OK</button>
 	  </div>
 	</div>
-
-	<div class="modal fade" id="casier-modal">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h2 class="modal-title">N° de Casier</h2>
-		  </div>
-		  <div class="modal-body text-center">
-			<div class="row">
-			  <div class="container-fluid">
-				<div class="col-md-6 col-md-offset-3">
-				  <input class="form-control input-lg" type="text" ng-model="modal.casier" />
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
-			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(current.item)">Réimprimer</button>
-			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="do(current.item, modal.casier)">OK</button>
-		  </div>
-		</div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
  </div>
