@@ -1,0 +1,69 @@
+    <link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
+<div class="container-fluid">
+<style>
+	.list-group.active {
+		display:none;
+	}
+	.modal-footer .btn.modal-btn-center {
+		margin-left: 28%;
+		margin-right: 28%;
+	}
+	.draft { 
+		color: #ccc;
+	}
+</style>
+<div class="row big-list">
+	<input ng-model="workcenter">
+	<div ng-hide="list.timekey"><h1>Loading</h1></div>
+</div>
+<div class="row big-list" ng-show="list.timekey">
+
+	<div class="col-md-5 col-no-padding">
+	  <ul class="nav nav-pills nav-justified">
+		<li id="todo" role="presentation" class="tab active no-radius">
+			<a data-toggle="tab" ng-click="current.filter={state:'draft'}">Order to do</a>
+		</li>
+		<li id="done" role="presentation" class="tab no-radius">
+			<a data-toggle="tab" ng-click="current.filter={state:'done'}">Order done</a>
+		</li>
+	  </ul>
+	  <ul class="list-group tab " >
+	  	<li ng-repeat="item in data | filter: current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">
+{{ item.lot_number }} {{ item.name}} 
+	  	</li>
+	  </ul>
+	</div>
+	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[current.item.state=='done']">
+<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{item.barcode}}*</div> {{ item.bardocde }}	
+	  <div class="btn-bottom pull-right">
+		<button class="btn btn-info" ng-show="current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="current.item.status= 'toDo'">Relancer</button>
+		<button class="btn btn-info" ng-show="current.item.status == 'done'">Réimprimer</button>
+		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal" ng-click="print(current.item)">OK</button>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="casier-modal">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h2 class="modal-title">N° de Casier</h2>
+		  </div>
+		  <div class="modal-body text-center">
+			<div class="row">
+			  <div class="container-fluid">
+				<div class="col-md-6 col-md-offset-3">
+				  <input class="form-control input-lg" type="text" ng-model="modal.casier" />
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(current.item)">Réimprimer</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="do(current.item, modal.casier)">OK</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+ </div>

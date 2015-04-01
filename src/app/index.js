@@ -19,6 +19,11 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         controller: 'CutCtrl'
     });
 
+    $stateProvider.state('decoupe', {
+        url: '/decoupe/{workcenter:int}',
+        templateUrl: 'app/decoupe/decoupe.html',
+        controller: 'DecoupeCtrl'
+    });
     $stateProvider.state('assembly', {
       url:'/assembly/{workcenter:int}',
         templateUrl: 'app/assembly/assembly.html',
