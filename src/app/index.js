@@ -19,6 +19,12 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         controller: 'CutCtrl'
     });
 
+    $stateProvider.state('assembly', {
+      url:'/assembly',
+        templateUrl: 'app/assembly/assembly.html',
+        controller:'AssemblyCtrl'
+    });
+
    $urlRouterProvider.otherwise('/');
 
    if (prodoo.server)
