@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('CutCtrl', function ($scope, $state, jsonRpc) {
+  .controller('CutCtrl', function ($scope, $state, jsonRpc, prodooConfig) {
   console.log('Cut ctrl');
 
 	$scope.workcenter = $state.params.workcenter;
@@ -15,8 +15,8 @@ angular.module('prodapps')
             model: 'mrp.production.workcenter.line',
             func_key: 'prodoo',
             domain: [['workcenter_id', '=', $scope.workcenter ]],
-            limit: 50,
-            interval: 5000
+            limit: prodooConfig.fetchLimit,
+            interval: prodooConfig.refreshInterval
         });
 	$scope.$watch('list.timekey', function (newVal, oldVal) {
 		console.log('watched !', oldVal, newVal);

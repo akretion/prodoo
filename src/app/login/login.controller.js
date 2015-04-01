@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('LoginCtrl', function ($scope,$state, jsonRpc) {
+  .controller('LoginCtrl', function ($scope,$state, jsonRpc, prodooConfig) {
     $scope.login = function () {
 	$scope.error = "";
-	jsonRpc.login('db',$scope.bucheUsername,$scope.buchePassword).then(function () {
+	jsonRpc.login(prodooConfig.db,$scope.bucheUsername,$scope.buchePassword).then(function () {
 		console.log('login succeed');
 		$state.go('home');
 	}, function () {
