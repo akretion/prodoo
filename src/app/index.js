@@ -20,7 +20,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
     });
 
     $stateProvider.state('assembly', {
-      url:'/assembly',
+      url:'/assembly/{workcenter:int}',
         templateUrl: 'app/assembly/assembly.html',
         controller:'AssemblyCtrl'
     });
