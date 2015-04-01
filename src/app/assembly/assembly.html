@@ -1,113 +1,83 @@
-<html doctype="html">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link type="text/scss" href="coupe.scss">
-  </head>
-  <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="col-md-6 col-md-offset-3">
-          <input type="text" class="form-control" placeholder="N° commande" style="margin-top:7px;">
-        </div>
-      </div>
-    </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2>Info commande</h2>
-            </div>
-            <div class="panel-body">
-              <p>Hazmat. Everyones favorite super team presented in true blockbuster fashion. Striker. The Avengers return.</p>
-              <p>Finesse. At the dawn of the Heroic Age, the Avengers will assemble once again. Avengers Assemble. Meet all of Spideys deadly enemies, from the Green Goblin and Doctor Octopus to Venom and Carnage, plus see Peter Parker fall in love, face tragedy and triumph, and learn that with great power comes great responsibility.</p>
-              <p>Featuring the work of Kurt Busiek, George Perez and other quintessential Avengers creators. New roster. Reptil. Mettle.</p>
-            </div>
-          </div>
-          <div class="pull-right">
-            <button class="btn btn-success" data-toggle="modal" data-target="#casier-modal">OK</button>
-            <button class="btn btn-warning">Annuler</button>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h5>Pièce à assembler</h5>
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-            </ul>
-          </div>
-          <div class="panel panel-success">
-            <div class="panel-heading">
-              <h5>Pièce scanné</h5>
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-              <li class="list-group-item">
-                <h6>Pièce #1 312314432541325</h6>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="casier-modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h2 class="modal-title">N° de Casier</h2>
-          </div>
-          <div class="modal-body text-center">
-            <div class="row">
-              <div class="container-fluid">
-                <div class="col-md-6 col-md-offset-3">
-                  <input class="form-control input-lg" type="text"/>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
-            <button type="button" class="btn btn-info">Réimprimer</button>
-            <button type="button" class="btn btn-primary">OK</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <script src="bower_components/sass.link.js/dist/sass.link.min.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/js/collapse.js"></script>
-    <script src="bower_components/bootstrap/js/tab.js"></script>
-    <script src="bower_components/bootstrap/js/modal.js"></script>
-    <script type="application/javascript">
-    $('#todo').click(function () {
-      $('.todo').removeClass('hide');
-      $('.done').addClass('hide');
-      $('.nav-pills li').removeClass('active');
-      $(this).addClass('active');
-    })
-    $('#done').click(function () {
-      $('.done').removeClass('hide');
-      $('.todo').addClass('hide');
-      $('.nav-pills li').removeClass('active');
-      $(this).addClass('active');
-    })
-    </script>
-  </body>
-</html>
+<div class="container-fluid">
+	<div class="row big-list">
+		<div ng-hide="list.timekey"><h1>Loading</h1></div>
+	</div>
+
+	<div class="row" ng-show="list.timekey">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2>Info commande</h2>
+				</div>
+				<div class="panel-body">
+					<p>Hazmat. Everyones favorite super team presented in true blockbuster fashion. Striker. The Avengers return.</p>
+					<p>Finesse. At the dawn of the Heroic Age, the Avengers will assemble once again. Avengers Assemble. Meet all of Spideys deadly enemies, from the Green Goblin and Doctor Octopus to Venom and Carnage, plus see Peter Parker fall in love, face tragedy and triumph, and learn that with great power comes great responsibility.</p>
+					<p>Featuring the work of Kurt Busiek, George Perez and other quintessential Avengers creators. New roster. Reptil. Mettle.</p>
+				</div>
+			</div>
+			<div class="pull-right">
+				<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal">OK</button>
+				<button class="btn btn-warning">Annuler</button>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h5>Pièce à assembler</h5>
+				</div>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+				</ul>
+			</div>
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h5>Pièce scanné</h5>
+				</div>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+					<li class="list-group-item">
+						<h6>Pièce #1 312314432541325</h6>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="casier-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h2 class="modal-title">N° de Casier</h2>
+			</div>
+			<div class="modal-body text-center">
+				<div class="row">
+					<div class="container-fluid">
+						<div class="col-md-6 col-md-offset-3">
+							<input class="form-control input-lg" type="text"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
+				<button type="button" class="btn btn-info">Réimprimer</button>
+				<button type="button" class="btn btn-primary">OK</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
