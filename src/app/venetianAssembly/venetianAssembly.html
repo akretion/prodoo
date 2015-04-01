@@ -19,18 +19,18 @@
 
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h2>{{ currentItem.name }}</h2>
+						<h2>{{ current.item.name }}</h2>
 					</div>
 					<div class="panel-body">
-						{{ currentItem.body }}
+						<div ng-bind-html="current.item.description"></div>
 					</div>
 					<div class="pull-right">
-						<button class="btn btn-success" ng-click="print(currentItem)">OK</button>
+						<button class="btn btn-success" ng-click="print(current.item)">OK</button>
 					</div>
 				</div>
 
-				<ul class="list-group">
-					<li ng-repeat="item in data | filter: state" class="list-group-item list-link no-radius clearfix">
+				<ul class="list-group"> {{ current.item.lot_number }}
+					<li ng-repeat="item in data | filter: {lot_numer: current.item.lot_number}" class="list-group-item list-link no-radius clearfix">
 						{{ item.lot_number }} {{ item.name }}
 						 <button class="btn btn-success pull-right">Re-print</button>
 						 <button class="btn btn-success pull-right">Re-do</button>

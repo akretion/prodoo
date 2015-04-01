@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('CutCtrl', function ($scope, $state, jsonRpc) {
+  .controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooConfig) {
   console.log('Cut ctrl');
-
 	$scope.workcenter = $state.params.workcenter;
 	$scope.modale = { casier : '' };
   $scope.list = [];
@@ -16,7 +15,7 @@ angular.module('prodapps')
             func_key: 'prodoo',
             domain: [['workcenter_id', '=', $scope.workcenter ]],
             limit: 50,
-            interval: 5000
+            interval: prodooConfig.refreshInterval
         });
 	$scope.$watch('list.timekey', function (newVal, oldVal) {
 		console.log('watched !', oldVal, newVal);

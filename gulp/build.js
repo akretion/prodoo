@@ -13,12 +13,13 @@ gulp.task('pdf', function () {
   //var pdfjs = gulp.src(paths.src + '**/*.js'); 
   var wiredep = require('wiredep').stream;
 
-  return gulp.src(paths.src + '/pdfRender.html')
+  return gulp.src(paths.src + '/**/*.js')
 //      .pipe(pdfjs)
 //      .pipe($.inject(pdfjs))
-      .pipe(wiredep())
-      .pipe(gulp.dest(paths.dist + '/'))
-      .pipe($.size({ title: paths.dist + '/', showFiles: true }));
+//      .pipe(wiredep())
+//      .pipe(gulp.dest(paths.dist + '/'))
+//      .pipe($.size({ title: paths.dist + '/', showFiles: true }));
+	.pipe($.size({ title: 'oo', showFiles: true}));
 
 });
 

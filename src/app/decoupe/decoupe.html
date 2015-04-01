@@ -34,7 +34,8 @@
 	  </ul>
 	</div>
 	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[current.item.state=='done']">
-<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{item.barcode}}*</div> {{ item.bardocde }}	
+		<div>{{current.item.name }}</div>
+		<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{current.item.barcode}}*</div> {{ current.item.barcode }}	
 	  <div class="btn-bottom pull-right">
 		<button class="btn btn-info" ng-show="current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="current.item.status= 'toDo'">Relancer</button>
 		<button class="btn btn-info" ng-show="current.item.status == 'done'">Réimprimer</button>
