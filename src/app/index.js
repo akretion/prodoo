@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'mgcrea.ngStrap','buche', 'odoo'])
-  .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider, prodooConfigProvider) {
     $stateProvider
       .state('home', {
         url: '/',
@@ -37,12 +37,11 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 
    $urlRouterProvider.otherwise('/');
 
-   if (prodoo.server)
-     jsonRpcProvider.odooRpc.odoo_server = prodoo.server;
+    jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.server;
    jsonRpcProvider.odooRpc.interceptors.push(function (a) { console.log('Et BIM !!!', a);});
 
 	})
-.run(function ($rootScope, $state, jsonRpc) {
+.run(function ($rootScope, $state, jsonRpc, prodooConfig) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 		if (toState.name === 'login')
 			return;
