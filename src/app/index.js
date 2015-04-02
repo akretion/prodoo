@@ -34,6 +34,11 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         templateUrl: 'app/venetianAssembly/venetianAssembly.html',
         controller:'VenetianAssemblyCtrl'
     });
+    $stateProvider.state('carrierAssembly', {
+      url:'/carrierAssembly/{workcenter:int}',
+        templateUrl: 'app/carrierAssembly/carrierAssembly.html',
+        controller:'carrierAssemblyCtrl'
+    });
 
    $urlRouterProvider.otherwise('/');
 
