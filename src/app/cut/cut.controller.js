@@ -6,7 +6,8 @@ angular.module('prodapps')
 
 	$scope.workcenter = $state.params.workcenter;
 	$scope.modale = { casier : '' };
-  $scope.list = [];
+	$scope.data = null;
+	$scope.list = [];
 	$scope.current = { filter: { 'state':'draft'},  item : {sequence: 99999}}; 
   	$scope.fetchList = function () {
   		console.log('fetchList');
@@ -20,7 +21,8 @@ angular.module('prodapps')
         });
 	$scope.$watch('list.timekey', function (newVal, oldVal) {
 		console.log('watched !', oldVal, newVal);
-		$scope.data = [];
+		if (newVal !== undefined)
+			$scope.data = [];
 		var item;
 		for(var key in $scope.list.data) {
 			item = $scope.list.data[key];
@@ -42,11 +44,16 @@ angular.module('prodapps')
   	};
 
   	$scope.do = function (item, modale) {
-		console.log('modale ', modale);
-        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, modale.casier]).then(function () {
+		var casier = null;
+		if (modale && modale.casier)
+			casier = modale.casier;
+
+        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
+			if (casier)
+				modale.casier = "";
+			item.state = 'done';
 		}, function () {
 		});
-		modale.casier = "";
   	};
 	$scope.$on('$destroy', $scope.list.stopCallback);
   });

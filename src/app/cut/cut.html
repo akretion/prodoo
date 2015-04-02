@@ -12,10 +12,10 @@
 	}
 </style>
 <div class="row big-list">
-	<input ng-model="workcenter">
-	<div ng-hide="list.timekey"><h1>Loading</h1></div>
+	<div ng-hide="data"><h1>Loading</h1></div>
+	<div ng-show="data.length == 0"><h2>No data</h2></div>
 </div>
-<div class="row big-list" ng-show="list.timekey">
+<div class="row big-list" ng-show="data.length">
 
 	<div class="col-md-5 col-no-padding">
 	  <ul class="nav nav-pills nav-justified">
