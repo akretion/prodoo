@@ -4,8 +4,7 @@ angular.module('prodapps')
   .controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooConfig) {
   console.log('Cut ctrl');
 	$scope.workcenter = $state.params.workcenter;
-	$scope.modale = { casier : '' };
-  $scope.list = [];
+  	$scope.list = [];
 	$scope.current = { filter: { 'state':'draft'},  item : {sequence: 99999}}; 
   	$scope.fetchList = function () {
   		console.log('fetchList');
@@ -47,6 +46,7 @@ angular.module('prodapps')
 		$scope.salesDone = $scope.data.filter(function (e) {
 			return draft.indexOf(e.sale_name) === -1;
 		});
+		console.log(draft, $scope.salesDone);
 	};
 
   	$scope.print = function (item) {
