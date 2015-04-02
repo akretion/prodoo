@@ -37,7 +37,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
     $stateProvider.state('carrierAssembly', {
       url:'/carrierAssembly/{workcenter:int}',
         templateUrl: 'app/carrierAssembly/carrierAssembly.html',
-        controller:'carrierAssemblyCtrl'
+        controller:'CarrierAssemblyCtrl'
     });
 
    $urlRouterProvider.otherwise('/');
