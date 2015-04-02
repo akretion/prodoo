@@ -27,8 +27,14 @@ angular.module('prodapps')
 
 			$scope.data.push(item);
 		}
+		//$scope.updateSalesDone();
+		console.log('should update sales');
+	});
+	$scope.$watch('data', function () {
+		console.log('dans watch data');
 		$scope.updateSalesDone();
 	});
+
 	
     console.log($scope.list);
     }      
