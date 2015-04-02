@@ -9,11 +9,8 @@
 			<div class="col-md-4 col-no-padding">
 
 				<ul class="nav nav-pills nav-justified">
-					<li id="todo" role="presentation" class="tab active no-radius">
-						<a data-toggle="tab" ng-click="current.filter={state:'draft'}">Order to do</a>
-					</li>
-					<li id="done" role="presentation" class="tab no-radius">
-						<a data-toggle="tab" ng-click="current.filter={state:'done'}">Order done</a>
+					<li id="todo" role="presentation" class="tab no-radius">
+						<a> Order to do</a>
 					</li>
 				</ul>
 				<ul class="list-group tab ">
@@ -30,10 +27,10 @@
 					<div class="panel-body">
 						<div ng-bind-html="current.item.description"></div>
 					</div>
-					<div class="pull-right" ng-show="current.item.sate != 'done'">
+					<div class="pull-right" ng-show="current.item.state != 'done'">
 						<button class="btn btn-success" ng-click="do(current.item)">OK</button>
 					</div>
-					<div class="pull-right" ng-show="current.item.sate == 'done'">
+					<div class="pull-right" ng-show="current.item.state == 'done'">
 						<button class="btn btn-success" ng-click="do(current.item)">Re Do</button>
 						<button class="btn btn-success" ng-click="print(current.item)">Re-print</button>
 					</div>
@@ -49,7 +46,7 @@
 			</div>
 			<div class="col-md-4 col-no-padding">
 				<ul class="nav nav-pills nav-justified">
-					<li id="todo" role="presentation" class="no-radius"><a href="#">Traité</a></li>
+					<li id="todo" role="presentation" class="tab no-radius"><a> Order done</a></li>
 				</ul>
 				<ul class="list-group">
 					<li ng-repeat="item in salesDone | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{'similar': (current.item.sale_name==item.sale_name), 'active': (current.item == item) }">	{{ item.lot_number }} {{ item.name}}</li>
