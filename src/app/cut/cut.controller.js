@@ -48,4 +48,5 @@ angular.module('prodapps')
 		});
 		modale.casier = "";
   	};
+	$scope.$on('$destroy', $scope.list.stopCallback);
   });
