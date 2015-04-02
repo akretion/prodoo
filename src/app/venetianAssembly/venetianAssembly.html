@@ -1,4 +1,9 @@
 	<link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
+	<style>
+	.similar {
+		background-color: #ccc;
+	}
+	</style>
 	<div class="container-fluid">
 		<div class="row big-list">
 			<div class="col-md-4 col-no-padding">
@@ -12,7 +17,7 @@
 					</li>
 				</ul>
 				<ul class="list-group tab ">
-					<li ng-repeat="item in data | filter: current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">	{{ item.lot_number }} {{ item.name}}</li>
+					<li ng-repeat="item in data | filter: current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{'similar': (current.item.sale_name==item.sale_name), 'active': (current.item == item) }">	{{ item.lot_number }} {{ item.name}}</li>
 				</ul>
 			</div>
 			<div class="col-md-4 col-no-padding">
@@ -20,18 +25,23 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h2>{{ current.item.name }}</h2>
+						<p>{{ current.item.lot_number }}</p>
 					</div>
 					<div class="panel-body">
 						<div ng-bind-html="current.item.description"></div>
 					</div>
-					<div class="pull-right">
-						<button class="btn btn-success" ng-click="print(current.item)">OK</button>
+					<div class="pull-right" ng-show="current.item.sate == 'done'">
+						<button class="btn btn-success" ng-click="do(current.item)">OK</button>
+					</div>
+					<div class="pull-right" ng-show="current.item.sate != 'done'">
+						<button class="btn btn-success" ng-click="do(current.item)">Re Do</button>
+						<button class="btn btn-success" ng-click="print(current.item)">Re-print</button>
 					</div>
 				</div>
 
 				<ul class="list-group"> {{ current.item.lot_number }}
-					<li ng-repeat="item in data | filter: {lot_numer: current.item.lot_number}" class="list-group-item list-link no-radius clearfix">
-						{{ item.lot_number }} {{ item.name }}
+					<li ng-repeat="item in data | filter: {sale_name: current.item.sale_name, state: 'done'}" ng-hide="item == current.item" class="list-group-item list-link no-radius clearfix">
+						<p>{{ item.lot_number }} {{ item.name }}</p>
 						 <button class="btn btn-success pull-right">Re-print</button>
 						 <button class="btn btn-success pull-right">Re-do</button>
 					</li>
@@ -42,7 +52,7 @@
 					<li id="todo" role="presentation" class="no-radius"><a href="#">Traité</a></li>
 				</ul>
 				<ul class="list-group">
-						<li ng-repeat="item in data | filter: {state:'done'} | orderBy: 'sequence'" class="list-group-item list-link" ng-class="{true: 'active'}[current.item==item]">	{{ item.lot_number }} {{ item.name}}</li>
+					<li ng-repeat="item in salesDone | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{'similar': (current.item.sale_name==item.sale_name), 'active': (current.item == item) }">	{{ item.lot_number }} {{ item.name}}</li>
 				</ul>
 			</div>
 		</div>

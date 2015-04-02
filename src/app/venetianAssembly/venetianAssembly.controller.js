@@ -28,12 +28,26 @@ angular.module('prodapps')
 
 			$scope.data.push(item);
 		}
+		$scope.updateSalesDone();
 	});
 	
     console.log($scope.list);
     }      
   	$scope.fetchList();
 
+	$scope.updateSalesDone = function () {
+		$scope.salesDone = [];
+
+		var draft = $scope.data.filter(function(e) {
+			return e.state === 'draft';
+		}).map(function (e) {
+			return e.sale_name;
+		});
+
+		$scope.salesDone = $scope.data.filter(function (e) {
+			return draft.indexOf(e.sale_name) === -1;
+		});
+	};
 
   	$scope.print = function (item) {
   		console.log('print ! ', item);
@@ -41,10 +55,10 @@ angular.module('prodapps')
   	};
 
   	$scope.do = function (item, modale) {
-		console.log('modale ', modale);
-        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, modale.casier]).then(function () {
+        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id]).then(function () {
+			item.state = 'done';
+			$scope.updateSalesDone();
 		}, function () {
 		});
-		modale.casier = "";
   	};
   });
