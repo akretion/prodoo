@@ -1,0 +1,14 @@
+<div class="container">
+	<h1>Application List</h1>
+
+	<table>
+		<tr>
+			<th>Application</th>
+			<th>Workcenter</th>
+		</tr>
+		<tr ng-repeat="workcenter in workcenters"> 
+			<td><a ng-href="{{ $state.href(workcenter.app, {workcenter: workcenter.workcenter}) }}">{{workcenter.app}}</a></td><td>{{workcenter.workcenter}}</td>
+		</tr>
+	</table>
+
+</div>
