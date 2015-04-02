@@ -30,10 +30,10 @@
 					<div class="panel-body">
 						<div ng-bind-html="current.item.description"></div>
 					</div>
-					<div class="pull-right" ng-show="current.item.sate == 'done'">
+					<div class="pull-right" ng-show="current.item.sate != 'done'">
 						<button class="btn btn-success" ng-click="do(current.item)">OK</button>
 					</div>
-					<div class="pull-right" ng-show="current.item.sate != 'done'">
+					<div class="pull-right" ng-show="current.item.sate == 'done'">
 						<button class="btn btn-success" ng-click="do(current.item)">Re Do</button>
 						<button class="btn btn-success" ng-click="print(current.item)">Re-print</button>
 					</div>
