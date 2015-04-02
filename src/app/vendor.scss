@@ -1,3 +1,78 @@
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
 @import '../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap';
+$grid-gutter-width:  0px;
+
+body {
+  padding-top:40px;
+}
+
+.row {
+  .col-no-padding {
+    padding-left:0;
+    padding-right:0;
+  }
+}
+
+.row.big-list {
+  height:100%;
+  & > div[class*=col-md] {
+    height:100%;
+    border-right:solid 1px #ddd;
+  }
+}
+
+.nav-pills {
+  & > li.no-radius {
+    & > a {
+      border-radius: 0;
+    }
+  }
+}
+
+.list-group-item.no-radius:first-child, .list-group-item.no-radius:last-child {
+  border-radius:0;
+}
+
+.btn-bottom {
+  margin-right:10px;
+}
+
+.hide {
+  display:none;
+}
+
+.list-group-item {
+  border-right:none;
+  border-left:none;
+}
+
+.list-link {
+  cursor:pointer;
+
+  &.active {
+    background-color:#337ab7;
+  }
+
+  &:hover {
+    background-color: #ddd;
+  }
+}
+.navbar {
+	margin-bottom: 0;
+}
+
+.list-group-item:first-child {
+    border-top-right-radius: initial;
+    border-top-left-radius: initial;
+}
+.list-group-item:last-child {
+    border-bottom-right-radius: initial;
+    border-bottom-left-radius: initial;
+}
+.list-group {
+    margin-bottom: 0;
+}
+.panel {
+    border-radius: 0;
+}
