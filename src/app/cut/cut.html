@@ -12,39 +12,43 @@
 	}
 </style>
 <div class="row big-list">
-	<div ng-hide="data"><h1>Loading</h1></div>
-	<div ng-show="data.length == 0"><h2>No data</h2></div>
+	<div ng-hide="sync.data"><h1>Loading</h1></div>
+	<div ng-show="sync.data.length == 0"><h2>No data</h2></div>
 </div>
-<div class="row big-list" ng-show="data.length">
+<div class="row big-list" ng-show="sync.data.length">
 
 	<div class="col-md-5 col-no-padding">
 	  <ul class="nav nav-pills nav-justified">
 		<li id="todo" role="presentation" class="tab active no-radius">
-			<a data-toggle="tab" ng-click="current.filter={state:'draft'}">Order to do</a>
+			<a data-toggle="tab" ng-click="sync.current.filter={state:'draft'}">Order to do</a>
 		</li>
 		<li id="done" role="presentation" class="tab no-radius">
-			<a data-toggle="tab" ng-click="current.filter={state:'done'}">Order done</a>
+			<a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
 		</li>
 	  </ul>
 	  <ul class="list-group tab " >
-	  	<li ng-repeat="item in data | filter: current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="current.item = item" ng-class="{true: 'active'}[current.item==item]">
+	  	<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
 {{ item.lot_number }} {{ item.name}} 
 	  	</li>
 	  </ul>
 	</div>
-	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[current.item.state=='done']">
+	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
 	  <h1>Détails</h1>
 	  <p>
 		<div class="well">
-		  <h3>Opération {{ current.item.name}}</h3>
-		<p>State: {{ current.item.state}}  {{ current.item. casier }} </p>
-		  <div ng-bind-html="current.item.description"></div>
+		  <h3>Opération {{ sync.current.item.name}}</h3>
+		<p>State: {{ sync.current.item.state}}  {{ sync.current.item. casier }} </p>
+		  <div ng-bind-html="sync.current.item.description"></div>
 		</div>
 	  </p>
 	  <div class="btn-bottom pull-right">
-		<button class="btn btn-info" ng-show="current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="current.item.status= 'toDo'">Relancer</button>
-		<button class="btn btn-info" ng-show="current.item.status == 'done'">Réimprimer</button>
-		<button class="btn btn-success" ng-hide="current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal" ng-click="print(current.item)">OK</button>
+	  	<span ng-show="sync.current.item.status == 'done'">
+			<button class="btn btn-info" data-toggle="modal" data-target="#casier-modal">Redo</button>
+			<button class="btn btn-info">Print</button>
+		<span>
+		<span ng-hide="sync.current.item.status == 'done'">
+			<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="print(sync.current.item)">OK</button>
+		</span>
 	  </div>
 	</div>
 
@@ -65,8 +69,8 @@
 			</div>
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-warning" data-dismiss="modal">Annuler</button>
-			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(current.item)">Réimprimer</button>
+			<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(current.item)">Print</button>
 			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="do(current.item, modal.casier)">OK</button>
 		  </div>
 		</div><!-- /.modal-content -->

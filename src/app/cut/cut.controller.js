@@ -1,59 +1,34 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('CutCtrl', function ($scope, $state, jsonRpc, prodooConfig) {
-  console.log('Cut ctrl');
+	.controller('CutCtrl', function ($scope, $state, jsonRpc, prodooSync) {
 
-	$scope.workcenter = $state.params.workcenter;
-	$scope.modale = { casier : '' };
-	$scope.data = null;
-	$scope.list = [];
-	$scope.current = { filter: { 'state':'draft'},  item : {sequence: 99999}}; 
-  	$scope.fetchList = function () {
-  		console.log('fetchList');
-  		
-        $scope.list = jsonRpc.syncImportObject({
-            model: 'mrp.production.workcenter.line',
-            func_key: 'prodoo',
-            domain: [['workcenter_id', '=', $scope.workcenter ]],
-            limit: prodooConfig.fetchLimit,
-            interval: prodooConfig.refreshInterval
-        });
-	$scope.$watch('list.timekey', function (newVal, oldVal) {
-		console.log('watched !', oldVal, newVal);
-		if (newVal !== undefined)
-			$scope.data = [];
-		var item;
-		for(var key in $scope.list.data) {
-			item = $scope.list.data[key];
-			if (item.sequence < $scope.current.item.sequence && item.state != 'done')
-				$scope.current.item = item;
+	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
+	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
-			$scope.data.push(item);
-		}
-	});
-	
-    console.log($scope.list);
-    }      
-  	$scope.fetchList();
+	$scope.print = function (item) {
+		console.log('print ! ', item);
+	};
 
+	$scope.do = function (item, modale) {
+		$scope.print(item);
+		$scope.markAsDone(item, modale);
+	}
 
-  	$scope.print = function (item) {
-  		console.log('print ! ', item);
-
-  	};
-
-  	$scope.do = function (item, modale) {
+	$scope.markAsDone = function (item, modale) {
 		var casier = null;
 		if (modale && modale.casier)
 			casier = modale.casier;
 
-        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
+			jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
 			if (casier)
 				modale.casier = "";
 			item.state = 'done';
 		}, function () {
 		});
-  	};
-	$scope.$on('$destroy', $scope.list.stopCallback);
-  });
+	};
+
+	$scope.$on('$destroy', function() {
+		destroy();
+	});
+});
