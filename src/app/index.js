@@ -22,10 +22,10 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         controller: 'CutCtrl'
     });
 
-    $stateProvider.state('main.decoupe', {
-        url: '/decoupe/{workcenter:int}',
-        templateUrl: 'app/decoupe/decoupe.html',
-        controller: 'CutCtrl'
+    $stateProvider.state('main.strip_cut', {
+        url: '/stripCut/{workcenter:int}',
+        templateUrl: 'app/stripCut/stripCut.html',
+        controller: 'StripCutCtrl'
     });
     $stateProvider.state('main.assembly', {
       url:'/assembly/{workcenter:int}',
