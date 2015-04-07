@@ -32,7 +32,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         templateUrl: 'app/assembly/assembly.html',
         controller:'AssemblyCtrl'
     });
-    $stateProvider.state('main.venetianAssembly', {
+    $stateProvider.state('main.venetian_assembly', {
       url:'/venetianAssembly/{workcenter:int}',
         templateUrl: 'app/venetianAssembly/venetianAssembly.html',
         controller:'VenetianAssemblyCtrl'
