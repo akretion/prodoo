@@ -37,10 +37,10 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         templateUrl: 'app/venetianAssembly/venetianAssembly.html',
         controller:'VenetianAssemblyCtrl'
     });
-    $stateProvider.state('main.carrierAssembly', {
-      url:'/carrierAssembly/{workcenter:int}',
-        templateUrl: 'app/carrierAssembly/carrierAssembly.html',
-        controller:'CarrierAssemblyCtrl'
+    $stateProvider.state('main.trolley_assembly', {
+      url:'/trolleyAssembly/{workcenter:int}',
+        templateUrl: 'app/trolleyAssembly/trolleyAssembly.html',
+        controller:'TrolleyAssemblyCtrl'
     });
 
    $urlRouterProvider.otherwise('/');
