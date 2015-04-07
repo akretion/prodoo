@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
+	.controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
@@ -32,8 +32,9 @@ angular.module('prodapps')
 		});
 	};
 
-	$scope.$watch('sync.data', function () {
-		$scope.updateSalesDone();
+	$scope.$watch('sync.data', function (newVal) {
+		if (newVal)
+			$scope.updateSalesDone();
 	});
 
 	$scope.updateSalesDone = function () {
