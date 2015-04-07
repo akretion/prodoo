@@ -4,7 +4,7 @@ angular.module('prodapps').directive('douchette', [ function () {
 return {
 	scope: { 'values':'=douchette'}, //values : array expected 
 	template:'<form ng-submit="add()">'+
-	'<ul>'+
+	'<ul class="list-unstyled">'+
 		'<li ng-repeat="val in values" ng-show="val.length">{{ val }} <a ng-click="rm(val)">x</a></li>'+
 	'</ul>'+
 	'<input ng-model="value"></input></form>',
