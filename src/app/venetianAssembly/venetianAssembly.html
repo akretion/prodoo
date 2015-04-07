@@ -32,7 +32,7 @@
 					<div class="panel-body">
 						<div ng-bind-html="sync.current.item.description"></div>
 					</div>
-					<div class="pull-right" ng-show="sync.sync.current.item.state != 'done'">
+					<div class="pull-right" ng-show="sync.current.item.state != 'done'">
 						<button class="btn btn-success" ng-click="do(sync.current.item)">OK</button>
 					</div>
 					<div class="pull-right" ng-show="sync.current.item.state == 'done'">
