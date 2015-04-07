@@ -42,11 +42,11 @@
 		</div>
 	  </p>
 	  <div class="btn-bottom pull-right">
-	  	<span ng-show="sync.current.item.status == 'done'">
-			<button class="btn btn-info" data-toggle="modal" data-target="#casier-modal">Redo</button>
+	  	<span ng-show="sync.current.item.state == 'done'">
 			<button class="btn btn-info">Print</button>
-		<span>
-		<span ng-hide="sync.current.item.status == 'done'">
+			<button class="btn btn-info" data-toggle="modal" data-target="#casier-modal">Redo</button>
+		</span>
+		<span ng-hide="sync.current.item.state == 'done'">
 			<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="print(sync.current.item)">OK</button>
 		</span>
 	  </div>
