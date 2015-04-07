@@ -1,16 +1,13 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('MainCtrl', function ($scope, $state) {
+  .controller('MainCtrl', function ($scope, $state, jsonRpc) {
 	
-	$scope.workcenters = [
-		{ app: 'main.cut', workcenter: 1 },
-		{ app: 'main.cut', workcenter: 2 },
-		{ app: 'main.decoupe', workcenter: 1 },
-		{ app: 'main.assembly', workcenter: 1 },
-		{ app: 'main.venetianAssembly', workcenter: 33 },
-		{ app: 'main.carrierAssembly', workcenter: 32 },
-
-	];
 	$scope.$state = $state;
+	jsonRpc.call('mrp.workcenter', 'prodoo_get_workcenter', []).then(function (data) {
+		console.log('data loaded', data);
+		$scope.workcenters = data;
+	});
+
+
 });

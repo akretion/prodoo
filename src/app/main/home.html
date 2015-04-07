@@ -4,10 +4,13 @@
 	<table>
 		<tr>
 			<th>Application</th>
-			<th>Workcenter</th>
+			<th>Group</th>
+			<th>Name</th>
 		</tr>
 		<tr ng-repeat="workcenter in workcenters"> 
-			<td><a ng-href="{{ $state.href(workcenter.app, {workcenter: workcenter.workcenter}) }}">{{workcenter.app}}</a></td><td>{{workcenter.workcenter}}</td>
+			<td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
+			<td>{{ workcenter.group}}</td>
+			<td>{{workcenter.name}}</td>
 		</tr>
 	</table>
 
