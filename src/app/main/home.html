@@ -7,7 +7,8 @@
 			<th>Group</th>
 			<th>Name</th>
 		</tr>
-		<tr ng-repeat="workcenter in workcenters"> 
+		<tr><td ng-hide="workcenters" colspan="3">Loading...</td></tr>
+		<tr ng-repeat="workcenter in workcenters| orderBy: 'group'">
 			<td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
 			<td>{{ workcenter.group}}</td>
 			<td>{{workcenter.name}}</td>
