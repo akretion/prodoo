@@ -1,4 +1,4 @@
-    <link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
+<link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
 <div class="container-fluid">
 <style>
 	.list-group.active {
@@ -27,9 +27,9 @@
 			<a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
 		</li>
 	  </ul>
-	  <ul class="list-group tab " >
-	  	<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
-({{item.sequence}}){{ item.lot_number }} {{ item.name}} 
+	  <ul class="list-group tab">
+	  	<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]" class="list-group-item list-link">
+			{{ item.lot_number }} {{ item.name}} 
 	  	</li>
 	  </ul>
 	</div>
@@ -37,9 +37,13 @@
 		<div>{{sync.current.item.name }}</div>
 		<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{sync.current.item.barcode}}*</div> {{ sync.current.item.barcode }}	
 	  <div class="btn-bottom pull-right">
-		<button class="btn btn-info" ng-show="sync.current.item.status == 'done'" data-toggle="modal" data-target="#casier-modal" ng-click="sync.current.item.status= 'toDo'">Relancer</button>
-		<button class="btn btn-info" ng-show="sync.current.item.status == 'done'">Réimprimer</button>
-		<button class="btn btn-success" ng-hide="sync.current.item.status == 'done'"data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)">OK</button>
+	  	<span ng-show="sync.current.item.state == 'done'">
+			<button class="btn btn-info" ng-click="markAsDone(sync.current.item)">Redo</button>
+			<button class="btn btn-info" ng-click="print(sync.current.item)">Print</button>
+		</span>
+		<span ng-hide="sync.current.item.state == 'done'">
+			<button class="btn btn-success" ng-click="do(sync.current.item)">Do</button>
+		</span>
 	  </div>
 	</div>
  </div>
