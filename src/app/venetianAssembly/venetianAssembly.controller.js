@@ -1,70 +1,58 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooConfig) {
-  console.log('Cut ctrl');
-	$scope.workcenter = $state.params.workcenter;
-  	$scope.list = [];
-	$scope.current = { filter: { 'state':'draft'},  item : {sequence: 99999}}; 
-  	$scope.fetchList = function () {
-  		console.log('fetchList');
-  		
-        $scope.list = jsonRpc.syncImportObject({
-            model: 'mrp.production.workcenter.line',
-            func_key: 'prodoo',
-            domain: [['workcenter_id', '=', $scope.workcenter ]],
-            limit: 50,
-            interval: prodooConfig.refreshInterval
-        });
-	$scope.$watch('list.timekey', function (newVal, oldVal) {
-		console.log('watched !', oldVal, newVal);
-		$scope.data = [];
-		var item;
-		for(var key in $scope.list.data) {
-			item = $scope.list.data[key];
-			if (item.sequence < $scope.current.item.sequence && item.state != 'done')
-				$scope.current.item = item;
+	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
+	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
+	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
-			$scope.data.push(item);
-		}
-		//$scope.updateSalesDone();
-		console.log('should update sales');
-	});
-	$scope.$watch('data', function () {
-		console.log('dans watch data');
+	$scope.print = function (item) {
+		console.log('print ! ', item);
+		$notification('Printing...');
+	};
+
+	$scope.do = function (item, modale) {
+		$scope.print(item);
+		$scope.markAsDone(item, modale);
+	}
+
+	$scope.markAsDone = function (item, modale) {
+		var casier = null;
+		if (modale && modale.casier)
+			casier = modale.casier;
+
+			jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
+			if (casier)
+				modale.casier = "";
+			item.state = 'done';
+			$notification('Done');
+
+			$scope.updateSalesDone();
+		}, function () {
+			$notification('an error has occured');
+		});
+	};
+
+	$scope.$watch('sync.data', function () {
 		$scope.updateSalesDone();
 	});
-
-	
-    console.log($scope.list);
-    }      
-  	$scope.fetchList();
 
 	$scope.updateSalesDone = function () {
 		$scope.salesDone = [];
 
-		var draft = $scope.data.filter(function(e) {
+		var draft = $scope.sync.data.filter(function(e) {
 			return e.state === 'draft';
 		}).map(function (e) {
 			return e.sale_name;
 		});
 
-		$scope.salesDone = $scope.data.filter(function (e) {
+		$scope.salesDone = $scope.sync.data.filter(function (e) {
 			return draft.indexOf(e.sale_name) === -1;
 		});
 		console.log(draft, $scope.salesDone);
 	};
 
-  	$scope.print = function (item) {
-  		console.log('print ! ', item);
 
-  	};
-
-  	$scope.do = function (item, modale) {
-        	jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id]).then(function () {
-			item.state = 'done';
-			$scope.updateSalesDone();
-		}, function () {
-		});
-  	};
-  });
+	$scope.$on('$destroy', function() {
+		destroy();
+	});
+});

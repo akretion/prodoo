@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('prodapps')
-	.controller('TrolleyAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync) {
+	.controller('TrolleyAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
 	$scope.print = function (item) {
 		console.log('print ! ', item);
+		$notification('Printing...');
 	};
 
 	$scope.do = function (item, modale) {
@@ -23,7 +24,9 @@ angular.module('prodapps')
 			if (casier)
 				modale.casier = "";
 			item.state = 'done';
+			$notification('Done');
 		}, function () {
+			$notification('an error has occured');
 		});
 	};
 
