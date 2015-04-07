@@ -1,7 +1,7 @@
 <div class="container">
 	<h1>Application List</h1>
 
-	<table>
+	<table class="table table-stripped">
 		<tr>
 			<th>Application</th>
 			<th>Group</th>
@@ -10,9 +10,25 @@
 		<tr><td ng-hide="workcenters" colspan="3">Loading...</td></tr>
 		<tr ng-repeat="workcenter in workcenters| orderBy: 'group'">
 			<td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
-			<td>{{ workcenter.group}}</td>
-			<td>{{workcenter.name}}</td>
+			<td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.group}}</a></td>
+			<td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.name}}</a></td>
 		</tr>
 	</table>
 
+	<hr>
+
+<style>
+.workcenter-group {
+	min-height: 250px !important;
+}
+.workcenter-list {
+	line-height:170%;
+}
+</style>
+	<div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
+		<h2>{{ g[0].group }}</h2>
+		<ul class="list-unstyled">
+			<li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.'+w.app, {workcenter: w.id}) }}">{{w.name}}</a></li>
+		</ul>
+	</div>
 </div>
