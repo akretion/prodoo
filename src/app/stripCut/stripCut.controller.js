@@ -3,6 +3,7 @@
 angular.module('prodapps')
 	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
 
+	$scope.casier = [];
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
@@ -12,18 +13,12 @@ angular.module('prodapps')
 	};
 
 	$scope.do = function (item, modale) {
-		$scope.print(item);
+		$notification('Done');
 		$scope.markAsDone(item, modale);
 	}
 
-	$scope.markAsDone = function (item, modale) {
-		var casier = null;
-		if (modale && modale.casier)
-			casier = modale.casier;
-
-			jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
-			if (casier)
-				modale.casier = "";
+	$scope.markAsDone = function (item) {
+		jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, $scope.casier.join(';')]).then(function () {
 			item.state = 'done';
 			$notification('Done');
 		}, function () {

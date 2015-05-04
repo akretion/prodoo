@@ -38,12 +38,36 @@
 		<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{sync.current.item.barcode}}*</div> {{ sync.current.item.barcode }}	
 	  <div class="btn-bottom pull-right">
 	  	<span ng-show="sync.current.item.state == 'done'">
-			<button class="btn btn-info" ng-click="markAsDone(sync.current.item)">Redo</button>
 			<button class="btn btn-info" ng-click="print(sync.current.item)">Print</button>
+			<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal">Redo</button>
 		</span>
 		<span ng-hide="sync.current.item.state == 'done'">
-			<button class="btn btn-success" ng-click="do(sync.current.item)">Do</button>
+			<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="print(sync.current.item)">Do</button>
 		</span>
 	  </div>
 	</div>
+
+	<div class="modal fade" id="casier-modal">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h2 class="modal-title">N° de Casier</h2>
+		  </div>
+		  <div class="modal-body text-center">
+			<div class="row">
+			  <div class="container-fluid">
+				<div douchette="casier">
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-info modal-btn-center" ng-click="print(sync.current.item)">Print</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="do(sync.current.item)">OK</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
  </div>
