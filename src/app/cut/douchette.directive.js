@@ -4,10 +4,11 @@ angular.module('prodapps').directive('douchette', [ function () {
 return {
 	scope: { 'values':'=douchette'}, //values : array expected 
 	template:'<form ng-submit="add()">'+
-	'<ul>'+
-		'<li ng-repeat="val in values" ng-show="val.length">{{ val }} <a ng-click="rm(val)">x</a></li>'+
-	'</ul>'+
-	'<input ng-model="value"></input></form>',
+	'<table class="table table-striped">'+
+		'<tr ng-repeat="val in values" ng-show="val.length"><td>{{ val }}</td><td><a class="btn btn-danger" role="button" ng-click="rm(val)">x</a></td></tr>'+
+		'<tr><td><input autofocus="true" ng-model="value"></input></td><td><button class="btn">+</button></td></tr>' +
+	'</table>'+
+	'</form>',
 	link: function ($scope, elem, attrs) {
 		$scope.value = '';
 		$scope.rm = function(val) {

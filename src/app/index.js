@@ -59,6 +59,12 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 			event.preventDefault();
 			$state.go('login');
 		}
+
+    //modal workaround for bootstrap
+    angular.element('body').on('shown.bs.modal', function (e) {
+      angular.element(e.currentTarget).find('[autofocus]').focus();
+    });
+
 	}); 
 
   })
