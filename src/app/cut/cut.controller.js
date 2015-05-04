@@ -6,7 +6,18 @@ angular.module('prodapps')
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
+	$scope.prefillCasier = function (item) {
+		//prefill casier array with casier comming from samed order
+		$scope.sync.data.filter(function (i) {
+			return i. === item.lot_number;
+		}).forEach(function (item) {
+			if ($scope.casier.indexOf(item.casier) === -1)
+				$scope.casier.push(item.casier);
+		});
+	};
+
 	$scope.print = function (item) {
+		$scope.prefillCasier(item);
 		console.log('print ! ', item);
 		$notification('Printing...');
 	};
