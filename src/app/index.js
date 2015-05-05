@@ -45,8 +45,8 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 
    $urlRouterProvider.otherwise('/');
 
-    jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.server;
-   jsonRpcProvider.odooRpc.interceptors.push(function (a) { console.log('Et BIM !!!', a);});
+   // jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.odooServer;
+   jsonRpcProvider.odooRpc.errorInterceptors.push(function (a) { console.log('Et BIM !!!', a);});
 
 	})
 .run(function ($rootScope, $state, jsonRpc, prodooConfig) {
