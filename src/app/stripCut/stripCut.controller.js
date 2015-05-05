@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
+	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooPrint, $notification) {
 
 	$scope.casier = [];
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
@@ -9,6 +9,7 @@ angular.module('prodapps')
 
 	$scope.print = function (item) {
 		console.log('print ! ', item);
+		prodooPrint(item);
 		$notification('Printing...');
 	};
 
