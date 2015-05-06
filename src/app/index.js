@@ -61,7 +61,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 		angular.element('body').on('shown.bs.modal', function (e) {
 			angular.element(e.currentTarget).find('[autofocus]').focus();
 		});
-		jsonRpc.odooRpc.errorInterceptors.push(function (a) { 
+		jsonRpc.errorInterceptors.push(function () {
 			$state.go('login');
 		});
 	});
