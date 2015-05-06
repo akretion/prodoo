@@ -5,7 +5,7 @@ return {
 	scope: { 'values':'=douchette'}, //values : array expected 
 	template:'<form ng-submit="add()">'+
 	'<table class="table table-striped">'+
-		'<tr ng-repeat="val in values" ng-show="val.length"><td>{{ val }}</td><td><a class="btn btn-danger" role="button" ng-click="rm(val)">x</a></td></tr>'+
+		'<tr ng-repeat="val in values track by $index" ng-show="val.length"><td>{{ val }}</td><td><a class="btn btn-danger" role="button" ng-click="rm(val)">x</a></td></tr>'+
 		'<tr><td><input autofocus="true" ng-model="value"></input></td><td><button class="btn">+</button></td></tr>' +
 	'</table>'+
 	'</form>',
