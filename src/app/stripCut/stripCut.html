@@ -23,11 +23,13 @@
 			<a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
 		</li>
 	  </ul>
-	  <ul class="list-group tab">
-	  	<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]" class="list-group-item list-link">
-			{{ item.lot_number }} {{ item.name}} 
-	  	</li>
-	  </ul>
+		<ion-scroll class="prodoo-ion-scroll" direction="y">
+			<ul class="list-group tab">
+				<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]" class="list-group-item list-link">
+				{{ item.lot_number }} {{ item.name}} 
+				</li>
+			</ul>
+		</ion-scroll>
 	</div>
 	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
 		<div>{{sync.current.item.name }}</div>
