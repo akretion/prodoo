@@ -17,16 +17,31 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
 	});
 
  	sync.liste.watch(function (e) {
+		//sync.liste.data is an object
+		//we need it as array
+		//plus
+		//  we want set current.item
+
 		console.log(sync.liste.data, objectRef);
 		//objectRef.data.splice(0, objectRef.data.length);
 		objectRef.data = [];
 		var item, key;
+		var candidate = null;
 		for(key in sync.liste.data) {
 			item = sync.liste.data[key];
-			if (item.sequence < objectRef.current.item.sequence && item.state != 'done')
-				objectRef.current.item = item;
 
 			objectRef.data.push(item);
+
+			//set only to task done
+			//choose a candidate with the lowest possible sequence number
+			if (item.state != 'done' && (!candidate || candidate.sequence > item.sequence))
+				candidate = item;
+		}
+
+		//if current.item not defined or not present in sync.liste.data (removed)
+		//set it to the best candidate
+		if (!objectRef.current.item || !sync.liste.data[objectRef.current.item.id]){
+			objectRef.current.item = candidate;			
 		}
 	});
 

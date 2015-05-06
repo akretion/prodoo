@@ -3,7 +3,7 @@
 angular.module('prodapps')
 	.controller('CutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
 	$scope.casier = [];
-	$scope.sync = { data: null, current: { filter: { 'state':'draft'},  item : {sequence: 99999}}};
+	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
 	$scope.prefillCasier = function (item) {
