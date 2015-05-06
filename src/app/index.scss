@@ -4,5 +4,8 @@
 }
 
 .prodoo-ion-scroll {
-	width: 100%; height: 600px; position: absolute; overflow: hidden;
+	width: 100% !important;
+	height: 600px !important;
+	position: absolute !important;
+	overflow: hidden !important;
 }
