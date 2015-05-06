@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-	.controller('CutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
+	.controller('CutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint) {
 	$scope.casier = [];
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
@@ -18,7 +18,7 @@ angular.module('prodapps')
 
 	$scope.print = function (item) {
 		$scope.prefillCasier(item);
-		console.log('print ! ', item);
+		prodooPrint(item);
 		$notification('Printing...');
 	};
 
