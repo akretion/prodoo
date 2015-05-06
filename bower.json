@@ -15,6 +15,7 @@
     "angular-notification": "~1.0.1",
     "buche": "https://github.com/FranzPoize/buche.git#~0.0.3",
     "odoo": "https://github.com/hparfr/angular-odoo.git",
+    "ionic": "~0.9.27",
     "pdfjs-dist": "~1.1.28"
   },
   "devDependencies": {
