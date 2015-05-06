@@ -45,9 +45,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 
 	$urlRouterProvider.otherwise('/');
 
-	// jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.odooServer;
-	jsonRpcProvider.odooRpc.errorInterceptors.push(function (a) { console.log('Et BIM !!!', a);});
-
+	jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.odooServer;
 })
 .run(function ($rootScope, $state, jsonRpc, prodooConfig) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -63,5 +61,8 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 		angular.element('body').on('shown.bs.modal', function (e) {
 			angular.element(e.currentTarget).find('[autofocus]').focus();
 		});
-	}); 
+		jsonRpc.odooRpc.errorInterceptors.push(function (a) { 
+			$state.go('login');
+		});
+	});
 });
