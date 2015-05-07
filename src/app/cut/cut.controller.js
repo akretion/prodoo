@@ -33,6 +33,7 @@ angular.module('prodapps')
 		jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, $scope.rack.join(';')]).then(function () {
 			item.state = 'done';
 			$notification('Done');
+			$scope.sync.current.item = {};
 		}, function () {
 			$notification('an error has occured');
 		});
