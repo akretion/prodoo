@@ -11,7 +11,10 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
  	sync.liste = jsonRpc.syncImportObject({
 		model: 'mrp.production.workcenter.line',
 		func_key: 'prodoo',
-		domain: [['workcenter_id', '=', options.workcenter ]],
+		domain: [
+			['workcenter_id', '=', options.workcenter ],
+			['pending', '=', false ]
+		],
 		limit: 50,
 		interval: prodooConfig.refreshInterval,
 	});
