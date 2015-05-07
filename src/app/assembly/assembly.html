@@ -49,7 +49,7 @@
 					<td ng-repeat="s in scan track by $index">
 						<input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans"></input>
 					</td>
-					<td><input ng-model="casiers[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input></td>
+					<td><input ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input></td>
 				</tr>
 			</tbody>
 		</table>
@@ -87,7 +87,7 @@
 					<div class="modal-body text-center">
 					<div class="row">
 						<div class="container-fluid">
-							<div douchette="casiers"></div>
+							<div douchette="casier"></div>
 						</div>
 					</div>
 				</div>
