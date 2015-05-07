@@ -7,7 +7,7 @@ angular.module('prodapps')
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 	$scope.prefillCasier = function (item) {
 		//prefill casier array with casier comming from samed order
-		$scope.rack = [];
+		$scope.rack = $scope.sync.current.item.rack;
 		$scope.sync.data.filter(function (i) {
 			return i.lot_number === item.lot_number;
 		}).forEach(function (item) {
