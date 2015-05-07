@@ -7,7 +7,7 @@ angular.module('prodapps')
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 	$scope.prefillCasier = function (item) {
 		//prefill casier array with casier comming from samed order
-		$scope.rack = $scope.sync.current.item.rack;
+		$scope.rack = angular.copy($scope.sync.current.item.rack); //angular.copy protects from cycles
 		$scope.sync.data.filter(function (i) {
 			return i.lot_number === item.lot_number;
 		}).forEach(function (item) {
@@ -33,7 +33,6 @@ angular.module('prodapps')
 		jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, $scope.rack.join(';')]).then(function () {
 			item.state = 'done';
 			$notification('Done');
-			$scope.sync.current.item = {};
 		}, function () {
 			$notification('an error has occured');
 		});
