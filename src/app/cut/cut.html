@@ -27,6 +27,7 @@
 			<ul class="list-group tab">
 				<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
 				{{ item.lot_number }} {{ item.name}} 
+				({{ item.qty }})
 				</li>
 			</ul>
 		</ion-scroll>
@@ -37,11 +38,16 @@
 			<h3>Opération {{ sync.current.item.name}}</h3>
 			<p>State: {{ sync.current.item.state}}  {{ sync.current.item.rack }} </p>
 			<div ng-bind-html="sync.current.item.description"></div>
+			
+			<div ng-show="sync.current.item.barcode">
+				<div style="font-family:Code39AzaleaFont; font-size:72px;">*{{sync.current.item.barcode}}*</div> 
+				<p>{{ sync.current.item.barcode }}</p>
+			</div>
 		</div>
 		<div ng-show="sync.current.item.state == 'done'">
 			<div class="btn-group btn-group-justified">
 				<div class="btn-group">
-					<button class="btn btn-warning"><span class="glyphicon glyphicon-print"></span> Print</button>
+					<button class="btn btn-warning" ng-click="print(sync.current.item)"><span class="glyphicon glyphicon-print"></span> Print</button>
 				</div>
 				<div class="btn-group">
 					<button class="btn btn-info" data-toggle="modal" data-target="#casier-modal"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
@@ -51,7 +57,7 @@
 		<div ng-hide="sync.current.item.state == 'done'">
 			<div class="btn-group btn-group-justified">
 				<div class="btn-group">
-					<button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="print(sync.current.item)"><span class="glyphicon glyphicon-print"></span> OK</button>
+					<button class="btn btn-info" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-print"></span> Produce</button>
 				</div>
 			</div>
 		</div>
@@ -79,7 +85,7 @@
 						<button type="button" class="btn btn-warning" ng-click="print(sync.current.item)"><span class="glyphicon glyphicon-print"></span> Print</button>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-success" data-dismiss="modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-ok"></span> OK</button>
+						<button type="button" class="btn btn-success" data-dismiss="modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-ok"></span> Finish</button>
 					</div>
 				</div>
 			</div><!-- /.modal-content -->

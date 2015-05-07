@@ -18,12 +18,14 @@ angular.module('prodapps')
 
 	$scope.print = function (item) {
 		$scope.prefillCasier(item);
-		prodooPrint(item);
 		$notification('Printing...');
+		prodooPrint(item,1);
 	};
 
 	$scope.do = function (item) {
-		$scope.print(item);
+		$scope.prefillCasier(item);
+		$notification('Printing...');
+		prodooPrint(item);
 		$scope.markAsDone(item);
 	};
 
