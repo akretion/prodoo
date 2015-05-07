@@ -36,12 +36,19 @@
 			<h3>Opération {{ sync.current.item.name}}</h3>
 			<p>State: {{ sync.current.item.state}}	{{ sync.current.item.casier }} </p>
 			<div ng-bind-html="sync.current.item.description"></div>
+			<h2>Casiers</h2>
+			<table class="table">
+				<tr ng-repeat="field in fields">
+					<th>{{ field.name }}</th>
+					<td ng-repeat="rack in fields.racks">{{ rack }}</td>
+				</tr>
+			</table>
 		</div>
 
 		<form name="grid" ng-submit="formSubmitted=1">
 		<table class="table">
 			<tr>
-				<th ng-repeat="field in fields">{{ field }}</th>
+				<th ng-repeat="field in fields">{{ field.name }}</th>
 				<th>Casier</th>
 			</tr>
 			<tbody ng-repeat="scan in scans track by $index">
