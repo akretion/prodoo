@@ -30,8 +30,7 @@
 		</ion-scroll>
 	</div>
 	<div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
-		<p>Scan<div douchette="search"></div></p>
-
+		<ion-scroll class="prodoo-ion-scroll" direction="y">
 		<h1>Détails</h1>
 		<div class="well">
 			<h3>Opération {{ sync.current.item.name}}</h3>
@@ -39,11 +38,6 @@
 			<div ng-bind-html="sync.current.item.description"></div>
 		</div>
 
-		<div class=""> {{ sync.current.item.relatives }}
-			<p>Relative 1</p>
-			<p>Relative 2</p>
-		</div>
-		{{ formSubmitted }}
 		<form name="grid" ng-submit="formSubmitted=1">
 		<table class="table">
 			<tr>
@@ -55,7 +49,7 @@
 					<td ng-repeat="s in scan track by $index">
 						<input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans"></input>
 					</td>
-					<td><input ng-model="casiers[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input> {{ scan }} </td>
+					<td><input ng-model="casiers[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input></td>
 				</tr>
 			</tbody>
 		</table>
@@ -80,6 +74,9 @@
 				</div>
 			</div>
 		</div>
+
+		</ion-scroll>
+
 		<div class="modal fade" id="casier-modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -90,7 +87,7 @@
 					<div class="modal-body text-center">
 					<div class="row">
 						<div class="container-fluid">
-							<div douchette="casier"></div>
+							<div douchette="casiers"></div>
 						</div>
 					</div>
 				</div>
