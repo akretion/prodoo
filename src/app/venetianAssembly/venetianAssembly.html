@@ -21,7 +21,7 @@
 				<ion-scroll class="prodoo-ion-scroll" direction="y">
 					<ul class="list-group tab ">
 						<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" ng-click="sync.current.item = item" ng-class="{'similar': (sync.current.item.sale_name==item.sale_name), 'active': (sync.current.item == item) }" class="list-group-item list-link">	{{ item.lot_number }} {{ item.name}}
-							<span class="label label-default pull-right" style="font-size:100%">{{ item.qty }}</span></li>
+							<span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span></li>
 					</ul>
 				</ion-scroll>
 			</div>
