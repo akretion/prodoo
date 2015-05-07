@@ -42,7 +42,7 @@ angular.module('prodapps')
 		});
 
 		$scope.salesDone = $scope.sync.data.filter(function (e) {
-			return draft.indexOf(e.sale_name) === -1;
+			return draft.indexOf(e.sale_name) === -1 && $scope.sync.current.item.sale_name != e.sale_name;
 		});
 		console.log(draft, $scope.salesDone);
 	};
