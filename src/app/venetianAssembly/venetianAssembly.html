@@ -54,14 +54,6 @@
 				<ul class="list-group">
 					<li ng-repeat="item in sync.data | filter: {sale_name: sync.current.item.sale_name, state: 'done'}" ng-hide="item == sync.current.item" class="list-group-item list-link no-radius clearfix">
 						<p><a ng-click="sync.current.item = item">{{ item.lot_number }} {{ item.name }}</a></p>
-						<div ng-show="item.state == 'done'" class="btn-group-justified">
-							<div class="btn-group" role="group">
-								<button class="btn btn-warning" ng-click="print(item)"><span class="glyphicon glyphicon-print"></span> Print</button>
-							</div>
-							<div class="btn-group" role="group">
-								<button class="btn btn-info" ng-click="markAsDone(item)"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
-							</div>
-						</div>
 					</li>
 				</ul>
 			</div>
