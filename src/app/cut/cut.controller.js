@@ -16,17 +16,13 @@ angular.module('prodapps')
 		});
 	};
 
-	$scope.print = function (item) {
-		$scope.prefillCasier(item);
+	$scope.print = function (item, qte) {
 		$notification('Printing...');
-		prodooPrint(item,1);
+		prodooPrint(item, qte);
 	};
 
 	$scope.do = function (item) {
 		$scope.prefillCasier(item);
-		$notification('Printing...');
-		prodooPrint(item);
-		$scope.markAsDone(item);
 	};
 
 	$scope.markAsDone = function (item) {
