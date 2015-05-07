@@ -6,10 +6,11 @@ angular.module('prodapps').directive('enterFocus', [function () {
 		scope: { scans:'=enterFocus' },
 		link: function ($scope, el) {
 			$scope.buildQuery = function (id) {
-				var type, line, column, out;
-				[type, line, column] = id.split('-');
-				line = parseInt(line);
-				column = parseInt(column);
+				var splitted, type, line, column, out;
+				splitted = id.split('-');
+				type = splitted[0];
+				line = parseInt(splitted[1]);
+				column = parseInt(splitted[2]));
 
 				if (type === 'scan')
 				{
