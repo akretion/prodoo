@@ -38,9 +38,10 @@
 			<div ng-bind-html="sync.current.item.description"></div>
 			<h2>Casiers</h2>
 			<table class="table">
+				<tr><th></th><th>Rack</th></tr>
 				<tr ng-repeat="field in fields">
 					<th>{{ field.name }}</th>
-					<td ng-repeat="rack in field.rack">{{ rack }}</td>
+					<td>{{ field.rack }}</td>
 				</tr>
 			</table>
 		</div>
@@ -49,7 +50,7 @@
 		<table class="table">
 			<tr>
 				<th ng-repeat="field in fields">{{ field.name }}</th>
-				<th>Casier</th>
+				<th>Rack</th>
 			</tr>
 			<tbody ng-repeat="scan in scans track by $index">
 				<tr ng-form="">
