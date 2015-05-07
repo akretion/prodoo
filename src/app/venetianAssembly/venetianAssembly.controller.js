@@ -17,16 +17,10 @@ angular.module('prodapps')
 	}
 
 	$scope.markAsDone = function (item, modale) {
-		var casier = null;
-		if (modale && modale.casier)
-			casier = modale.casier;
 
-			jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, casier]).then(function () {
-			if (casier)
-				modale.casier = "";
+		jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id]).then(function () {
 			item.state = 'done';
 			$notification('Done');
-
 			$scope.updateSalesDone();
 		}, function () {
 			$notification('an error has occured');
