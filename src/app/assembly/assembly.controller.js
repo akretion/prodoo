@@ -15,6 +15,10 @@ angular.module('prodapps')
 
 		$scope.fields = newVal.components;
 		$scope.scans = [];
+		//if item.components is [ {name: 'tissu'}, { name:'profile'}]
+		// and item.qty = 2 
+		// then scans whould be [ [null, null], [null, null]]
+		// (Array.prototype.fill() is not ready yet / polyfill instead : 
 		var line = [], k = 0;
 		for (k = 0; k < newVal.components.length; k++)
 			line.push(null);
@@ -23,4 +27,7 @@ angular.module('prodapps')
 			$scope.scans.push(line)
 
 	});
+
+	$scope.$on('$destroy', destroy);
+
 });
