@@ -28,7 +28,7 @@
 			<ul class="list-group tab">
 				<li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
 				{{ item.lot_number }} {{ item.name}} 
-				({{ item.qty }})
+				<span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span></li>
 				</li>
 			</ul>
 		</ion-scroll>
