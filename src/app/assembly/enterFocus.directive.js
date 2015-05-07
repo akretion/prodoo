@@ -10,7 +10,7 @@ angular.module('prodapps').directive('enterFocus', [function () {
 				splitted = id.split('-');
 				type = splitted[0];
 				line = parseInt(splitted[1]);
-				column = parseInt(splitted[2]));
+				column = parseInt(splitted[2]);
 
 				if (type === 'scan')
 				{
