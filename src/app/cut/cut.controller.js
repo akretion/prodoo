@@ -5,14 +5,14 @@ angular.module('prodapps')
 	$scope.casier = [];
 	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
-
 	$scope.prefillCasier = function (item) {
 		//prefill casier array with casier comming from samed order
+		$scope.casier = [];
 		$scope.sync.data.filter(function (i) {
 			return i.lot_number === item.lot_number;
 		}).forEach(function (item) {
-			if ($scope.casier.indexOf(item.casier) === -1)
-				$scope.casier.push(item.casier);
+			if ($scope.casier.indexOf(item.rack) === -1)
+				$scope.casier.push(item.rack);
 		});
 	};
 
