@@ -4,7 +4,7 @@ angular.module('prodapps')
 	.controller('StripCutCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooPrint, $notification) {
 
 	$scope.casier = [];
-	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
+	$scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
 	$scope.prefillCasier = function (item) {

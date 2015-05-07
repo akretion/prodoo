@@ -2,7 +2,7 @@
 
 angular.module('prodapps')
 	.controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
-	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
+	$scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
 	$scope.print = function (item) {
@@ -41,7 +41,7 @@ angular.module('prodapps')
 		$scope.salesDone = [];
 
 		var draft = $scope.sync.data.filter(function(e) {
-			return e.state === 'draft';
+			return e.state !== 'done';
 		}).map(function (e) {
 			return e.sale_name;
 		});

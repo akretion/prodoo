@@ -3,7 +3,7 @@
 angular.module('prodapps')
 	.controller('CutCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint) {
 	$scope.casier = [];
-	$scope.sync = { data: null, current: { filter: { 'state':'draft'}}};
+	$scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 	$scope.prefillCasier = function (item) {
 		//prefill casier array with casier comming from samed order
