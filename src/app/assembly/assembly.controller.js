@@ -28,6 +28,19 @@ angular.module('prodapps')
 
 	});
 
+	$scope.do = function(item) {
+		$scope.markAsDone(item);
+	};
+
+	$scope.markAsDone = function (item) {
+		jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, $scope.casier.join(';')]).then(function () {
+			item.state = 'done';
+			$notification('Done');
+		}, function () {
+			$notification('an error has occured');
+		});
+	};
+
 	$scope.$on('$destroy', destroy);
 
 });
