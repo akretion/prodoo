@@ -1,6 +1,7 @@
 <div class="container">
 	<h1>Application List</h1>
 
+	<ion-scroll class="prodoo-ion-scroll" direction="y">
 	<table class="table table-stripped">
 		<tr>
 			<th>Application</th>
@@ -31,4 +32,7 @@
 			<li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.'+w.app, {workcenter: w.id}) }}">{{w.name}}</a></li>
 		</ul>
 	</div>
+
+	</ion-scroll>
+
 </div>
