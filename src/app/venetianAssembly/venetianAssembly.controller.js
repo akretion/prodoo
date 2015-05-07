@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('prodapps')
-	.controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification) {
+	.controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooPrint, $notification) {
 	$scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
 	$scope.print = function (item) {
 		console.log('print ! ', item);
 		$notification('Printing...');
+		prodooPrint(item);
 	};
 
 	$scope.do = function (item, modale) {
