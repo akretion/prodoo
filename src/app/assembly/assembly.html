@@ -6,6 +6,15 @@
     .draft {
         color: #ccc;
     }
+    tr.ng-valid {
+      background-color:#dff0d8;
+    }
+    tr.ng-valid-ensure-value.ng-invalid {
+      background-color:#fcf8e3;
+    }
+    tr.ng-invalid-ensure-value.ng-dirty {
+      background-color:#f2dede;
+    }
 </style>
 <div class="row big-list">
     <div ng-hide="sync.data"><h1>Loading</h1></div>
@@ -61,14 +70,12 @@
             <tbody ng-repeat="scan in scans track by $index">
                 <tr ng-form="">
                     <td ng-repeat="s in scan track by $index">
-                        <input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans"></input>
+                      <input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans" ensure-value="{{ fields[0].rack }}"></input>
                     </td>
                     <td><input ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input></td>
                 </tr>
             </tbody>
         </table>
-        </form>
-
 
         <div ng-show="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
@@ -80,11 +87,12 @@
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-print"></span> OK</button>
+                    <button ng-disabled="grid.$error" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-print"></span> OK</button>
                 </div>
             </div>
         </div>
 
+        </form>
         </ion-scroll>
 
 
