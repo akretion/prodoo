@@ -15,11 +15,15 @@
 <div class="row big-list" ng-show="sync.data.length">
 
     <div class="col-md-5 col-no-padding">
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search">
+        </div>
         <ul class="nav nav-pills nav-justified">
-            <li id="todo" role="presentation" class="tab active no-radius">
+            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
             </li>
-            <li id="done" role="presentation" class="tab no-radius">
+            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' && !sync.current.filter.lot_number }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
             </li>
         </ul>
