@@ -3,7 +3,7 @@
 
     <ion-scroll class="prodoo-ion-scroll" direction="y">
         <form>
-            <input ng-model="barcode" type="number"> {{ barcode }}
+            <input ng-model="barcode" type="number">
             <input type="reset" class="btn btn-warning" ng-click="barcode = ''">
             <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
               <a ng-href="{{ $state.href('main.'+workcenter.app, { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
