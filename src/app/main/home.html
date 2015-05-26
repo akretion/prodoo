@@ -2,22 +2,28 @@
     <h1>Application List</h1>
 
     <ion-scroll class="prodoo-ion-scroll" direction="y">
-    <table class="table table-stripped">
-        <tr>
-            <th>Application</th>
-            <th>Group</th>
-            <th>Name</th>
-        </tr>
-        <tr><td ng-hide="workcenters" colspan="3">Loading...</td></tr>
-        <tr ng-repeat="workcenter in workcenters| orderBy: 'group'">
-            <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
-            <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.group}}</a></td>
-            <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.name}}</a></td>
-        </tr>
-    </table>
+        <form>
+            <input ng-model="barcode" type="number"> {{ barcode }}
+            <input type="reset" class="btn btn-warning" ng-click="barcode = ''">
+            <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
+              <a ng-href="{{ $state.href('main.'+workcenter.app, { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+          </div>
+        </form>
+        <table class="table table-stripped">
+            <tr>
+                <th>Application</th>
+                <th>Group</th>
+                <th>Name</th>
+            </tr>
+            <tr><td ng-hide="workcenters" colspan="3">Loading...</td></tr>
+            <tr ng-repeat="workcenter in workcenters| orderBy: 'group'">
+                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
+                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.group}}</a></td>
+                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.name}}</a></td>
+            </tr>
+        </table>
 
     <hr>
-
 <style>
 .workcenter-group {
     min-height: 250px !important;
@@ -26,12 +32,12 @@
     line-height:170%;
 }
 </style>
-    <div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
-        <h2>{{ g[0].group }}</h2>
-        <ul class="list-unstyled">
-            <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.'+w.app, {workcenter: w.id}) }}">{{w.name}}</a></li>
-        </ul>
-    </div>
+        <div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
+            <h2>{{ g[0].group }}</h2>
+            <ul class="list-unstyled">
+                <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.'+w.app, {workcenter: w.id}) }}">{{w.name}}</a></li>
+            </ul>
+        </div>
 
     </ion-scroll>
 
