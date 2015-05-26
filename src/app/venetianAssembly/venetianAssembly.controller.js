@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('prodapps')
-	.controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooPrint, $notification) {
+angular.module('prodapps').controller('VenetianAssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooPrint, $notification) {
 	$scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
 	var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
 
@@ -42,11 +41,10 @@ angular.module('prodapps')
 		});
 
 		$scope.salesDone = $scope.sync.data.filter(function (e) {
-			return draft.indexOf(e.sale_name) === -1 && $scope.sync.current.item.id != e.id;
+			return draft.indexOf(e.sale_name) === -1 && $scope.sync.current.item.sale_name != e.sale_name;
 		});
 		console.log(draft, $scope.salesDone);
 	};
-
 
 	$scope.$on('$destroy', function() {
 		destroy();
