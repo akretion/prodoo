@@ -13,7 +13,7 @@ angular.module('prodapps')
 	};
 	$scope.logout = function () {
 		console.log('logout');
-		jsonRpc.logout();
+		jsonRpc.logout(true);
 		$state.go('login');
 	};
 	$scope.logout();
