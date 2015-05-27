@@ -47,7 +47,7 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
 
     jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.odooServer;
 })
-.run(function ($rootScope, $state, jsonRpc, prodooConfig) {
+.run(function ($rootScope, $state, jsonRpc, prodooConfig, $notification) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         if (toState.name === 'login')
             return;
@@ -61,8 +61,12 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         angular.element('body').on('shown.bs.modal', function (e) {
             angular.element(e.currentTarget).find('[autofocus]').focus();
         });
-        jsonRpc.errorInterceptors.push(function () {
-            $state.go('login');
+        jsonRpc.errorInterceptors.push(function (e) {
+            console.log('Error with webservice: ', e);
+            if (e.title =='session_expired')
+              $state.go('login');
+            else
+              $notification('Webservice error: ' + e.title);
         });
     });
 });

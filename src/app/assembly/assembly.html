@@ -6,6 +6,18 @@
     .draft {
         color: #ccc;
     }
+    tr.ng-valid {
+      background-color:#dff0d8;
+    }
+    tr.ng-valid-ensure-value.ng-invalid {
+      background-color:#fcf8e3;
+    }
+    tr.ng-invalid-ensure-value.ng-dirty {
+      background-color:#f2dede;
+    }
+    .haute-ligne {
+      line-height: 300%;
+    }
 </style>
 <div class="row big-list">
     <div ng-hide="sync.data"><h1>Loading</h1></div>
@@ -13,11 +25,15 @@
 </div>
 <div class="row big-list" ng-show="sync.data.length">
     <div class="col-md-5 col-no-padding">
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search">
+        </div>
         <ul class="nav nav-pills nav-justified">
-            <li id="todo" role="presentation" class="tab active no-radius">
+            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
             </li>
-            <li id="done" role="presentation" class="tab no-radius">
+            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' && !sync.current.filter.lot_number }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
             </li>
         </ul>
@@ -57,14 +73,12 @@
             <tbody ng-repeat="scan in scans track by $index">
                 <tr ng-form="">
                     <td ng-repeat="s in scan track by $index">
-                        <input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans"></input>
+                      <input class="haute-ligne" ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
                     </td>
-                    <td><input ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans"></input></td>
+                    <td><input  class="haute-ligne" ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans" ng-focus="casier[$index]"></input></td>
                 </tr>
             </tbody>
         </table>
-        </form>
-
 
         <div ng-show="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
@@ -76,11 +90,12 @@
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-print"></span> OK</button>
+                    <button ng-disabled="grid.$error" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-print"></span> OK</button>
                 </div>
             </div>
         </div>
 
+        </form>
         </ion-scroll>
 
 
