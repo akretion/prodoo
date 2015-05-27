@@ -15,6 +15,9 @@
     tr.ng-invalid-ensure-value.ng-dirty {
       background-color:#f2dede;
     }
+    .haute-ligne {
+      line-height: 300%;
+    }
 </style>
 <div class="row big-list">
     <div ng-hide="sync.data"><h1>Loading</h1></div>
@@ -70,9 +73,9 @@
             <tbody ng-repeat="scan in scans track by $index">
                 <tr ng-form="">
                     <td ng-repeat="s in scan track by $index">
-                      <input ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
+                      <input class="haute-ligne" ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" enter-focus="scans" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
                     </td>
-                    <td><input ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans" ng-focus="casier[$index]"></input></td>
+                    <td><input  class="haute-ligne" ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" enter-focus="scans" ng-focus="casier[$index]"></input></td>
                 </tr>
             </tbody>
         </table>
