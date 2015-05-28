@@ -24,13 +24,15 @@ angular.module('prodapps')
           // and item.qty = 2
           // then scans whould be [ [null, null], [null, null]]
           // (Array.prototype.fill() is not ready yet / polyfill instead :
-          var line = [], k = 0;
-          for (k = 0; k < newVal.components.length; k++)
-              line.push(null);
 
+          var line = [], k = 0, l = 0;
           for (k = 0; k < newVal.qty; k++) {
-              newVal.scans.push(line);
-              $scope.locks.push(true);
+            line = [];
+            for (l = 0; l < newVal.components.length; l++) {
+              line.push(null);
+            }
+            newVal.scans.push(line);
+            $scope.locks.push(true);
           }
         }
 
