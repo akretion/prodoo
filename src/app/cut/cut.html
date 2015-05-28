@@ -54,7 +54,7 @@
                     <button class="btn btn-warning" ng-click="print(sync.current.item, 1)"><span class="glyphicon glyphicon-print"></span> Print</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#casier-modal"><span class="glyphicon glyphicon-repeat" ng-click="do(sync.current.item)"></span> Redo</button>
+                  <button class="btn btn-info" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat"> </span> Redo</button>
                 </div>
             </div>
         </div>
@@ -76,6 +76,7 @@
                 <div class="modal-body text-center">
                 <div class="row">
                     <div class="container-fluid">
+                        <div>rack : {{ rack }} </div>
                         <div douchette="rack"></div>
                     </div>
                 </div>
