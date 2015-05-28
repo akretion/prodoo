@@ -7,6 +7,7 @@ angular.module('prodapps')
     $scope.fields = [];
     $scope.scans = [];
     $scope.casier = [];
+    $scope.locks = [];
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
@@ -27,8 +28,10 @@ angular.module('prodapps')
           for (k = 0; k < newVal.components.length; k++)
               line.push(null);
 
-          for (k = 0; k < newVal.qty; k++)
+          for (k = 0; k < newVal.qty; k++) {
               newVal.scans.push(line);
+              $scope.locks.push(true);
+          }
         }
 
     });

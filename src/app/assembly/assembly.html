@@ -6,13 +6,13 @@
     .draft {
         color: #ccc;
     }
-    tr.ng-valid {
+    tbody.ng-valid {
       background-color:#dff0d8;
     }
-    tr.ng-valid-ensure-value.ng-invalid {
+    tbody.ng-valid-ensure-value.ng-invalid {
       background-color:#fcf8e3;
     }
-    tr.ng-invalid-ensure-value.ng-dirty {
+    tbody.ng-invalid-ensure-value.ng-dirty {
       background-color:#f2dede;
     }
     .haute-ligne {
@@ -70,12 +70,18 @@
                 <th ng-repeat="field in fields">{{ field.name }}</th>
                 <th>Rack</th>
             </tr>
-            <tbody ng-repeat="scan in sync.current.item.scans track by $index">
-                <tr ng-form>
+            <tbody ng-repeat="scan in sync.current.item.scans track by $index" ng-form="f{{$index}}">
+                <tr ng-hide="grid['f'+$index].$valid && locks[$index]">
                     <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="scan[$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
+                      <input class="haute-ligne" ng-model="scan[$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
                     </td>
-                    <td><input  class="haute-ligne" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]"></input></td>
+                    <td><input class="haute-ligne" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input></td>
+                </tr>
+                <tr ng-show="grid['f'+$index].$valid && locks[$index]">
+                  <td ng-repeat="s in scan track by $index">
+                    {{ scan[$index] }}
+                  </td>
+                  <td>{{sync.current.item.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
                 </tr>
             </tbody>
         </table>
