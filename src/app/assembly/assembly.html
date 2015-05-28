@@ -73,9 +73,9 @@
             <tbody ng-repeat="scan in scans track by $index">
                 <tr ng-form="">
                     <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="scan[$index]" required="true" id="scan-{{$parent.$index + '-' + $index}}" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
+                      <input class="haute-ligne" ng-model="scan[$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
                     </td>
-                    <td><input  class="haute-ligne" ng-model="casier[$index]" required="true" id="casier-{{$index}}-0" ng-focus="casier[$index]"></input></td>
+                    <td><input  class="haute-ligne" ng-model="casier[$index]" required="true" ng-focus="casier[$index]"></input></td>
                 </tr>
             </tbody>
         </table>
