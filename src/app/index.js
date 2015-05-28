@@ -14,7 +14,8 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         .state('login', {
             url: '/login',
             templateUrl: 'app/login/login.html',
-            controller: 'LoginCtrl'
+            controller: 'LoginCtrl',
+            data: {}
         })
         .state('main.cut', {
             url: '/cut/{workcenter:int}',
@@ -54,6 +55,10 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         if (!jsonRpc.isLoggedIn()) {
             console.log('not logged in');
             event.preventDefault();
+            //keep in memory desired app/workcenter
+            //in order to redirect after login
+            $state.get('login').data.params = toParams;
+            $state.get('login').data.state = toState.name;
             $state.go('login');
         }
         //modal workaround for bootstrap
