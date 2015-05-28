@@ -70,12 +70,12 @@
                 <th ng-repeat="field in fields">{{ field.name }}</th>
                 <th>Rack</th>
             </tr>
-            <tbody ng-repeat="scan in scans track by $index">
-                <tr ng-form="">
+            <tbody ng-repeat="scan in sync.current.item.scans track by $index">
+                <tr ng-form>
                     <td ng-repeat="s in scan track by $index">
                       <input class="haute-ligne" ng-model="scan[$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="scan[$index]=''"></input>
                     </td>
-                    <td><input  class="haute-ligne" ng-model="casier[$index]" required="true" ng-focus="casier[$index]"></input></td>
+                    <td><input  class="haute-ligne" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]"></input></td>
                 </tr>
             </tbody>
         </table>
