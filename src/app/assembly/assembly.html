@@ -87,8 +87,15 @@
                   <td ng-repeat="s in scan track by $index">
                     {{ s }}
                   </td>
-                  <td></td>
-                  <td>{{sync.current.item.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default haute-ligne"><span class="glyphicon glyphicon glyphicon-flag"></span> T</button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)"><span class="glyphicon glyphicon-print"></span> P</button>
+                        </div>
+                    </td>
+                    <td>{{sync.current.item.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
                 </tr>
             </tbody>
         </table>

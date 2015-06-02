@@ -51,6 +51,11 @@ angular.module('prodapps')
         });
     };
 
+    $scope.print = function (item, qte) {
+        $notification('Printing...');
+        prodooPrint(item, qte);
+    };
+
     $scope.$on('$destroy', destroy);
 
 });
