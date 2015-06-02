@@ -49,14 +49,11 @@
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
         <ion-scroll class="prodoo-ion-scroll" direction="y">
-        <h1>Détails</h1>
         <div class="well">
-            <h3>Opération {{ sync.current.item.name}}</h3>
-            <p>State: {{ sync.current.item.state}}    {{ sync.current.item.casier }} </p>
+            <h3>{{ sync.current.item.name}}</h3>
             <div ng-bind-html="sync.current.item.description"></div>
-            <h2>Casiers</h2>
+            <h2>Shelves</h2>
             <table class="table">
-                <tr><th></th><th>Rack</th></tr>
                 <tr ng-repeat="field in fields">
                     <th>{{ field.name }}</th>
                     <td>{{ field.rack }}</td>
