@@ -14,34 +14,34 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         .state('login', {
             url: '/login',
             templateUrl: 'app/login/login.html',
-            controller: 'LoginCtrl'
-    });
-    $stateProvider.state('main.cut', {
+            controller: 'LoginCtrl',
+            data: {}
+        })
+        .state('main.cut', {
             url: '/cut/{workcenter:int}',
             templateUrl: 'app/cut/cut.html',
             controller: 'CutCtrl'
-    });
-
-    $stateProvider.state('main.strip_cut', {
+        })
+        .state('main.strip_cut', {
             url: '/stripCut/{workcenter:int}',
             templateUrl: 'app/cut/cut.html',
             controller: 'CutCtrl'
-    });
-    $stateProvider.state('main.assembly', {
-        url:'/assembly/{workcenter:int}',
+        })
+        .state('main.assembly', {
+            url:'/assembly/{workcenter:int}',
             templateUrl: 'app/assembly/assembly.html',
             controller:'AssemblyCtrl'
-    });
-    $stateProvider.state('main.venetian_assembly', {
-        url:'/venetianAssembly/{workcenter:int}',
+        })
+        .state('main.venetian_assembly', {
+            url:'/venetianAssembly/{workcenter:int}',
             templateUrl: 'app/venetianAssembly/venetianAssembly.html',
             controller:'VenetianAssemblyCtrl'
-    });
-    $stateProvider.state('main.trolley_assembly', {
-        url:'/trolleyAssembly/{workcenter:int}',
+        })
+        .state('main.trolley_assembly', {
+            url:'/trolleyAssembly/{workcenter:int}',
             templateUrl: 'app/trolleyAssembly/trolleyAssembly.html',
             controller:'TrolleyAssemblyCtrl'
-    });
+        });
 
     $urlRouterProvider.otherwise('/');
 
@@ -55,6 +55,10 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
         if (!jsonRpc.isLoggedIn()) {
             console.log('not logged in');
             event.preventDefault();
+            //keep in memory desired app/workcenter
+            //in order to redirect after login
+            $state.get('login').data.params = toParams;
+            $state.get('login').data.state = toState.name;
             $state.go('login');
         }
         //modal workaround for bootstrap
