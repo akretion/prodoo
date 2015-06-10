@@ -22,11 +22,6 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
             templateUrl: 'app/cut/cut.html',
             controller: 'CutCtrl'
         })
-        .state('main.strip_cut', {
-            url: '/stripCut/{workcenter:int}',
-            templateUrl: 'app/cut/cut.html',
-            controller: 'CutCtrl'
-        })
         .state('main.assembly', {
             url:'/assembly/{workcenter:int}',
             templateUrl: 'app/assembly/assembly.html',
