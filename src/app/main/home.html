@@ -9,20 +9,6 @@
               <a ng-href="{{ $state.href('main.'+workcenter.app, { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
           </div>
         </form>
-        <table class="table table-stripped">
-            <tr>
-                <th>Application</th>
-                <th>Group</th>
-                <th>Name</th>
-            </tr>
-            <tr><td ng-hide="workcenters" colspan="3">Loading...</td></tr>
-            <tr ng-repeat="workcenter in workcenters| orderBy: 'group'">
-                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.app}}</a></td>
-                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.group}}</a></td>
-                <td><a ng-href="{{ $state.href('main.'+workcenter.app, {workcenter: workcenter.id}) }}">{{workcenter.name}}</a></td>
-            </tr>
-        </table>
-
     <hr>
 <style>
 .workcenter-group {
