@@ -26,8 +26,12 @@
 <div class="row big-list" ng-show="sync.data.length">
     <div class="col-md-5 col-no-padding">
         <div class="input-group">
-            <div class="input-group-addon" ng-click="sync.current.filter={}"><span class="glyphicon glyphicon-search"></span></div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search">
+            <div class="input-group-addon" >
+                <label for="exampleInputAmount">
+                    <span class="glyphicon glyphicon-search"></span>
+                </label>
+            </div>
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="sync.current.filter={}">
         </div>
         <ul class="nav nav-pills nav-justified">
             <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
@@ -39,7 +43,7 @@
         </ul>
         <ion-scroll class="prodoo-ion-scroll" direction="y">
             <ul class="list-group tab">
-                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]">
+                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
                     {{ item.lot_number }} - {{ item.name}}
                     <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
                 <br />

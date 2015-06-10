@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $ionicScrollDelegate, $location) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $location) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
@@ -46,8 +46,7 @@ angular.module('prodapps')
       $scope.sync.current.filter = {};
 
       //scroll to item
-      $location.hash(item.id)
-      $ionicScrollDelegate.anchorScroll();
+      $location.hash('item' + item.id);
     }
 
     $scope.do = function(item) {
