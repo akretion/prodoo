@@ -77,7 +77,7 @@
             <tbody ng-repeat="scan in sync.current.item.scans track by $index" ng-form="f{{$index}}">
                 <tr ng-hide="grid['f'+$index].$valid && locks[$index]">
                     <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="sync.current.item.scans[$parent.$index][$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="sync.current.item.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
+                      <input class="haute-ligne" ng-model="sync.current.item.scans[$parent.$index][$index]" required="true" ensure-value="{{ sync.current.item.lot_number }}" ng-focus="sync.current.item.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
                     </td>
                     <td>
                         <div class="btn-group">
