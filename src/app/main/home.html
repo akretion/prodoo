@@ -6,7 +6,7 @@
             <input ng-model="barcode" type="number">
             <input type="reset" class="btn btn-warning" ng-click="barcode = ''">
             <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
-              <a ng-href="{{ $state.href('main.'+workcenter.app, { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+              <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
           </div>
         </form>
     <hr>
@@ -21,7 +21,7 @@
         <div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
             <h2>{{ g[0].group }}</h2>
             <ul class="list-unstyled">
-                <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.'+w.app, {workcenter: w.id}) }}">{{w.name}}</a></li>
+                <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.assembly', {workcenter: w.id}) }}">{{w.name}}</a></li>
             </ul>
         </div>
 
