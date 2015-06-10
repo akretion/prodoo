@@ -31,13 +31,13 @@
                     <span class="glyphicon glyphicon-search"></span>
                 </label>
             </div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="sync.current.filter={}">
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="sync.current.filter.lot_number=null">
         </div>
         <ul class="nav nav-pills nav-justified">
-            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
+            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
             </li>
-            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' && !sync.current.filter.lot_number }">
+            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' }">
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
             </li>
         </ul>

@@ -43,7 +43,7 @@ angular.module('prodapps')
       $scope.sync.current.item = item;
 
       //erase the search
-      $scope.sync.current.filter = {};
+      $scope.sync.current.filter.lot_number = null
 
       //scroll to item
       $location.hash('item' + item.id);
