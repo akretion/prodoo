@@ -31,7 +31,7 @@
                     <span class="glyphicon glyphicon-search"></span>
                 </label>
             </div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="sync.current.filter.lot_number=null">
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="sync.current.filter.lot_number = undefined">
         </div>
         <ul class="nav nav-pills nav-justified">
             <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
@@ -41,7 +41,7 @@
                 <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
             </li>
         </ul>
-        <ion-scroll class="prodoo-ion-scroll" direction="y">
+        <ion-scroll class="prodoo-ion-scroll" delegate-handle="handleScroll" direction="y">
             <ul class="list-group tab">
                 <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
                     {{ item.lot_number }} - {{ item.name}}
