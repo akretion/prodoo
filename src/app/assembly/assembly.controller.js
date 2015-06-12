@@ -66,7 +66,7 @@ angular.module('prodapps')
       //scroll to item
       $timeout(function () {
         var offset =  angular.element('#item'+item.id)[0].offsetTop; //can be put in directive
-        $ionicScrollDelegate.$getByHandle('handleScroll').scrollTo(0, offset, true);
+        $ionicScrollDelegate.$getByHandle('leftScroll').scrollTo(0, offset, true);
         //anchorScroll doesn't work well
       },50); //wait dom update
     };
@@ -79,7 +79,8 @@ angular.module('prodapps')
       if (status === 'eraseSearch')
         delete ($scope.sync.current.filter.lot_number);
 
-      $ionicScrollDelegate.$getByHandle('handleScroll').scrollTop();
+      $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
+      $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
 
     $scope.do = function(item) {
