@@ -35,25 +35,23 @@ angular.module('prodapps')
           }
         }
 
-        if (!newVal.suggestedRack) {
-          //if there is another task with same lot_number
-          //and the other one is done
-          //and they have the same qty
-          //then we can prefill "suggestedRack"  
-          newVal.suggestedRack = [];
+        //if there is another task with same lot_number
+        //and the other one is done
+        //and they have the same qty
+        //then we can prefill "suggestedRack"  
+        newVal.suggestedRack = [];
 
-          $scope.sync.data.filter(function (i) {
-            return i.lot_number === newVal.lot_number && i.id != newVal.id;
-          }).forEach(function (item) { //normalement on devrait en avoir qu'un
-            //should be : 
-            // newVal.suggestedRack = item.rack;
-            //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
-            if (item.rack[0])
-              newVal.suggestedRack = item.rack[0] //because it's a [string]
-              .split(';') //';' is the current separator
-              .filter(function (i) { return i.length; }); //trim shit
-          });
-        }
+        $scope.sync.data.filter(function (i) {
+          return i.lot_number === newVal.lot_number && i.id != newVal.id;
+        }).forEach(function (item) { //normalement on devrait en avoir qu'un
+          //should be : 
+          // newVal.suggestedRack = item.rack;
+          //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
+          if (item.rack[0])
+            newVal.suggestedRack = item.rack[0] //because it's a [string]
+            .split(';') //';' is the current separator
+            .filter(function (i) { return i.length; }); //trim shit
+        });
     });
 
     $scope.clickTask = function (item) {
