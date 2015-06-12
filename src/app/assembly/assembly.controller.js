@@ -17,6 +17,8 @@ angular.module('prodapps')
         if (!newVal.casiers)
           if (newVal.rack[0])
           newVal.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
+          else
+          newVal.casiers = [];
 
         if (!newVal.scans) {
           newVal.scans = [];
@@ -87,12 +89,15 @@ angular.module('prodapps')
     };
 
     $scope.markAsDone = function (item) {
-        jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.casiers.join(';')]).then(function () {
-            item.state = 'done';
-            $notification('Done');
-        }, function () {
-            $notification('an error has occured');
-        });
+      if (item.casiers && item.casiers.length > 0 )
+        item.rack = item.casiers.join(';');
+
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
+          item.state = 'done';
+          $notification('Done');
+      }, function () {
+          $notification('an error has occured');
+      });
     };
 
     $scope.print = function (item, qte) {
