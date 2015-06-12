@@ -58,6 +58,8 @@ angular.module('prodapps')
         $scope.sync.current.filter={state:'!done'};
       if (status === 'done')
         $scope.sync.current.filter={state:'done'};
+      if (status === 'eraseSearch')
+        delete ($scope.sync.current.filter.lot_number);
 
       $ionicScrollDelegate.$getByHandle('handleScroll').scrollTop();
     };
