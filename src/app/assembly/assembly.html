@@ -90,7 +90,10 @@
                             <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)" ng-disabled="!sync.current.item.label" ><span class="glyphicon glyphicon-print"></span></button>
                         </div>
                     </td>
-                    <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input></td>
+                    <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input>
+                        <button class="btn pull-right" ng-click="locks[$index]=true" ng-show="grid['f'+$index].$valid">Edit</button>
+                    </td>
+
                 </tr>
                 <tr ng-show="grid['f'+$index].$valid && locks[$index]">
                   <td ng-repeat="s in scan track by $index">
