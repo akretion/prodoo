@@ -35,10 +35,10 @@
         </div>
         <ul class="nav nav-pills nav-justified">
             <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
-                <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
+                <a data-toggle="tab" ng-click="setFilter('toDo')">Order to do</a>
             </li>
             <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' }">
-                <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
+                <a data-toggle="tab" ng-click="setFilter('done')">Order done</a>
             </li>
         </ul>
         <ion-scroll class="prodoo-ion-scroll" delegate-handle="handleScroll" direction="y">

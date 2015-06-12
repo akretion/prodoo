@@ -53,6 +53,15 @@ angular.module('prodapps')
       },50); //wait dom update
     };
 
+    $scope.setFilter = function (status) {
+      if (status === 'toDo')
+        $scope.sync.current.filter={state:'!done'};
+      if (status === 'done')
+        $scope.sync.current.filter={state:'done'};
+
+      $ionicScrollDelegate.$getByHandle('handleScroll').scrollTop();
+    };
+
     $scope.do = function(item) {
         $scope.markAsDone(item);
     };
