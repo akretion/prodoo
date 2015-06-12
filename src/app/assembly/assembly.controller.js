@@ -6,7 +6,6 @@ angular.module('prodapps')
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
     $scope.scans = [];
-    $scope.casier = [];
     $scope.locks = [];
 
     $scope.$watch('sync.current.item', function (newVal) {
@@ -49,11 +48,10 @@ angular.module('prodapps')
             //should be : 
             // newVal.suggestedRack = item.rack;
             //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
-
-            newVal.suggestedRack = item.rack[0] //because it's a [string]
-            .split(';') //';' is the current separator
-            .filter(function (i) { return i.length; }); //trim shit
-
+            if (item.rack[0])
+              newVal.suggestedRack = item.rack[0] //because it's a [string]
+              .split(';') //';' is the current separator
+              .filter(function (i) { return i.length; }); //trim shit
           });
         }
     });
@@ -89,7 +87,7 @@ angular.module('prodapps')
     };
 
     $scope.markAsDone = function (item) {
-        jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, $scope.casier.join(';')]).then(function () {
+        jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.casiers.join(';')]).then(function () {
             item.state = 'done';
             $notification('Done');
         }, function () {
