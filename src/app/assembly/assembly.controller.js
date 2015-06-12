@@ -15,7 +15,8 @@ angular.module('prodapps')
         $scope.fields = newVal.components;
 
         if (!newVal.casiers)
-          newVal.casiers = []; //rack shoud be a better fit !
+          if (newVal.rack[0])
+          newVal.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
 
         if (!newVal.scans) {
           newVal.scans = [];
