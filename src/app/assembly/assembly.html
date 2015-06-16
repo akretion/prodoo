@@ -26,29 +26,36 @@
 <div class="row big-list" ng-show="sync.data.length">
     <div class="col-md-5 col-no-padding">
         <div class="input-group">
-            <div class="input-group-addon" ng-click="sync.current.filter={}"><span class="glyphicon glyphicon-search"></span></div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search">
+            <div class="input-group-addon" >
+                <label for="exampleInputAmount">
+                    <span class="glyphicon glyphicon-search"></span>
+                </label>
+            </div>
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search" ng-focus="setFilter('eraseSearch')">
         </div>
         <ul class="nav nav-pills nav-justified">
-            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
-                <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
+            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
+                <a data-toggle="tab" ng-click="setFilter('toDo')">Order to do</a>
             </li>
-            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' && !sync.current.filter.lot_number }">
-                <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
+            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' }">
+                <a data-toggle="tab" ng-click="setFilter('done')">Order done</a>
             </li>
         </ul>
-        <ion-scroll class="prodoo-ion-scroll" direction="y">
+        <ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y">
             <ul class="list-group tab">
-                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"    ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
-                    {{ item.lot_number }} {{ item.name}}
-                    <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span></li>
+                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+                    {{ item.lot_number }} - {{ item.name}}
+                    <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+                    <span class="label label-danger pull-right" style="font-size:100%;" ng-show="sync.current.item.pending">Pending</span>
+                <br />
+                <div ng-bind-html="item.short_description"></div>
 
                 </li>
             </ul>
         </ion-scroll>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
-        <ion-scroll class="prodoo-ion-scroll" direction="y">
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
         <div class="well">
             <h3>{{ sync.current.item.name}}</h3>
             <div ng-bind-html="sync.current.item.description"></div>
@@ -66,12 +73,13 @@
             <tr>
                 <th ng-repeat="field in fields">{{ field.name }}</th>
                 <th colspan="2">Operations</th>
+                <th>Suggested rack</th>
                 <th>Rack</th>
             </tr>
             <tbody ng-repeat="scan in sync.current.item.scans track by $index" ng-form="f{{$index}}">
                 <tr ng-hide="grid['f'+$index].$valid && locks[$index]">
                     <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="sync.current.item.scans[$parent.$index][$index]" required="true" ensure-value="{{ fields[0].rack }}" ng-focus="sync.current.item.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
+                      <input class="haute-ligne" ng-model="sync.current.item.scans[$parent.$index][$index]" required="true" ensure-value="{{ sync.current.item.lot_number }}" ng-focus="sync.current.item.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
                     </td>
                     <td>
                         <div class="btn-group">
@@ -80,10 +88,16 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)" ><span class="glyphicon glyphicon-print"></span></button>
+                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)" ng-disabled="!sync.current.item.label" ><span class="glyphicon glyphicon-print"></span></button>
                         </div>
                     </td>
-                    <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input></td>
+                    <td>
+                        {{ sync.current.item.suggestedRack[$index] }}
+                    </td>
+                        <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input>
+                        <button class="btn pull-right" ng-click="locks[$index]=true" ng-show="grid['f'+$index].$valid">Edit</button>
+                    </td>
+
                 </tr>
                 <tr ng-show="grid['f'+$index].$valid && locks[$index]">
                   <td ng-repeat="s in scan track by $index">
@@ -96,9 +110,10 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)"><span class="glyphicon glyphicon-print"></span></button>
+                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)"  ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span></button>
                         </div>
                     </td>
+                    <td></td>
                     <td>{{sync.current.item.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
                 </tr>
             </tbody>
@@ -114,7 +129,7 @@
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button ng-disabled="grid.$error" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
+                    <button ng-disabled="grid.$invalid" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
                 </div>
             </div>
         </div>
