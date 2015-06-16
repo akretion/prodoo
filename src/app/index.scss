@@ -1,16 +1,15 @@
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+.code-bar {
+  font-family: "Code39AzaleaFont";
+  font-size: 60px;
 }
 
-.thumbnail {
-  height: 200px;
-
-  img.pull-right {
-    width: 50px;
-  }
+.prodoo-ion-scroll {
+    width: 100% !important;
+    height: 90vh !important;
+    position: absolute !important;
+    overflow: hidden !important;
 }
-// injector
-// endinjector
+
+body {
+  padding-top: 0 !important;
+}

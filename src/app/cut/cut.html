@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="http://azalea.com/web-fonts/Code39Azalea.min.css">
+<div class="container-fluid">
+<style>
+    .list-group.active {
+        display:none;
+    }
+    .draft {
+        color: #ccc;
+    }
+</style>
+<div class="row big-list">
+    <div ng-hide="sync.data"><h1>Loading</h1></div>
+    <div ng-show="sync.data.length == 0"><h2>No data</h2></div>
+</div>
+<div class="row big-list" ng-show="sync.data.length">
+
+    <div class="col-md-5 col-no-padding">
+        <div class="input-group">
+            <div class="input-group-addon" ng-click="sync.current.filter={}"><span class="glyphicon glyphicon-search"></span></div>
+            <input ng-model="sync.current.filter.lot_number" class="form-control" id="exampleInputAmount" placeholder="search">
+        </div>
+        <ul class="nav nav-pills nav-justified">
+            <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' && !sync.current.filter.lot_number }">
+                <a data-toggle="tab" ng-click="sync.current.filter={state:'!done'}">Order to do</a>
+            </li>
+            <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' && !sync.current.filter.lot_number }">
+                <a data-toggle="tab" ng-click="sync.current.filter={state:'done'}">Order done</a>
+            </li>
+        </ul>
+
+        <ion-scroll class="prodoo-ion-scroll" direction="y">
+            <ul class="list-group tab">
+                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link"  ng-click="sync.current.item = item" ng-class="{true: 'active'}[sync.current.item==item]">
+                {{ item.lot_number }} {{ item.name}}
+                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span></li>
+                </li>
+            </ul>
+        </ion-scroll>
+    </div>
+    <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
+        <h1>Détails</h1>
+        <div class="well">
+            <h3>Opération {{ sync.current.item.name}}</h3>
+            <p>State: {{ sync.current.item.state}}  {{ sync.current.item.rack }} </p>
+            <div ng-bind-html="sync.current.item.description"></div>
+            <div ng-show="sync.current.item.barcode">
+                <div style="font-family:Code39AzaleaFont; font-size:72px;">*{{sync.current.item.barcode}}*</div> 
+                <p>{{ sync.current.item.barcode }}</p>
+            </div>
+        </div>
+        <div ng-show="sync.current.item.state == 'done'">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button class="btn btn-warning" ng-click="print(sync.current.item, 1)"><span class="glyphicon glyphicon-print"></span> Print</button>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-info" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat"> </span> Redo</button>
+                </div>
+            </div>
+        </div>
+        <div ng-hide="sync.current.item.state == 'done'">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button class="btn btn-info" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item); print(sync.current.item)"><span class="glyphicon glyphicon-print"></span> Produce</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="casier-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title">N° de Casier</h2>
+                </div>
+                <div class="modal-body text-center">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div douchette="rack"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning" ng-click="print(sync.current.item,1)"><span class="glyphicon glyphicon-print"></span> Print</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="markAsDone(sync.current.item)"><span class="glyphicon glyphicon-ok"></span> Finish</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+ </div>

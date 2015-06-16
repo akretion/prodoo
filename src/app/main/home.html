@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <h1>Application List</h1>
+
+    <ion-scroll class="prodoo-ion-scroll" direction="y" style="position:relative">
+        <form>
+            <input ng-model="barcode" type="number">
+            <input type="reset" class="btn btn-warning" ng-click="barcode = ''">
+            <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
+              <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+          </div>
+        </form>
+    <hr>
+<style>
+.workcenter-group {
+    min-height: 250px !important;
+}
+.workcenter-list {
+    line-height:170%;
+}
+</style>
+        <div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
+            <h2>{{ g[0].group }}</h2>
+            <ul class="list-unstyled">
+                <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.assembly', {workcenter: w.id}) }}">{{w.name}}</a></li>
+            </ul>
+        </div>
+
+    </ion-scroll>
+
+</div>

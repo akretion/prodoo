@@ -1,0 +1,17 @@
+'use strict';
+
+angular.module('prodapps').provider('prodooConfig', [ function prodooConfigProvider() {
+    this.config = {
+        odooServer: '',
+        db: 'db',
+        refreshInterval: 5000,
+        fetchLimit: 50,
+        printServer:'',
+    };
+
+    this.$get = [function () {
+            return this.config;
+    }];
+
+    return this;
+}])
