@@ -85,18 +85,19 @@ angular.module('prodapps')
     };
 
     $scope.do = function(item) {
-        $scope.markAsDone(item);
-    };
+      $notification('Pending');
+      item.lock = true;
 
-    $scope.markAsDone = function (item) {
       if (item.casiers && item.casiers.length > 0 )
         item.rack = item.casiers.join(';');
 
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
-          item.state = 'done';
-          $notification('Done');
+        item.state = 'done';
+        $notification('Done');
       }, function () {
-          $notification('an error has occured');
+        $notification('an error has occured');
+      }).then(function () {
+        item.lock = false;
       });
     };
 

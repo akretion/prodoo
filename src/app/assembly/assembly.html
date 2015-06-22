@@ -122,14 +122,14 @@
         <div ng-show="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button class="btn btn-info" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
+                    <button class="btn btn-info" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat" ng-disabled="!sync.current.item.lock"></span> Redo</button>
                 </div>
             </div>
         </div>
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button ng-disabled="grid.$invalid || sync.current.item.pending" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
+                    <button ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item.lock" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
                 </div>
             </div>
         </div>
