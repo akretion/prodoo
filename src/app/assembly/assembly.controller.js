@@ -5,8 +5,6 @@ angular.module('prodapps')
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
-    $scope.scans = [];
-    $scope.locks = [];
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
@@ -15,15 +13,18 @@ angular.module('prodapps')
         newVal._v = newVal._v || {};
 
         $scope.fields = newVal.components;
-
-        if (!newVal._v.casiers)
-          if (newVal.rack[0])
+        
+        newVal._v.casiers = []; //item.rack is a semicol separated list; we want it as an array (.length = qty)
+        if (newVal.rack[0])
           newVal._v.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
-          else
-          newVal._v.casiers = [];
 
         if (!newVal._v.scans) {
+        //for storing the scans - only usefull for the operator for keeping track of progression
+        //and ensuring she selected the good input product
+        //scan is not stored in odoo
+
           newVal._v.scans = [];
+          newVal._v.locks = [];
           //if item.components is [ {name: 'tissu'}, { name:'profile'}]
           // and item.qty = 2
           // then scans whould be [ [null, null], [null, null]]
@@ -36,7 +37,7 @@ angular.module('prodapps')
               line.push(null);
             }
             newVal._v.scans.push(line);
-            $scope.locks.push(true);
+            newVal._v.locks.push(true); //for locking the lines
           }
         }
 
