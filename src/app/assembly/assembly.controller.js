@@ -47,9 +47,11 @@ angular.module('prodapps')
         //then we can prefill "suggestedRack"  
         newVal._v.suggestedRack = [];
 
-        $scope.sync.data.filter(function (i) {
+        $scope.sameLotNumber = $scope.sync.data.filter(function (i) {
           return i.lot_number === newVal.lot_number && i.id != newVal.id;
-        }).forEach(function (item) { //normalement on devrait en avoir qu'un
+        });
+
+        $scope.sameLotNumber.forEach(function (item) { //normalement on devrait en avoir qu'un
           //should be : 
           // newVal.suggestedRack = item.rack;
           //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
@@ -85,6 +87,19 @@ angular.module('prodapps')
 
       $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
       $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
+    };
+
+    $scope.book = function(item) {
+      //assign the task to the current workcenter
+      item._v.lock = true;
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_book', [item.id]).then(function () {
+        //do the changes
+        $notification('Done');
+      }, function () {
+        $notification('an error has occured');
+      }).then(function () {
+        item._v.lock = false;
+      });
     };
 
     $scope.do = function(item) {
