@@ -67,6 +67,18 @@
                 </table>
             </div>
 
+            <div>
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button class="btn btn-success" ng-click="take(sync.current.item)">
+                            <span class="glyphicon glyphicon-download-alt" ng-disabled="!sync.current.item._v.lock"></span> 
+                            Book 
+                            <span class="badge badge-default">+ {{ sameLotNumber.length }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <form name="grid" ng-submit="formSubmitted=1">
                 <table class="table">
                     <tr>

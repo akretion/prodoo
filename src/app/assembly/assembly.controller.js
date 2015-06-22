@@ -112,6 +112,19 @@ angular.module('prodapps')
       $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
 
+    $scope.book = function(item) {
+      //assign the task to the current workcenter
+      item._v.lock = true;
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_book', [item.id]).then(function () {
+        //do the changes
+        $notification('Done');
+      }, function () {
+        $notification('an error has occured');
+      }).then(function () {
+        item._v.lock = false;
+      });
+    };
+
     $scope.do = function(item) {
       $notification('Pending');
       item._v.lock = true;
