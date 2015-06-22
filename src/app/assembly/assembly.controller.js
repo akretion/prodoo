@@ -12,16 +12,18 @@ angular.module('prodapps')
         if (!newVal)
             return;
 
+        newVal._v = newVal._v || {};
+
         $scope.fields = newVal.components;
 
-        if (!newVal.casiers)
+        if (!newVal._v.casiers)
           if (newVal.rack[0])
-          newVal.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
+          newVal._v.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
           else
-          newVal.casiers = [];
+          newVal._v.casiers = [];
 
-        if (!newVal.scans) {
-          newVal.scans = [];
+        if (!newVal._v.scans) {
+          newVal._v.scans = [];
           //if item.components is [ {name: 'tissu'}, { name:'profile'}]
           // and item.qty = 2
           // then scans whould be [ [null, null], [null, null]]
@@ -33,7 +35,7 @@ angular.module('prodapps')
             for (l = 0; l < newVal.components.length; l++) {
               line.push(null);
             }
-            newVal.scans.push(line);
+            newVal._v.scans.push(line);
             $scope.locks.push(true);
           }
         }
@@ -42,7 +44,7 @@ angular.module('prodapps')
         //and the other one is done
         //and they have the same qty
         //then we can prefill "suggestedRack"  
-        newVal.suggestedRack = [];
+        newVal._v.suggestedRack = [];
 
         $scope.sync.data.filter(function (i) {
           return i.lot_number === newVal.lot_number && i.id != newVal.id;
@@ -51,7 +53,7 @@ angular.module('prodapps')
           // newVal.suggestedRack = item.rack;
           //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
           if (item.rack[0])
-            newVal.suggestedRack = item.rack[0] //because it's a [string]
+            newVal._v.suggestedRack = item.rack[0] //because it's a [string]
             .split(';') //';' is the current separator
             .filter(function (i) { return i.length; }); //trim shit
         });
@@ -86,10 +88,10 @@ angular.module('prodapps')
 
     $scope.do = function(item) {
       $notification('Pending');
-      item.lock = true;
+      item._v.lock = true;
 
-      if (item.casiers && item.casiers.length > 0 )
-        item.rack = item.casiers.join(';');
+      if (item._v.casiers && item._v.casiers.length > 0 )
+        item.rack = item._v.casiers.join(';');
 
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
@@ -97,7 +99,7 @@ angular.module('prodapps')
       }, function () {
         $notification('an error has occured');
       }).then(function () {
-        item.lock = false;
+        item._v.lock = false;
       });
     };
 

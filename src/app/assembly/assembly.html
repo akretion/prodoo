@@ -76,10 +76,10 @@
                 <th>Suggested rack</th>
                 <th>Rack</th>
             </tr>
-            <tbody ng-repeat="scan in sync.current.item.scans track by $index" ng-form="f{{$index}}">
+            <tbody ng-repeat="scan in sync.current.item._v.scans track by $index" ng-form="f{{$index}}">
                 <tr ng-hide="grid['f'+$index].$valid && locks[$index]">
                     <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="sync.current.item.scans[$parent.$index][$index]" required="true" ensure-value="{{ sync.current.item.lot_number }}" ng-focus="sync.current.item.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
+                      <input class="haute-ligne" ng-model="sync.current.item._v.scans[$parent.$index][$index]" required="true" ensure-value="{{ sync.current.item.lot_number }}" ng-focus="sync.current.item._v.scans[$parent.$index][$index]=''; locks[$parent.$index]=false" ng-blur="locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
                     </td>
                     <td>
                         <div class="btn-group">
@@ -92,9 +92,9 @@
                         </div>
                     </td>
                     <td>
-                        {{ sync.current.item.suggestedRack[$index] }}
+                        {{ sync.current.item._v.suggestedRack[$index] }}
                     </td>
-                        <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item.casiers[$index]" required="true" ng-focus="sync.current.item.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input>
+                        <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item._v.casiers[$index]" required="true" ng-focus="sync.current.item._v.casiers[$index]=''; locks[$index]=false" ng-blur="locks[$index]=grid['f'+$index].$valid"></input>
                         <button class="btn pull-right" ng-click="locks[$index]=true" ng-show="grid['f'+$index].$valid">Edit</button>
                     </td>
 
@@ -114,7 +114,7 @@
                         </div>
                     </td>
                     <td></td>
-                    <td>{{sync.current.item.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
+                    <td>{{sync.current.item._v.casiers[$index]}} <button class="btn pull-right" ng-click="locks[$index]=false">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -122,14 +122,14 @@
         <div ng-show="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button class="btn btn-info" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat" ng-disabled="!sync.current.item.lock"></span> Redo</button>
+                    <button class="btn btn-info" ng-click="do(sync.current.item)"><span class="glyphicon glyphicon-repeat" ng-disabled="!sync.current.item._v.lock"></span> Redo</button>
                 </div>
             </div>
         </div>
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item.lock" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
+                    <button ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
                 </div>
             </div>
         </div>
