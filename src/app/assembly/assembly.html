@@ -76,10 +76,15 @@
                 <th>Suggested rack</th>
                 <th>Rack</th>
             </tr>
-            <tbody ng-repeat="scan in sync.current.item._v.scans track by $index" ng-form="f{{$index}}">
-                <tr ng-hide="grid['f'+$index].$valid && sync.current.item._v.locks[$index]">
-                    <td ng-repeat="s in scan track by $index">
-                      <input class="haute-ligne" ng-model="sync.current.item._v.scans[$parent.$index][$index]" required="true" ensure-value="{{ sync.current.item.lot_number }}" ng-focus="sync.current.item._v.scans[$parent.$index][$index]=''; sync.current.item._v.locks[$parent.$index]=false" ng-blur="sync.current.item._v.locks[$parent.$index]=grid['f'+$parent.$index].$valid"></input>
+            <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
+                <tr ng-hide="grid['f'+$index].$valid && line.lock">
+                    <td ng-repeat="s in line.scans track by $index">
+                      <input class="haute-ligne" required="true" 
+                        ng-model="line.scans[$index]"
+                        ng-focus="line.scans[$index]=''; line.lock=false" 
+                        ng-blur="line.lock=grid['f'+$parent.$index].$valid"
+                        ensure-value="{{ sync.current.item.lot_number }}">
+                      </input>
                     </td>
                     <td>
                         <div class="btn-group">
@@ -88,19 +93,28 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)" ng-disabled="!sync.current.item.label" ><span class="glyphicon glyphicon-print"></span></button>
+                            <button type="button" class="btn btn-warning haute-ligne" 
+                            ng-click="print(sync.current.item)" 
+                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span></button>
                         </div>
                     </td>
                     <td>
-                        {{ sync.current.item._v.suggestedRack[$index] }}
+                        {{ line.suggestedRack }}
                     </td>
-                        <td><input class="haute-ligne col-xs-5" ng-model="sync.current.item._v.casiers[$index]" required="true" ng-focus="sync.current.item._v.casiers[$index]=''; sync.current.item._v.locks[$index]=false" ng-blur="sync.current.item._v.locks[$index]=grid['f'+$index].$valid"></input>
-                        <button class="btn pull-right" ng-click="sync.current.item._v.locks[$index]=true" ng-show="grid['f'+$index].$valid">Edit</button>
+                        <td>
+                          <input class="haute-ligne col-xs-5" required="true"
+                            ng-model="line.rack"
+                            ng-focus="line.rack=''; line.lock=false" 
+                            ng-blur="line.lock=grid['f'+$index].$valid">
+                           </input>
+                        <button class="btn pull-right" 
+                        ng-click="line.lock=true" 
+                        ng-show="grid['f'+$index].$valid">Edit</button>
                     </td>
 
                 </tr>
-                <tr ng-show="grid['f'+$index].$valid && sync.current.item._v.locks[$index]">
-                  <td ng-repeat="s in scan track by $index">
+                <tr ng-show="grid['f'+$index].$valid && line.lock">
+                  <td ng-repeat="s in line.scans track by $index">
                     {{ s }}
                   </td>
                     <td>
@@ -110,11 +124,13 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning haute-ligne" ng-click="print(sync.current.item)"  ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span></button>
+                            <button type="button" class="btn btn-warning haute-ligne" 
+                            ng-click="print(sync.current.item)"
+                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span></button>
                         </div>
                     </td>
                     <td></td>
-                    <td>{{sync.current.item._v.casiers[$index]}} <button class="btn pull-right" ng-click="sync.current.item._v.locks[$index]=false">Edit</button></td>
+                    <td>{{line.rack}} <button class="btn pull-right" ng-click="line.lock=false">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -129,15 +145,16 @@
         <div ng-hide="sync.current.item.state == 'done'">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock" class="btn btn-success" data-toggle="modal" data-target="#casier-modal" ng-click="do(sync.current.item)"> OK</button>
+                    <button class="btn btn-success" 
+                    ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock" 
+                    ng-click="do(sync.current.item)"
+                    data-toggle="modal" data-target="#casier-modal"> OK</button>
                 </div>
             </div>
         </div>
 
         </form>
-        </ion-scroll>
-
-
+      </ion-scroll>
     </div>
 </div>
 </div>

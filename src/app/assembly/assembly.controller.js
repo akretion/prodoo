@@ -5,6 +5,7 @@ angular.module('prodapps')
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
+    $scope.sameLotNumber = [];
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
@@ -13,51 +14,75 @@ angular.module('prodapps')
         newVal._v = newVal._v || {};
 
         $scope.fields = newVal.components;
+        $scope.sameLotNumber = $scope.sync.data.filter(function (i) {
+          return i.lot_number === newVal.lot_number && i.id != newVal.id;
+        });
+
+        //some values needs to be calculated once, because the user may
+        //start to fill the form
+        //go to another task (complete it)
+        //go back to the first task (and we don't want to loose any data)
+
+        //do it each time because task with sameLotNumber may be completed
+        newVal._v.suggestedRacks = unserializeRacks( ($scope.sameLotNumber[0]) ? ($scope.sameLotNumber[0].rack[0]) : null);
+
+        if (!newVal._v.racks) //do it only once (because user may have entered some data)
+          newVal._v.racks = unserializeRacks(newVal.rack[0]);
         
-        newVal._v.casiers = []; //item.rack is a semicol separated list; we want it as an array (.length = qty)
-        if (newVal.rack[0])
-          newVal._v.casiers = newVal.rack[0].split(';') //[]; //rack shoud be a better fit !
+        if (!newVal._v.scans) //do it only once (because user may have entered some date)
+          newVal._v.scans = createArray(newVal.qty).map(function () {
+            //if item.components is [ {name: 'tissu'}, { name:'profile'}]
+            // and item.qty = 2
+            // then scans whould be [ [null, null], [null, null]]
 
-        if (!newVal._v.scans) {
-        //for storing the scans - only usefull for the operator for keeping track of progression
-        //and ensuring she selected the good input product
-        //scan is not stored in odoo
+            return createArray(newVal.components.length);
+          });
+      
+        if (!newVal._v.locks) //do it only once (because some lines may be terminated )
+          newVal._v.locks = createArray(newVal.qty);
 
-          newVal._v.scans = [];
-          newVal._v.locks = [];
-          //if item.components is [ {name: 'tissu'}, { name:'profile'}]
-          // and item.qty = 2
-          // then scans whould be [ [null, null], [null, null]]
-          // (Array.prototype.fill() is not ready yet / polyfill instead :
+        //do it each time
+        newVal._v.lines = createArray(newVal.qty).map(function (unused, idx) {
+          var l = {};
+          //for storing the scans - only usefull for the operator for keeping track of progression
+          //and ensuring she selected the good input product
+          l.scans = newVal._v.scans[idx];
 
-          var line = [], k = 0, l = 0;
-          for (k = 0; k < newVal.qty; k++) {
-            line = [];
-            for (l = 0; l < newVal.components.length; l++) {
-              line.push(null);
-            }
-            newVal._v.scans.push(line);
-            newVal._v.locks.push(true); //for locking the lines
+          //for storing the output rack of the operation 
+          //it may be already filled  
+          //stored in odoo
+          l.rack = newVal._v.racks[idx];
+
+          //it's may be already filled
+          l.suggestedRack = newVal._v.suggestedRacks[idx];
+          
+          //for locking the line when it's filled and valid
+          l.lock = newVal._v.locks[idx];
+          return l;
+        });
+
+
+
+        function createArray(length) {
+        //create and fill with null an array of length
+        // (Array.prototype.fill() is not ready yet / polyfill instead :
+          var a = [], l = 0;
+          for (l = 0; l < length; l++) {
+            a.push(null);
           }
+          return a;
         }
 
-        //if there is another task with same lot_number
-        //and the other one is done
-        //and they have the same qty
-        //then we can prefill "suggestedRack"  
-        newVal._v.suggestedRack = [];
+        function unserializeRacks(racks) {
+          //currently item.rack is a kind of : ";;a;b" instead of ['a','b']
 
-        $scope.sync.data.filter(function (i) {
-          return i.lot_number === newVal.lot_number && i.id != newVal.id;
-        }).forEach(function (item) { //normalement on devrait en avoir qu'un
-          //should be : 
-          // newVal.suggestedRack = item.rack;
-          //but currently item.rack is a kind of : ";;a;b" instead of ['a','b']
-          if (item.rack[0])
-            newVal._v.suggestedRack = item.rack[0] //because it's a [string]
-            .split(';') //';' is the current separator
-            .filter(function (i) { return i.length; }); //trim shit
-        });
+          if (!racks)
+            return [];
+          console.log('racks',racks);
+          return racks.split(';').filter(function (i) { return i.length; }); //trim shit with filter
+        }
+
+
     });
 
     $scope.clickTask = function (item) {
