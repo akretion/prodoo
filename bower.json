@@ -13,7 +13,6 @@
     "angular-strap": "2.1.x",
     "angular": "~1.3.4",
     "angular-notification": "~1.0.1",
-    "buche": "https://github.com/FranzPoize/buche.git#0.0.5",
     "odoo": "https://github.com/hparfr/angular-odoo.git#develop",
     "ionic": "~1.0.0"
   },
