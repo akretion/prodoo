@@ -7,6 +7,7 @@ angular.module('prodapps')
     $scope.groups = {};
     jsonRpc.call('mrp.workcenter', 'prodoo_get_workcenter', []).then(function (data) {
         console.log('data loaded', data);
+        angular.element('#barcode').trigger('focus');
         $scope.workcenters = data;
         $scope.workcenters.forEach(function (w) {
             if (!$scope.groups[w.group])
