@@ -4,7 +4,7 @@
         display:none;
     }
     .draft {
-        color: #ccc;
+        color: #666;
     }
     tbody.ng-valid {
       background-color:#dff0d8;
@@ -16,9 +16,6 @@
       background-color:#f2dede;
     }
     .haute-ligne {
-      line-height: 300%;
-    }
-    .haute-recherche {
         height: 3.5em;
     }
 </style>
@@ -34,7 +31,7 @@
                     <span class="glyphicon glyphicon-search"></span>
                 </label>
             </div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control haute-recherche" id="exampleInputAmount" placeholder="search" ng-focus="setFilter('eraseSearch')">
+            <input ng-model="sync.current.filter.lot_number" class="form-control haute-ligne" id="exampleInputAmount" placeholder="search" ng-focus="setFilter('eraseSearch')">
         </div>
         <ul class="nav nav-pills nav-justified">
             <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
