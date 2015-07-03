@@ -6,14 +6,14 @@
             
             <div class="form-group">
                 <label for="barcode">Workcenter</label>
-                <input ng-model="barcode" type="number" id="barcode">
+                <input ng-model="barcode" type="number" id="barcode" class="haute-ligne">
             </div>
             <div class="form-group">
-                <input type="reset" value="Reset" class="btn btn-warning" ng-click="barcode = ''">
+                <input type="reset" value="Reset" class="btn btn-warning haute-ligne" ng-click="barcode = ''">
             </div>
             <div class="form-group col-xs-offset-1">
                 <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
-                  <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+                  <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}" class=" haute-ligne">{{ workcenter.name }}</a>
             </div>
           </div>
         </form>
