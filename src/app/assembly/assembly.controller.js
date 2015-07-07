@@ -129,8 +129,10 @@ angular.module('prodapps')
       $notification('Pending');
       item._v.lock = true;
 
-      if (item._v.casiers && item._v.casiers.length > 0 )
-        item.rack = item._v.casiers.join(';');
+      //serialize racks
+      item.rack = item._v.lines.map(function (r) {
+        return r.rack; 
+      }).join(';');
 
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
