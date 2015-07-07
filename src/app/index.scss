@@ -13,3 +13,52 @@
 body {
   padding-top: 0 !important;
 }
+
+.haute-ligne {
+    height: 3.5em;
+}
+.haute-ligne {
+    height: 3.5em;
+}
+
+.btn-primary {
+    color: #000;
+}
+
+.btn-success {
+    color: #000;
+}
+
+.btn-info {
+    color: #000;
+}
+
+.btn-warning {
+    color: #000;
+}
+
+.btn-danger {
+    color: #000;
+}
+.disabled {
+	box-shadow: none;
+    cursor: not-allowed;
+    opacity: 1;
+    color:#fff;
+}
+
+tbody.ng-valid {
+    background-color: #4cae4c;
+}
+tbody.ng-valid-ensure-value.ng-invalid {
+    background-color: #fcf8e3;
+}
+tbody.ng-invalid-ensure-value.ng-dirty {
+    background: repeating-linear-gradient(
+	  45deg,
+	  #d9534f,
+	  #d9534f 10px,
+	  #c9302c 10px,
+	  #c9302c 20px
+	);
+}
