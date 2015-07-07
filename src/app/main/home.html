@@ -2,11 +2,19 @@
     <h1>Application List</h1>
 
     <ion-scroll class="prodoo-ion-scroll" direction="y" style="position:relative">
-        <form>
-            <input ng-model="barcode" type="number">
-            <input type="reset" class="btn btn-warning" ng-click="barcode = ''">
-            <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
-              <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+        <form class="form-inline">
+            
+            <div class="form-group">
+                <label for="barcode">Workcenter</label>
+                <input ng-model="barcode" type="number" id="barcode">
+            </div>
+            <div class="form-group">
+                <input type="reset" value="Reset" class="btn btn-warning" ng-click="barcode = ''">
+            </div>
+            <div class="form-group col-xs-offset-1">
+                <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
+                  <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}">{{ workcenter.name }}</a>
+            </div>
           </div>
         </form>
     <hr>

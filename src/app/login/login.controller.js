@@ -2,16 +2,25 @@
 
 angular.module('prodapps')
 .controller('LoginCtrl', function ($scope,$state, jsonRpc, prodooConfig, $stateParams) {
-    $scope.login = function () {
+    
+    //dirty but it's ok
+    angular.element('#loginPassword').trigger('focus');
+
+    $scope.login = function (loginPassword) {
+        //login and password are combined and separated by a space
+        //they should be scanned
+        var login = loginPassword.split(' ')[0];
+        var password = loginPassword.split(' ')[1];
+
         $scope.error = "";
-        jsonRpc.login(prodooConfig.db,$scope.bucheUsername,$scope.buchePassword).then(function () {
+        jsonRpc.login(prodooConfig.db,login,password).then(function () {
             var nextStep = $state.current.data;
             if (nextStep.state)
               $state.go(nextStep.state, nextStep.params);
             else
               $state.go('main.home');
         }, function () {
-            $scope.error = "Authentication failed";
+            $scope.error = "Authentication failed for " + login;
         });
     };
     $scope.logout = function () {
