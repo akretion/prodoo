@@ -79,7 +79,6 @@
                     <tr>
                         <th ng-repeat="field in fields">{{ field.name }}</th>
                         <th colspan="2">Operations</th>
-                        <th>Suggested rack</th>
                         <th>Rack</th>
                     </tr>
                     <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
@@ -105,9 +104,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td>
-                                {{ line.suggestedRack }}
-                            </td>
+                      
                             <td>
                                 <input class="haute-ligne col-xs-5" required="true"
                                     ng-model="line.rack"
@@ -137,7 +134,6 @@
                                     </button>
                                 </div>
                             </td>
-                            <td></td>
                             <td>{{line.rack}} <button class="btn pull-right haute-ligne" ng-click="line.lock=false">Edit</button></td>
                         </tr>
                     </tbody>
