@@ -13,8 +13,9 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
         func_key: 'prodoo',
         domain: [
             ['workcenter_id', '=', options.workcenter],
+            ['production_id.state', 'not in', ['draft', 'cancel', 'done']],
         ],
-        limit: 50,
+        limit: 20,
         interval: prodooConfig.refreshInterval,
     });
 
