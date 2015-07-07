@@ -24,18 +24,18 @@ angular.module('prodapps')
         //go back to the first task (and we don't want to loose any data)
 
         //do it each time because task with sameLotNumber may be completed
-        newVal._v.suggestedRacks = unserializeRacks( $scope.sameLotNumber[$scope.sameLotNumber.length -1] ); //last item or "undefined"
+        if ($scope.sameLotNumber.length)
+          newVal._v.suggestedRacks = $scope.sameLotNumber[0].rack; //mind the "s"
 
         
         if (!newVal._v.lines) {
           //first show of this item. User has not entered anything
 
           //get rack from the item (prefiled by odoo) 
-          newVal._v.racks = unserializeRacks(newVal);
+          newVal._v.racks = newVal.rack; // mind the "s" (or lack of)
 
           if (!newVal._v.racks.length) //if no rack in the task coming from odoo
             newVal._v.racks = newVal._v.suggestedRacks; //try to add some with another task from the same lotNumber
-
         } else {
           //it's not the first time we show this item
 
@@ -97,19 +97,6 @@ angular.module('prodapps')
           return a;
         }
 
-        function unserializeRacks(item) {
-          //currently item.rack is a kind of : ";;a;b" instead of ['a','b']
-
-          if (!item)
-            return [];
-
-          if (!item.rack.length)
-            return [];
-
-          return item.rack[0].split(';').filter(function (i) { return i.length; }); //trim shit with filter
-        }
-
-
     });
 
     $scope.clickTask = function (item) {
@@ -156,10 +143,10 @@ angular.module('prodapps')
       $notification('Pending');
       item._v.lock = true;
 
-      //serialize racks
+      //get back rack in item
       item.rack = item._v.lines.map(function (r) {
         return r.rack; 
-      }).join(';');
+      });
 
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
