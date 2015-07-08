@@ -47,6 +47,10 @@ body {
     color:#fff;
 }
 
+.btn-success[disabled] {
+ background: transparent repeating-linear-gradient(135deg, #4CAE4C, #4CAE4C 10px, #449D44 10px, #449D44 20px);
+}
+
 tbody.ng-valid {
     background-color: #4cae4c;
 }
@@ -79,3 +83,9 @@ tbody.ng-invalid-ensure-value.ng-pristine {
     #c9302c 20px
   );
 }
+
+tbody.ng-valid>tr.locked {
+background: transparent repeating-linear-gradient(45deg, #4CAE4C, #4CAE4C 10px, #449D44 10px, #449D44 20px);
+}
+
+
