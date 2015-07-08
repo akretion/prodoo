@@ -99,6 +99,17 @@ angular.module('prodapps')
 
     });
 
+    
+
+    $scope.checkLocks = function () {
+    //check if there is some lines still locked
+    //usefull because the "ok" buttn should be disabled otherwise
+      if (!$scope.sync.current.item)
+        return false;
+
+      return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
+    };
+
     $scope.clickTask = function (item) {
       //set to current
       $scope.sync.current.item = item;

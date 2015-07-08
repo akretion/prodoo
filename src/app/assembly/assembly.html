@@ -150,7 +150,7 @@
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
                             <button class="btn btn-success haute-ligne" 
-                                ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock" 
+                                ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock || checkLocks()" 
                                 ng-click="do(sync.current.item)"
                                 data-toggle="modal" data-target="#casier-modal"> OK
                             </button>
