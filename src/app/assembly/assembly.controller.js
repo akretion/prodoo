@@ -26,6 +26,14 @@ angular.module('prodapps')
         //do it each time because task with sameLotNumber may be completed
         newVal._v.suggestedRacks = ($scope.sameLotNumber.length) ? $scope.sameLotNumber[0].rack : []; //mind the "s"
 
+        //if no suggestedRack, may be there is in components (like in assemlby stuff)
+        if (newVal._v.suggestedRacks.length == 0)
+          newVal._v.suggestedRacks = newVal.components.map(function (c) { 
+            return c.rack; //extract rack
+          }).filter(function(value, index, array) {  //uniq
+              return array.indexOf(value) === index; 
+          });
+
         
         if (!newVal._v.lines) {
           //first show of this item. User has not entered anything
