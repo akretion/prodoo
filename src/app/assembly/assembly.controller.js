@@ -66,8 +66,8 @@ angular.module('prodapps')
           });
       
         if (!newVal._v.locks) //do it only once (because some lines may be terminated )
-          newVal._v.locks = createArray(newVal.qty);
-
+          newVal._v.locks = createArray(newVal.qty).map(function () { return false; });
+        
         //do it each time
         newVal._v.lines = createArray(newVal.qty).map(function (unused, idx) {
           var l = {};
