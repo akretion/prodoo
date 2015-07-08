@@ -16,7 +16,7 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
             ['production_id.state', 'not in', ['draft', 'cancel']],
             ['production_id.shipped', '=', false],
         ],
-        limit: 100,
+        limit: prodooConfig.fetchLimit,
         interval: prodooConfig.refreshInterval,
     });
 
