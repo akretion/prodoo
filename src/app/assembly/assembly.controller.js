@@ -24,8 +24,7 @@ angular.module('prodapps')
         //go back to the first task (and we don't want to loose any data)
 
         //do it each time because task with sameLotNumber may be completed
-        if ($scope.sameLotNumber.length)
-          newVal._v.suggestedRacks = $scope.sameLotNumber[0].rack; //mind the "s"
+        newVal._v.suggestedRacks = ($scope.sameLotNumber.length) ? $scope.sameLotNumber[0].rack : []; //mind the "s"
 
         
         if (!newVal._v.lines) {
@@ -36,6 +35,7 @@ angular.module('prodapps')
 
           if (!newVal._v.racks.length) //if no rack in the task coming from odoo
             newVal._v.racks = newVal._v.suggestedRacks; //try to add some with another task from the same lotNumber
+
         } else {
           //it's not the first time we show this item
 
