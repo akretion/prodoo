@@ -24,11 +24,38 @@ angular.module('prodapps')
         //go back to the first task (and we don't want to loose any data)
 
         //do it each time because task with sameLotNumber may be completed
-        newVal._v.suggestedRacks = unserializeRacks( ($scope.sameLotNumber[0]) ? ($scope.sameLotNumber[0].rack[0]) : null);
+        newVal._v.suggestedRacks = ($scope.sameLotNumber.length) ? $scope.sameLotNumber[0].rack : []; //mind the "s"
 
-        if (!newVal._v.racks) //do it only once (because user may have entered some data)
-          newVal._v.racks = unserializeRacks(newVal.rack[0]);
         
+        if (!newVal._v.lines) {
+          //first show of this item. User has not entered anything
+
+          //get rack from the item (prefiled by odoo) 
+          newVal._v.racks = newVal.rack; // mind the "s" (or lack of)
+
+          if (!newVal._v.racks.length) //if no rack in the task coming from odoo
+            newVal._v.racks = newVal._v.suggestedRacks; //try to add some with another task from the same lotNumber
+
+        } else {
+          //it's not the first time we show this item
+
+          //we don't use references in the view
+          //therefor we need to check each time if suggestedRacks has changed
+          //BUT entered input has priority over suggestedRacks
+
+          //check if there is some info already provided to the view
+          if ( newVal._v.lines.some(function(l) { return l.rack && l.rack.length > 0; })) {
+            //yes there is, get it all
+            newVal._v.racks = newVal._v.lines.map(function (l) { return l.rack; });
+          } else {
+            //nothing has been entered since first time
+            //so there is nothing new comming from odoo
+            //only new things may be from suggestedRacks
+            newVal._v.racks = newVal._v.suggestedRacks;
+          }
+
+        }
+
         if (!newVal._v.scans) //do it only once (because user may have entered some date)
           newVal._v.scans = createArray(newVal.qty).map(function () {
             //if item.components is [ {name: 'tissu'}, { name:'profile'}]
@@ -39,8 +66,8 @@ angular.module('prodapps')
           });
       
         if (!newVal._v.locks) //do it only once (because some lines may be terminated )
-          newVal._v.locks = createArray(newVal.qty);
-
+          newVal._v.locks = createArray(newVal.qty).map(function () { return false; });
+        
         //do it each time
         newVal._v.lines = createArray(newVal.qty).map(function (unused, idx) {
           var l = {};
@@ -49,13 +76,10 @@ angular.module('prodapps')
           l.scans = newVal._v.scans[idx];
 
           //for storing the output rack of the operation 
-          //it may be already filled  
+          //it may be already filled
           //stored in odoo
           l.rack = newVal._v.racks[idx];
 
-          //it's may be already filled
-          l.suggestedRack = newVal._v.suggestedRacks[idx];
-          
           //for locking the line when it's filled and valid
           l.lock = newVal._v.locks[idx];
           return l;
@@ -73,17 +97,18 @@ angular.module('prodapps')
           return a;
         }
 
-        function unserializeRacks(racks) {
-          //currently item.rack is a kind of : ";;a;b" instead of ['a','b']
-
-          if (!racks)
-            return [];
-          console.log('racks',racks);
-          return racks.split(';').filter(function (i) { return i.length; }); //trim shit with filter
-        }
-
-
     });
+
+    
+
+    $scope.checkLocks = function () {
+    //check if there is some lines still locked
+    //usefull because the "ok" buttn should be disabled otherwise
+      if (!$scope.sync.current.item)
+        return false;
+
+      return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
+    };
 
     $scope.clickTask = function (item) {
       //set to current
@@ -129,10 +154,10 @@ angular.module('prodapps')
       $notification('Pending');
       item._v.lock = true;
 
-      //serialize racks
+      //get back rack in item
       item.rack = item._v.lines.map(function (r) {
         return r.rack; 
-      }).join(';');
+      });
 
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';

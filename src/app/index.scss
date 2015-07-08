@@ -47,18 +47,45 @@ body {
     color:#fff;
 }
 
+.btn-success[disabled] {
+ background: transparent repeating-linear-gradient(135deg, #4CAE4C, #4CAE4C 10px, #449D44 10px, #449D44 20px);
+}
+
 tbody.ng-valid {
     background-color: #4cae4c;
 }
+
 tbody.ng-valid-ensure-value.ng-invalid {
-    background-color: #fcf8e3;
+   background: repeating-linear-gradient(
+    45deg,
+    #f0ad4e,
+    #f0ad4e 10px,
+    #ec971f 10px,
+    #ec971f 20px
+  );
 }
 tbody.ng-invalid-ensure-value.ng-dirty {
     background: repeating-linear-gradient(
-	  45deg,
-	  #d9534f,
-	  #d9534f 10px,
-	  #c9302c 10px,
-	  #c9302c 20px
-	);
+      45deg,
+      #d9534f,
+      #d9534f 10px,
+      #c9302c 10px,
+      #c9302c 20px
+    );
 }
+
+tbody.ng-invalid-ensure-value.ng-pristine {
+    background: repeating-linear-gradient(
+    45deg,
+    #d9534f,
+    #d9534f 10px,
+    #c9302c 10px,
+    #c9302c 20px
+  );
+}
+
+tbody.ng-valid>tr.locked {
+background: transparent repeating-linear-gradient(45deg, #4CAE4C, #4CAE4C 10px, #449D44 10px, #449D44 20px);
+}
+
+
