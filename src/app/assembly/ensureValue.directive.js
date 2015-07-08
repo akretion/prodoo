@@ -13,9 +13,9 @@ angular.module('prodapps').directive('ensureValue', [function() {
       attrs.$observe('ensureValue', function (value) {
         //because when you switch between tasks (order), attrs.ensureValue is changed
         //AFTER $validator callback and therefor check against the old value
-        //$scope.$parent.line may be better written with less dependencies
 
-          ensure($scope.$parent.line.scans[$scope.$index], value);
+        //force recheck
+        ensure(ngModel.$modelValue,  value);
       });
 
       ngModel.$validators.ensureValue = function (value) {
