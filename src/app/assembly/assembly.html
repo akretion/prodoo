@@ -87,7 +87,7 @@
                             <td ng-repeat="s in line.scans track by $index">
                                 <input class="haute-ligne" required="true" 
                                     ng-model="line.scans[$index]"
-                                    ng-focus="line.scans[$index]=''; line.lock=false" 
+                                    ng-focus="line.scans[$index]='' && line.lock=false"
                                     ng-blur="line.lock=grid['f'+$parent.$index].$valid"
                                     ensure-value="{{ sync.current.item.lot_number }}">
                                 </input>
@@ -109,7 +109,7 @@
                             <td>
                                 <input class="haute-ligne col-xs-5" required="true"
                                     ng-model="line.rack"
-                                    ng-focus="line.rack=''; line.lock=false" 
+                                    ng-focus="line.rack='' && line.lock=false"
                                     ng-blur="line.lock=grid['f'+$index].$valid">
                                 </input>
                                 <button class="btn pull-right haute-ligne" 
