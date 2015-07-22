@@ -83,12 +83,12 @@
                         <th>Rack</th>
                     </tr>
                     <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
-                        <tr ng-hide="grid['f'+$index].$valid && line.lock" ng-class="{false: 'locked'}[line.lock]">
+                        <tr ng-hide="isLineValid(grid, 'f'+$index) && line.lock" ng-class="{false: 'locked'}[line.lock]">
                             <td ng-repeat="s in line.scans track by $index">
                                 <input class="haute-ligne" required="true" 
                                     ng-model="line.scans[$index]"
-                                    ng-focus="line.scans[$index]=''; line.lock=false" 
-                                    ng-blur="line.lock=grid['f'+$parent.$index].$valid"
+                                    ng-focus="focusOnLineScan(line, $index)" 
+                                    ng-blur="lockOnValidLine(line, grid, 'f'+$parent.$index)"
                                     ensure-value="{{ sync.current.item.lot_number }}">
                                 </input>
                             </td>
@@ -109,16 +109,16 @@
                             <td>
                                 <input class="haute-ligne col-xs-5" required="true"
                                     ng-model="line.rack"
-                                    ng-focus="line.rack=''; line.lock=false" 
-                                    ng-blur="line.lock=grid['f'+$index].$valid">
+                                    ng-focus="focusOnLineRack(line)"
+                                    ng-blur="lockOnValidLine(line, grid, 'f'+$index)">
                                 </input>
                                 <button class="btn pull-right haute-ligne" 
                                     ng-click="line.lock=true" 
-                                    ng-show="grid['f'+$index].$valid">Confirm
+                                    ng-show="isLineValid(grid, 'f'+$index)">Confirm
                                 </button>
                             </td>
                         </tr>
-                        <tr ng-show="grid['f'+$index].$valid && line.lock">
+                        <tr ng-show="isLineValid(grid, 'f'+$index) && line.lock">
                             <td ng-repeat="s in line.scans track by $index">
                                 {{ s }}
                             </td>
