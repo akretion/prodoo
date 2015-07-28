@@ -13,6 +13,7 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
         func_key: 'prodoo',
         domain: [
             ['workcenter_id', '=', options.workcenter],
+            ['state', '!=', 'done'],
             ['production_id.state', 'not in', ['draft', 'cancel']],
             ['production_id.shipped', '=', false],
         ],
