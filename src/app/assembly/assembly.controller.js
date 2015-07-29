@@ -158,6 +158,21 @@ angular.module('prodapps')
       });
     };
 
+    $scope.focusOnLineRack = function (line) {
+      //when rack input is focused, 
+      line.rack = ''; //erase content
+      line.lock = false; //unlock the line
+    };
+    $scope.focusOnLineScan = function(line, idx) {
+      //when scan input is focused
+      line.scans[idx] = '';//erase content
+      line.lock = false; //unlock the line
+    };
+
+    $scope.isLineValid = function(grid, idx) {
+      return grid[idx].$valid;
+    };
+
     $scope.do = function(item) {
       $notification('Pending');
       item._v.lock = true;
