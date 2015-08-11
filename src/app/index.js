@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('prodapps', ['ngAnimate', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'mgcrea.ngStrap', 'odoo', 'notification', 'ionic'])
+angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngStrap', 'odoo', 'notification', 'ionic'])
 .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider, prodooConfigProvider) {
     $stateProvider
         .state('main', {
