@@ -1,11 +1,16 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
     $scope.sameLotNumber = [];
+    $scope.filteredList = [];
+
+    $scope.$watch('sync.data', function (newVal) {
+      $scope.filteredList = orderByFilter(filterFilter(newVal, $scope.sync.current.filter),'sequence');
+    });
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
