@@ -20,13 +20,13 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 interval: prodooConfig.refreshInterval,
             };
 
-            jsonRpc.call(param.model, 'get_sync_data', [ param.func_key, null, param.domain, 20]).then(function (d) {
+            /*jsonRpc.call(param.model, 'get_urgent_data', [ param.func_key, null, param.domain, 20]).then(function (d) {
                var key;
                 objectRef.data = [];
                 for(key in d.data) {
                     objectRef.data.push(d.data[key]);
                 }
-            });
+            });*/
 
             sync.liste = jsonRpc.syncImportObject(param);
 
