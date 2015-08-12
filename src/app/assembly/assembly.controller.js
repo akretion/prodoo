@@ -20,6 +20,8 @@ angular.module('prodapps')
 
         newVal._v = newVal._v || {};
 
+        fetchPdf(newVal);
+
         $scope.fields = newVal.components;
         $scope.sameLotNumber = $scope.sync.data.filter(function (i) {
           return i.lot_number === newVal.lot_number && i.id != newVal.id;
@@ -205,5 +207,11 @@ angular.module('prodapps')
     };
 
     $scope.$on('$destroy', destroy);
+
+    function fetchPdf(item) {
+      return item.label || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
+        item.label = d;
+      });
+    }
 
 });
