@@ -17,16 +17,6 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
             controller: 'LoginCtrl',
             data: {}
         })
-        .state('main.cut', {
-            url: '/cut/{workcenter:int}',
-            templateUrl: 'app/cut/cut.html',
-            controller: 'CutCtrl'
-        })
-        .state('main.strip_cut', {
-            url: '/stripCut/{workcenter:int}',
-            templateUrl: 'app/cut/cut.html',
-            controller: 'CutCtrl'
-        })
         .state('main.assembly', {
             url:'/assembly/{workcenter:int}',
             templateUrl: 'app/assembly/assembly.html',
