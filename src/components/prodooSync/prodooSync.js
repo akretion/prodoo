@@ -8,7 +8,8 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
 this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
     sync.syncData = function(options, objectRef) {
     console.log('options : ', options, objectRef);
-     sync.liste = jsonRpc.syncImportObject({
+    
+    var param = {
         model: 'mrp.production.workcenter.line',
         func_key: 'prodoo',
         domain: [
@@ -18,7 +19,17 @@ this.$get = ['jsonRpc', 'prodooConfig', function (jsonRpc, prodooConfig) {
         ],
         limit: prodooConfig.fetchLimit,
         interval: prodooConfig.refreshInterval,
+    }
+
+    jsonRpc.call(param.model, 'get_sync_data', [ param.func_key, null, param.domain, 20]).then(function (d) {
+       var key;
+        objectRef.data = [];
+        for(key in d.data) {
+            objectRef.data.push(d.data[key]);
+        }
     });
+
+    sync.liste = jsonRpc.syncImportObject(param);
 
      sync.liste.watch(function (e) {
         //sync.liste.data is an object
