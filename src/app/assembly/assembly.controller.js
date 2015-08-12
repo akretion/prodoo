@@ -8,7 +8,9 @@ angular.module('prodapps')
     $scope.sameLotNumber = [];
     $scope.filteredList = [];
 
+    //order the list (right pane)
     $scope.$watch('sync.data', function (newVal) {
+      //do it only on change
       $scope.filteredList = orderByFilter(filterFilter(newVal, $scope.sync.current.filter),'sequence');
     });
 
