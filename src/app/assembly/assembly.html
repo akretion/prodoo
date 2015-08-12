@@ -39,7 +39,7 @@
         </ul>
         <ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y">
             <ul class="list-group tab">
-                <li ng-repeat="item in sync.data | filter: sync.current.filter | orderBy: 'sequence'" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+                <li ng-repeat="item in filteredList" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
                     {{ item.lot_number }} - {{ item.name}}
                     <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
                     <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>

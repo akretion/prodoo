@@ -1,17 +1,26 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
     $scope.sameLotNumber = [];
+    $scope.filteredList = [];
+
+    //order the list (right pane)
+    $scope.$watch('sync.data', function (newVal) {
+      //do it only on change
+      $scope.filteredList = orderByFilter(filterFilter(newVal, $scope.sync.current.filter),'sequence');
+    });
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
             return;
 
         newVal._v = newVal._v || {};
+
+        fetchPdf(newVal);
 
         $scope.fields = newVal.components;
         $scope.sameLotNumber = $scope.sync.data.filter(function (i) {
@@ -198,5 +207,11 @@ angular.module('prodapps')
     };
 
     $scope.$on('$destroy', destroy);
+
+    function fetchPdf(item) {
+      return item.label || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
+        item.label = d;
+      });
+    }
 
 });

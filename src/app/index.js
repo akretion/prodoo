@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'mgcrea.ngStrap', 'odoo', 'notification', 'ionic'])
+angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngStrap', 'odoo', 'notification', 'ionic'])
 .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider, prodooConfigProvider) {
     $stateProvider
         .state('main', {
@@ -16,16 +16,6 @@ angular.module('prodapps', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', '
             templateUrl: 'app/login/login.html',
             controller: 'LoginCtrl',
             data: {}
-        })
-        .state('main.cut', {
-            url: '/cut/{workcenter:int}',
-            templateUrl: 'app/cut/cut.html',
-            controller: 'CutCtrl'
-        })
-        .state('main.strip_cut', {
-            url: '/stripCut/{workcenter:int}',
-            templateUrl: 'app/cut/cut.html',
-            controller: 'CutCtrl'
         })
         .state('main.assembly', {
             url:'/assembly/{workcenter:int}',
