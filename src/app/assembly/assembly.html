@@ -27,7 +27,7 @@
                     <span class="glyphicon glyphicon-search"></span>
                 </label>
             </div>
-            <input ng-model="sync.current.filter.lot_number" class="form-control haute-ligne" id="exampleInputAmount" placeholder="search" ng-focus="setFilter('eraseSearch')">
+            <input ng-model="sync.current.filter.lot_number" ng-model-options="{ debounce: 100 }" class="form-control haute-ligne" id="exampleInputAmount" placeholder="search" ng-focus="setFilter('eraseSearch')">
         </div>
         <ul class="nav nav-pills nav-justified">
             <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
