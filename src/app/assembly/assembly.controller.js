@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.$on('$destroy', destroy);
@@ -154,7 +154,10 @@ angular.module('prodapps')
       }, function () {
         $notification('an error has occured');
       }).then(function () {
-        item._v.lock = false;
+
+        $timeout(function () {
+            item._v.lock = false;
+        }, 1000);
       });
     };
 
