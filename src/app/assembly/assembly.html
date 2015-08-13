@@ -21,7 +21,7 @@
 </div>
 <div class="row big-list" ng-show="sync.data.length">
     <div class="col-md-5 col-no-padding">
-        <div ui-view="orderList">ici ui-view</div>
+        <div ui-view="orderList"></div>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
         <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
