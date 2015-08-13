@@ -55,6 +55,7 @@
                         <th ng-repeat="field in fields">{{ field.name }}</th>
                         <th colspan="2">Operations</th>
                         <th>Rack</th>
+                        <th><button style="visibility:hidden">Confirm</button></th>
                     </tr>
                     <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
                         <tr ng-hide="isLineValid(grid, 'f'+$index) && line.lock" ng-class="{false: 'locked'}[line.lock]">
@@ -86,6 +87,8 @@
                                     ng-focus="focusOnLineRack(line)"
                                     ng-blur="lockOnValidLine(line, grid, 'f'+$index)">
                                 </input>
+                            </td>
+                            <td>
                                 <button class="btn pull-right haute-ligne" 
                                     ng-click="line.lock=true" 
                                     ng-show="isLineValid(grid, 'f'+$index)">Confirm
@@ -109,7 +112,8 @@
                                     </button>
                                 </div>
                             </td>
-                            <td>{{line.rack}} <button class="btn pull-right haute-ligne" ng-click="line.lock=false">Edit</button></td>
+                            <td>{{line.rack}}</td>
+                            <td><button class="btn pull-right haute-ligne" ng-click="line.lock=false">Edit</button></td>
                         </tr>
                     </tbody>
                 </table>
