@@ -1,36 +1,14 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooConfig, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter, limitToFilter) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
+    $scope.$on('$destroy', destroy);
+
     $scope.fields = [];
     $scope.sameLotNumber = [];
-    $scope.filteredList = [];
 
-    $scope.$watch('sync.data', function (newVal, oldVal, scope) {
-      //refresh list of order (in the right pane)
-      //all items are present in DOM at time
-      //one list is shown while the others not
-      //limit size of shown item down to prodooConfig.displayLimit : less DOM Injection, less $animate running, better perf
-
-      if (newVal == oldVal)
-        return;
-
-      $scope.filteredList = {
-        done : limitToFilter(orderByFilter(filterFilter(newVal, 'done'),'sequence'), prodooConfig.displayLimit),
-        notDone : limitToFilter(orderByFilter(filterFilter(newVal, '!done'),'sequence'), prodooConfig.displayLimit),
-      };
-      if (scope.sync.current.filter.lot_number) {
-          $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(newVal, scope.sync.current.filter),'sequence'),prodooConfig.displayLimit);
-      }
-    });
-    $scope.$watch('sync.current.filter.lot_number', function (newVal, oldVal, scope) {
-      if (newVal) {
-       $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(scope.sync.data, newVal),'sequence'), prodooConfig.displayLimit);
-     }
-    })
- 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
             return;
@@ -119,18 +97,6 @@ angular.module('prodapps')
           return l;
         });
 
-
-
-        function createArray(length) {
-        //create and fill with null an array of length
-        // (Array.prototype.fill() is not ready yet / polyfill instead :
-          var a = [], l = 0;
-          for (l = 0; l < length; l++) {
-            a.push(null);
-          }
-          return a;
-        }
-
     });
 
     
@@ -144,32 +110,6 @@ angular.module('prodapps')
       return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
     };
 
-    $scope.clickTask = function (item) {
-      //set to current
-      $scope.sync.current.item = item;
-
-      //erase the search
-      delete ($scope.sync.current.filter.lot_number);
-    
-      //scroll to item
-      $timeout(function () {
-        var offset =  angular.element('#item'+item.id)[0].offsetTop; //can be put in directive
-        $ionicScrollDelegate.$getByHandle('leftScroll').scrollTo(0, offset, true);
-        //anchorScroll doesn't work well
-      },50); //wait dom update
-    };
-
-    $scope.setFilter = function (status) {
-      if (status === 'toDo')
-        $scope.sync.current.filter={state:'!done'};
-      if (status === 'done')
-        $scope.sync.current.filter={state:'done'};
-      if (status === 'eraseSearch')
-        delete ($scope.sync.current.filter.lot_number);
-
-      $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
-      $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
-    };
 
     $scope.book = function(item) {
       //assign the task to the current workcenter
@@ -223,12 +163,22 @@ angular.module('prodapps')
         prodooPrint(item, qte);
     };
 
-    $scope.$on('$destroy', destroy);
 
     function fetchPdf(item) {
+      //load a pdf async
       return item.label || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
         item.label = d;
       });
+    }
+
+    function createArray(length) {
+    //create and fill with null an array of length
+    // (Array.prototype.fill() is not ready yet / polyfill instead :
+      var a = [], l = 0;
+      for (l = 0; l < length; l++) {
+        a.push(null);
+      }
+      return a;
     }
 
 });

@@ -19,8 +19,16 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
         })
         .state('main.assembly', {
             url:'/assembly/{workcenter:int}',
-            templateUrl: 'app/assembly/assembly.html',
-            controller:'AssemblyCtrl'
+            views: {
+                '': {
+                    templateUrl: 'app/assembly/assembly.html',
+                    controller:'AssemblyCtrl',                    
+                },
+                'orderList@main.assembly': { 
+                    controller: 'OrderListCtrl',
+                    templateUrl: 'app/assembly/orderList.html'
+                }
+            }
         })
         .state('main.venetian_assembly', {
             url:'/venetianAssembly/{workcenter:int}',
