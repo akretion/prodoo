@@ -14,7 +14,6 @@
     .haute-ligne {
         height: 3.5em;
     }
-    .slowShow.ng-hide-remove{ animation:1.4s flipInX ease; }
 </style>
 <div class="row big-list">
     <div ng-hide="sync.data"><h1>Loading</h1></div>
@@ -119,7 +118,7 @@
                     </tbody>
                 </table>
 
-                <div ng-show="sync.current.item.state == 'done'" class="slowShow">
+                <div ng-show="sync.current.item.state == 'done'">
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
                             <button class="btn btn-info haute-ligne" ng-click="do(sync.current.item)" ng-disabled="sync.current.item._v.lock"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
