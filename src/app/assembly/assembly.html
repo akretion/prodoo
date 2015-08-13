@@ -14,9 +14,24 @@
     .haute-ligne {
         height: 3.5em;
     }
+
+@-moz-keyframes spin { 0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(359deg); } }
+@-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); } }
+@-o-keyframes spin { 0% { -o-transform: rotate(0deg); }
+  100% { -o-transform: rotate(359deg); } }
+@-ms-keyframes spin { 0% { -ms-transform: rotate(0deg); }
+  100% { -ms-transform: rotate(359deg); } }
+@keyframes spin { 0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); } }
+
 </style>
 <div class="row big-list">
-    <div ng-hide="sync.data"><h1>Loading</h1></div>
+    <div ng-if="!sync.data"><h1>Loading
+        <span class="glyphicon glyphicon-refresh" style="animation-timing-function: steps(8, start); animation: 1s linear 0s normal none infinite running spin; "></span>
+        </h1>
+    </div>
     <div ng-show="sync.data.length == 0"><h2>No data</h2></div>
 </div>
 <div class="row big-list" ng-show="sync.data.length">
