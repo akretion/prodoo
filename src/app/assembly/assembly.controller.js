@@ -1,19 +1,36 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, prodooConfig, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter, limitToFilter) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
     $scope.fields = [];
     $scope.sameLotNumber = [];
     $scope.filteredList = [];
 
-    //order the list (right pane)
-    $scope.$watch('sync.data', function (newVal) {
-      //do it only on change
-      $scope.filteredList = orderByFilter(filterFilter(newVal, $scope.sync.current.filter),'sequence');
-    });
+    $scope.$watch('sync.data', function (newVal, oldVal, scope) {
+      //refresh list of order (in the right pane)
+      //all items are present in DOM at time
+      //one list is shown while the others not
+      //limit size of shown item down to prodooConfig.displayLimit : less DOM Injection, less $animate running, better perf
 
+      if (newVal == oldVal)
+        return;
+
+      $scope.filteredList = {
+        done : limitToFilter(orderByFilter(filterFilter(newVal, 'done'),'sequence'), prodooConfig.displayLimit),
+        notDone : limitToFilter(orderByFilter(filterFilter(newVal, '!done'),'sequence'), prodooConfig.displayLimit),
+      };
+      if (scope.sync.current.filter.lot_number) {
+          $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(newVal, scope.sync.current.filter),'sequence'),prodooConfig.displayLimit);
+      }
+    });
+    $scope.$watch('sync.current.filter.lot_number', function (newVal, oldVal, scope) {
+      if (newVal) {
+       $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(scope.sync.data, newVal),'sequence'), prodooConfig.displayLimit);
+     }
+    })
+ 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
             return;
