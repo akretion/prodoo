@@ -24,7 +24,7 @@ angular.module('prodapps')
 
     $scope.$watch('sync.current.filter.lot_number', function (newVal, oldVal, scope) {
         if (newVal)
-            $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(scope.sync.data, newVal),'sequence'), prodooConfig.displayLimit);
+            $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(scope.sync.data, scope.sync.current.filter),'sequence'), prodooConfig.displayLimit);
     });
 
     $scope.clickTask = function (item) {
