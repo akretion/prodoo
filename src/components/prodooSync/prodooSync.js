@@ -11,10 +11,12 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
             var param = {
                 model: 'mrp.production.workcenter.line',
                 func_key: 'prodoo',
-                domain: [
-                    ['workcenter_id', '=', options.workcenter],
-                    ['production_id.state', 'not in', ['draft', 'cancel']],
-                    ['full_done', '=', false],
+                base_domain: [
+                    ['workcenter_id', '=', options.workcenter]
+                ],
+                filter_domain: [
+                    ['production_state', 'not in', ['draft', 'cancel']],
+                    ['full_done', '=', false]
                 ],
                 limit: prodooConfig.fetchLimit,
                 interval: prodooConfig.refreshInterval,
