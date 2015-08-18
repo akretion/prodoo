@@ -12,21 +12,34 @@ angular.module('prodapps')
 
         if (newVal == oldVal)
             return;
+        buildFilteredList(); 
+    });
 
-        $scope.filteredList = {
-            done : limitToFilter(orderByFilter(filterFilter(newVal, 'done'),'sequence'), prodooConfig.displayLimit),
-            notDone : limitToFilter(orderByFilter(filterFilter(newVal, '!done'),'sequence'), prodooConfig.displayLimit),
-        };
-        if (scope.sync.current.filter.lot_number) {
-            $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(newVal, scope.sync.current.filter),'sequence'),prodooConfig.displayLimit);
+    $scope.$watch('sync.current.filter.lot_number', function (newVal) {
+        if (newVal) {
+            $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
         }
     });
 
-    $scope.$watch('sync.current.filter.lot_number', function (newVal, oldVal, scope) {
-        if (newVal)
-            $scope.filteredList.search = limitToFilter(orderByFilter(filterFilter(scope.sync.data, scope.sync.current.filter),'sequence'), prodooConfig.displayLimit);
     });
 
+    function buildFilteredList() {
+        $scope.filteredList = {
+            done : filterAndOrder($scope.sync.data, 'done'),
+            notDone : filterAndOrder($scope.sync.data, '!done'),
+        };
+        if ($scope.sync.current.filter.lot_number)
+            $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
+    }
+
+    function filterAndOrder(bigList, filter) {
+        return limitToFilter(
+                    orderByFilter(
+                        filterFilter(bigList, filter),
+                    'sequence'),
+                prodooConfig.displayLimit);
+    }
+    
     $scope.clickTask = function (item) {
         //set to current
         $scope.sync.current.item = item;
