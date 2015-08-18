@@ -22,11 +22,10 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 interval: prodooConfig.refreshInterval,
             };
 
-            /*jsonRpc.call(param.model, 'get_urgent_data', [ param.func_key, null, param.domain, 20]).then(function (d) {
-               var key;
+            /*jsonRpc.call(param.model, 'get_foremost_data', [ param.func_key, [].concat(param.base_domain, param.filter_domain), 20]).then(function (d) {               var key;
                 objectRef.data = [];
-                for(key in d.data) {
-                    objectRef.data.push(d.data[key]);
+                for(key in d) {
+                    objectRef.data.push(d[key]);
                 }
             });*/
 
