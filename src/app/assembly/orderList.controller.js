@@ -21,6 +21,8 @@ angular.module('prodapps')
         }
     });
 
+    $scope.$on('syncAfterDone', function() {
+        buildFilteredList();
     });
 
     function buildFilteredList() {

@@ -151,6 +151,7 @@ angular.module('prodapps')
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
         $notification('Done');
+        $scope.$broadcast('syncAfterDone');
       }, function () {
         $notification('an error has occured');
       }).then(function () {
