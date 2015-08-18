@@ -31,13 +31,22 @@ angular.module('prodapps')
         newVal._v.suggestedRacks = ($scope.sameLotNumber.length) ? $scope.sameLotNumber[0].rack : []; //mind the "s"
 
         //if no suggestedRack, may be there is in components (like in assemlby stuff)
-        if (newVal._v.suggestedRacks.length == 0)
-          newVal._v.suggestedRacks = newVal.components.map(function (c) { 
-            return c.rack; //extract rack
-          }).filter(function(value, index, array) {  //uniq
-              return array.indexOf(value) === index; 
-          });
+        if (newVal._v.suggestedRacks.length == 0) {
 
+          
+          newVal._v.suggestedRacks = createArray(newVal.qty).map(function (useless, idx) { //for (idx in 1..5)
+            
+            //return [ [a1,b1], [a2,b2], [an,bn]] with n = qty
+            return newVal.components.map(function (component) {
+              return component.rack[idx];
+            });
+
+          }).map(function (a) { //stringify
+            if (a[0] != a[1]) //always 2
+              return a.join(',');
+            return a[0]; //no need to duplicate
+          });
+        }
         
         if (!newVal._v.lines) {
           //first show of this item. User has not entered anything
