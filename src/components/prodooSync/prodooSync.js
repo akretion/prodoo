@@ -37,7 +37,7 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 //plus
                 //  we want set current.item
 
-                console.log(sync.liste.data, objectRef);
+                console.log(objectRef);
                 //objectRef.data.splice(0, objectRef.data.length);
                 objectRef.data = [];
                 var item, key;
