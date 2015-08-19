@@ -35,16 +35,6 @@ angular.module('prodapps')
 
     function builFilteredListSearch() {
         $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
-        
-        var last = $scope.filteredList.search[$scope.filteredList.search.length - 1];
-        if (last) {
-            //add the last + 1 order
-            $scope.filteredList.search.push(
-                $scope.sync.data.filter(function(i) { 
-                    return i.sequence == last.sequence+1;
-                }).pop()
-            );
-        }
     }
 
     function filterAndOrder(bigList, filter) {
