@@ -39,7 +39,7 @@
     </div>
 
      <ul class="list-group tab" ng-show="sync.current.filter.lot_number">
-        <li ng-repeat="item in filteredList.search" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+        <li ng-repeat="item in filteredList.search" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]">
             {{ item.lot_number }} - {{ item.name}}
             <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
             <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
