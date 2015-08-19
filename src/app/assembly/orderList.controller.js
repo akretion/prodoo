@@ -46,15 +46,16 @@ angular.module('prodapps')
         //set to current
         $scope.sync.current.item = item;
 
-        //erase the search
-        delete ($scope.sync.current.filter.lot_number);
-
         //scroll to item
-        $timeout(function () {
-            var offset =  angular.element('#item'+item.id)[0].offsetTop; //can be put in directive
-            $ionicScrollDelegate.$getByHandle('leftScroll').scrollTo(0, offset, true);
-            //anchorScroll doesn't work well
-        }, 50); //wait dom update
+        if (!$scope.sync.current.filter.lot_number)
+        //don't scroll if it's a search result
+        //because all search results are not in "draft" list
+        //we can't scroll to them
+            $timeout(function () {
+                var offset =  angular.element('#item'+item.id)[0];
+                $ionicScrollDelegate.$getByHandle('leftScroll').scrollTo(0, offset.offsetTop, true);
+                //anchorScroll doesn't work well
+            }, 50); //wait dom update
     };
 
 
