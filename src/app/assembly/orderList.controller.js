@@ -16,9 +16,8 @@ angular.module('prodapps')
     });
 
     $scope.$watch('sync.current.filter.lot_number', function (newVal) {
-        if (newVal) {
-            $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
-        }
+        if (newVal)
+           builFilteredListSearch();
     });
 
     $scope.$on('syncAfterDone', function() {
@@ -31,7 +30,21 @@ angular.module('prodapps')
             notDone : filterAndOrder($scope.sync.data, '!done'),
         };
         if ($scope.sync.current.filter.lot_number)
-            $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
+            builFilteredListSearch();
+    }
+
+    function builFilteredListSearch() {
+        $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
+        
+        var last = $scope.filteredList.search[$scope.filteredList.search.length - 1];
+        if (last) {
+            //add the last + 1 order
+            $scope.filteredList.search.push(
+                $scope.sync.data.filter(function(i) { 
+                    return i.sequence == last.sequence+1;
+                }).pop()
+            );
+        }
     }
 
     function filterAndOrder(bigList, filter) {
