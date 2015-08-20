@@ -11,20 +11,21 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
             var param = {
                 model: 'mrp.production.workcenter.line',
                 func_key: 'prodoo',
-                domain: [
-                    ['workcenter_id', '=', options.workcenter],
-                    ['production_id.state', 'not in', ['draft', 'cancel']],
-                    ['full_done', '=', false],
+                base_domain: [
+                    ['workcenter_id', '=', options.workcenter]
+                ],
+                filter_domain: [
+                    ['production_state', 'not in', ['draft', 'cancel']],
+                    ['full_done', '=', false]
                 ],
                 limit: prodooConfig.fetchLimit,
                 interval: prodooConfig.refreshInterval,
             };
 
-            /*jsonRpc.call(param.model, 'get_urgent_data', [ param.func_key, null, param.domain, 20]).then(function (d) {
-               var key;
+            /*jsonRpc.call(param.model, 'get_foremost_data', [ param.func_key, [].concat(param.base_domain, param.filter_domain), 20]).then(function (d) {               var key;
                 objectRef.data = [];
-                for(key in d.data) {
-                    objectRef.data.push(d.data[key]);
+                for(key in d) {
+                    objectRef.data.push(d[key]);
                 }
             });*/
 
@@ -36,7 +37,7 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 //plus
                 //  we want set current.item
 
-                console.log(sync.liste.data, objectRef);
+                console.log(objectRef);
                 //objectRef.data.splice(0, objectRef.data.length);
                 objectRef.data = [];
                 var item, key;

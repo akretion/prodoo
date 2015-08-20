@@ -12,9 +12,10 @@ angular.module('prodapps')
         var login = loginPassword.split(' ')[0];
         var password = loginPassword.split(' ')[1];
 
-        $scope.error = "";
+        $scope.error = "Loading...";
         jsonRpc.login(prodooConfig.db,login,password).then(function () {
             var nextStep = $state.current.data;
+            $scope.error = "Ok";
             if (nextStep.state)
               $state.go(nextStep.state, nextStep.params);
             else
