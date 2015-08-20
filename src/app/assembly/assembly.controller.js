@@ -1,18 +1,13 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout, $ionicScrollDelegate, filterFilter, orderByFilter) {
+.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
+    $scope.$on('$destroy', destroy);
+
     $scope.fields = [];
     $scope.sameLotNumber = [];
-    $scope.filteredList = [];
-
-    //order the list (right pane)
-    $scope.$watch('sync.data', function (newVal) {
-      //do it only on change
-      $scope.filteredList = orderByFilter(filterFilter(newVal, $scope.sync.current.filter),'sequence');
-    });
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
@@ -36,13 +31,22 @@ angular.module('prodapps')
         newVal._v.suggestedRacks = ($scope.sameLotNumber.length) ? $scope.sameLotNumber[0].rack : []; //mind the "s"
 
         //if no suggestedRack, may be there is in components (like in assemlby stuff)
-        if (newVal._v.suggestedRacks.length == 0)
-          newVal._v.suggestedRacks = newVal.components.map(function (c) { 
-            return c.rack; //extract rack
-          }).filter(function(value, index, array) {  //uniq
-              return array.indexOf(value) === index; 
-          });
+        if (newVal._v.suggestedRacks.length == 0) {
 
+          
+          newVal._v.suggestedRacks = createArray(newVal.qty).map(function (useless, idx) { //for (idx in 1..5)
+            
+            //return [ [a1,b1], [a2,b2], [an,bn]] with n = qty
+            return newVal.components.map(function (component) {
+              return component.rack[idx];
+            });
+
+          }).map(function (a) { //stringify
+            if (a[0] != a[1]) //always 2
+              return a.join(',');
+            return a[0]; //no need to duplicate
+          });
+        }
         
         if (!newVal._v.lines) {
           //first show of this item. User has not entered anything
@@ -102,18 +106,6 @@ angular.module('prodapps')
           return l;
         });
 
-
-
-        function createArray(length) {
-        //create and fill with null an array of length
-        // (Array.prototype.fill() is not ready yet / polyfill instead :
-          var a = [], l = 0;
-          for (l = 0; l < length; l++) {
-            a.push(null);
-          }
-          return a;
-        }
-
     });
 
     
@@ -127,32 +119,6 @@ angular.module('prodapps')
       return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
     };
 
-    $scope.clickTask = function (item) {
-      //set to current
-      $scope.sync.current.item = item;
-
-      //erase the search
-      delete ($scope.sync.current.filter.lot_number);
-    
-      //scroll to item
-      $timeout(function () {
-        var offset =  angular.element('#item'+item.id)[0].offsetTop; //can be put in directive
-        $ionicScrollDelegate.$getByHandle('leftScroll').scrollTo(0, offset, true);
-        //anchorScroll doesn't work well
-      },50); //wait dom update
-    };
-
-    $scope.setFilter = function (status) {
-      if (status === 'toDo')
-        $scope.sync.current.filter={state:'!done'};
-      if (status === 'done')
-        $scope.sync.current.filter={state:'done'};
-      if (status === 'eraseSearch')
-        delete ($scope.sync.current.filter.lot_number);
-
-      $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
-      $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
-    };
 
     $scope.book = function(item) {
       //assign the task to the current workcenter
@@ -194,10 +160,14 @@ angular.module('prodapps')
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
         $notification('Done');
+        $scope.$broadcast('syncAfterDone');
       }, function () {
         $notification('an error has occured');
       }).then(function () {
-        item._v.lock = false;
+
+        $timeout(function () {
+            item._v.lock = false;
+        }, 1000);
       });
     };
 
@@ -206,12 +176,22 @@ angular.module('prodapps')
         prodooPrint(item, qte);
     };
 
-    $scope.$on('$destroy', destroy);
 
     function fetchPdf(item) {
+      //load a pdf async
       return item.label || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
         item.label = d;
       });
+    }
+
+    function createArray(length) {
+    //create and fill with null an array of length
+    // (Array.prototype.fill() is not ready yet / polyfill instead :
+      var a = [], l = 0;
+      for (l = 0; l < length; l++) {
+        a.push(null);
+      }
+      return a;
     }
 
 });

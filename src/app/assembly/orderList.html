@@ -1,0 +1,51 @@
+<div class="input-group">
+    <div class="input-group-addon" >
+        <label for="searchInput">
+            <span class="glyphicon glyphicon-search"></span>
+        </label>
+    </div>
+    <input ng-model="sync.current.filter.lot_number" ng-model-options="{ debounce: 100 }" class="form-control haute-ligne" id="searchInput" placeholder="search" ng-focus="setFilter('eraseSearch')">
+</div>
+<ul class="nav nav-pills nav-justified">
+    <li id="todo" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == '!done' }">
+        <a data-toggle="tab" ng-click="setFilter('toDo')">Order to do</a>
+    </li>
+    <li id="done" role="presentation" class="tab no-radius" ng-class="{'active': sync.current.filter.state == 'done' }">
+        <a data-toggle="tab" ng-click="setFilter('done')">Order done</a>
+    </li>
+</ul>
+<ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y">
+    <div ng-show="!sync.current.filter.lot_number">
+        <ul class="list-group tab" ng-show="sync.current.filter.state == 'done'">
+            <li ng-repeat="item in filteredList.done" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+                {{ item.lot_number }} - {{ item.name}}
+                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+                <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+                <br />
+                <div ng-bind-html="item.short_description"></div>
+            </li>
+            <li ng-hide="filteredList.done">No order</li>
+        </ul>
+        <ul class="list-group tab" ng-show="sync.current.filter.state == '!done'">
+            <li ng-repeat="item in filteredList.notDone" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+                {{ item.lot_number }} - {{ item.name}}
+                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+                <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+                <br />
+                <div ng-bind-html="item.short_description"></div>
+            </li>
+             <li ng-hide="filteredList.notDone">No order</li>
+        </ul>
+    </div>
+
+     <ul class="list-group tab" ng-show="sync.current.filter.lot_number">
+        <li ng-repeat="item in filteredList.search" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]">
+            {{ item.lot_number }} - {{ item.name}}
+            <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+            <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+            <br />
+            <div ng-bind-html="item.short_description"></div>
+        </li>
+        <li ng-hide="filteredList.search">No order</li>
+    </ul>
+</ion-scroll>
