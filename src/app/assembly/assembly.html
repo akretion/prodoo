@@ -53,13 +53,14 @@
             </div>
 
             <div>
-                <div class="btn-group btn-group-justified" style="display:none;">
-                    <div class="btn-group">
-                        <button class="btn btn-success haute-ligne" ng-click="take(sync.current.item)">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group" ng-show="sync.current.item.workcenter_id != workcenter">
+                        <button ng-show="sync.current.item.workcenter_id" class="btn btn-success haute-ligne" ng-click="take(sync.current.item)">
                             <span class="glyphicon glyphicon-download-alt" ng-disabled="!sync.current.item._v.lock"></span> 
                             Book 
                             <span class="badge badge-default">+ {{ sameLotNumber.length }}</span>
                         </button>
+                        <button ng-hide="sync.current.item.workcenter_id" class="btn btn-danger haute-ligne" disabled>Already taken by someone else</button>
                     </div>
                 </div>
             </div>
