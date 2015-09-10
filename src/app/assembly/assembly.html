@@ -66,92 +66,94 @@
             </div>
 
             <form name="grid" ng-submit="formSubmitted=1">
-                <table class="table">
-                    <tr>
-                        <th ng-repeat="field in fields">{{ field.name }}</th>
-                        <th colspan="2">Operations</th>
-                        <th>Rack</th>
-                        <th><button style="visibility:hidden">Confirm</button></th>
-                    </tr>
-                    <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
-                        <tr ng-hide="isLineValid(grid, 'f'+$index) && line.lock" ng-class="{false: 'locked'}[line.lock]">
-                            <td ng-repeat="s in line.scans track by $index">
-                                <input class="haute-ligne" required="true" 
-                                    ng-model="line.scans[$index]"
-                                    ng-focus="focusOnLineScan(line, $index)" 
-                                    ng-blur="lockOnValidLine(line, grid, 'f'+$parent.$index)"
-                                    ensure-value="{{ sync.current.item.lot_number }}">
-                                </input>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default haute-ligne" disabled><span class="glyphicon glyphicon glyphicon-flag"></span></button>
-                                </div> 
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-warning haute-ligne" 
-                                        ng-click="print(sync.current.item)" 
-                                        ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
-                                    </button>
-                                </div>
-                            </td>
-                      
-                            <td>
-                                <input class="haute-ligne col-xs-5" required="true"
-                                    ng-model="line.rack"
-                                    ng-focus="focusOnLineRack(line)"
-                                    ng-blur="lockOnValidLine(line, grid, 'f'+$index)">
-                                </input>
-                            </td>
-                            <td>
-                                <button class="btn pull-right haute-ligne" 
-                                    ng-click="line.lock=true" 
-                                    ng-show="isLineValid(grid, 'f'+$index)">Confirm
-                                </button>
-                            </td>
+                <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter">
+                    <table class="table">
+                        <tr>
+                            <th ng-repeat="field in fields">{{ field.name }}</th>
+                            <th colspan="2">Operations</th>
+                            <th>Rack</th>
+                            <th><button style="visibility:hidden">Confirm</button></th>
                         </tr>
-                        <tr ng-show="isLineValid(grid, 'f'+$index) && line.lock">
-                            <td ng-repeat="s in line.scans track by $index">
-                                {{ s }}
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default haute-ligne" disabled><span class="glyphicon glyphicon glyphicon-flag"></span></button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-warning haute-ligne" 
-                                        ng-click="print(sync.current.item)"
-                                        ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
+                        <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
+                            <tr ng-hide="isLineValid(grid, 'f'+$index) && line.lock" ng-class="{false: 'locked'}[line.lock]">
+                                <td ng-repeat="s in line.scans track by $index">
+                                    <input class="haute-ligne" required="true" 
+                                        ng-model="line.scans[$index]"
+                                        ng-focus="focusOnLineScan(line, $index)" 
+                                        ng-blur="lockOnValidLine(line, grid, 'f'+$parent.$index)"
+                                        ensure-value="{{ sync.current.item.lot_number }}">
+                                    </input>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default haute-ligne" disabled><span class="glyphicon glyphicon glyphicon-flag"></span></button>
+                                    </div> 
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning haute-ligne" 
+                                            ng-click="print(sync.current.item)" 
+                                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                          
+                                <td>
+                                    <input class="haute-ligne col-xs-5" required="true"
+                                        ng-model="line.rack"
+                                        ng-focus="focusOnLineRack(line)"
+                                        ng-blur="lockOnValidLine(line, grid, 'f'+$index)">
+                                    </input>
+                                </td>
+                                <td>
+                                    <button class="btn pull-right haute-ligne" 
+                                        ng-click="line.lock=true" 
+                                        ng-show="isLineValid(grid, 'f'+$index)">Confirm
                                     </button>
-                                </div>
-                            </td>
-                            <td>{{line.rack}}</td>
-                            <td><button class="btn pull-right haute-ligne" ng-click="line.lock=false">Edit</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            <tr ng-show="isLineValid(grid, 'f'+$index) && line.lock">
+                                <td ng-repeat="s in line.scans track by $index">
+                                    {{ s }}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default haute-ligne" disabled><span class="glyphicon glyphicon glyphicon-flag"></span></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning haute-ligne" 
+                                            ng-click="print(sync.current.item)"
+                                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>{{line.rack}}</td>
+                                <td><button class="btn pull-right haute-ligne" ng-click="line.lock=false">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <div ng-show="sync.current.item.state == 'done'">
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                            <button class="btn btn-info haute-ligne" ng-click="do(sync.current.item)" ng-disabled="sync.current.item._v.lock"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
+                    <div ng-show="sync.current.item.state == 'done'">
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <button class="btn btn-info haute-ligne" ng-click="do(sync.current.item)" ng-disabled="sync.current.item._v.lock"><span class="glyphicon glyphicon-repeat"></span> Redo</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div ng-hide="sync.current.item.state == 'done'">
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                            <button class="btn btn-success haute-ligne" 
-                                ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock || checkLocks()" 
-                                ng-click="do(sync.current.item)"
-                                data-toggle="modal" data-target="#casier-modal"> OK
-                            </button>
+                    <div ng-hide="sync.current.item.state == 'done'">
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <button class="btn btn-success haute-ligne" 
+                                    ng-disabled="grid.$invalid || sync.current.item.pending || sync.current.item._v.lock || checkLocks()" 
+                                    ng-click="do(sync.current.item)"
+                                    data-toggle="modal" data-target="#casier-modal"> OK
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </fieldset>
             </form>
         </ion-scroll>
     </div>
