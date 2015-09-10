@@ -55,7 +55,7 @@
             <div>
                 <div class="btn-group btn-group-justified">
                     <div class="btn-group" ng-show="sync.current.item.workcenter_id != workcenter">
-                        <button ng-show="sync.current.item.workcenter_id" class="btn btn-success haute-ligne" ng-click="take(sync.current.item)" ng-disabled="!sync.current.item._v.lock">
+                        <button ng-show="sync.current.item.workcenter_id" class="btn btn-success haute-ligne" ng-click="take(sync.current.item)" ng-disabled="sync.current.item._v.lock">
                             <span class="glyphicon glyphicon-download-alt"></span> 
                             Book 
                             <span class="badge badge-default">+ {{ sameLotNumber.length }}</span>
