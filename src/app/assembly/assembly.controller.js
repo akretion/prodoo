@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
+.controller('AssemblyCtrl', ['$scope', '$state', 'jsonRpc', 'prodooSync', '$notification', 'prodooPrint', '$timeout', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
-    var destroy = prodooSync.syncData({workcenter: $state.params.workcenter}, $scope.sync);
+    $scope.workcenter = $state.params.workcenter;
+    var destroy = prodooSync.syncData({workcenter: $scope.workcenter}, $scope.sync);
     $scope.$on('$destroy', destroy);
 
     $scope.fields = [];
@@ -176,6 +177,24 @@ angular.module('prodapps')
         prodooPrint(item, qte);
     };
 
+    $scope.take = function(item) {
+      item._v.lock = true;
+      jsonRpc.call('mrp.production.workcenter.line', 'book', [[item.id], $scope.workcenter]).then(function (hasSucceed) {
+        console.log('voici le result', hasSucceed);
+        if (hasSucceed) {
+          item.workcenter_id = $scope.workcenter;
+          $notification('Booked');
+        } else {
+          item.workcenter_id = false;
+          $notification('Already booked');
+        }
+      }).then(function () {
+
+        $timeout(function () {
+          item._v.lock = false;
+        }, 1000);
+      });
+    };
 
     function fetchPdf(item) {
       //load a pdf async
@@ -194,4 +213,4 @@ angular.module('prodapps')
       return a;
     }
 
-});
+}]);

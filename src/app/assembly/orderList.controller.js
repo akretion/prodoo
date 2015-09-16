@@ -1,6 +1,6 @@
 'use strict';
 angular.module('prodapps')
-.controller('OrderListCtrl', function ($scope, limitToFilter, filterFilter, orderByFilter, prodooConfig, $ionicScrollDelegate, $timeout) {
+.controller('OrderListCtrl', ['$scope', 'limitToFilter', 'filterFilter', 'orderByFilter', 'prodooConfig', '$ionicScrollDelegate', '$timeout', function ($scope, limitToFilter, filterFilter, orderByFilter, prodooConfig, $ionicScrollDelegate, $timeout) {
     //scope.sync is inherited by parent scope (assemblyCtrl)
     $scope.filteredList = [];
 
@@ -74,4 +74,4 @@ angular.module('prodapps')
         $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
 
-});
+}]);

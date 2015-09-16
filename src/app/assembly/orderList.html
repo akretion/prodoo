@@ -31,6 +31,7 @@
                 {{ item.lot_number }} - {{ item.name}}
                 <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
                 <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+                <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
                 <br />
                 <div ng-bind-html="item.short_description"></div>
             </li>
@@ -43,6 +44,7 @@
             {{ item.lot_number }} - {{ item.name}}
             <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
             <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+            <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
             <br />
             <div ng-bind-html="item.short_description"></div>
         </li>
