@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
+.controller('AssemblyCtrl', ['$scope', '$state', 'jsonRpc', 'prodooSync', '$notification', 'prodooPrint', '$timeout', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     $scope.workcenter = $state.params.workcenter;
     var destroy = prodooSync.syncData({workcenter: $scope.workcenter}, $scope.sync);
@@ -213,4 +213,4 @@ angular.module('prodapps')
       return a;
     }
 
-});
+}]);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('LoginCtrl', function ($scope,$state, jsonRpc, prodooConfig, $stateParams) {
+.controller('LoginCtrl', ['$scope', '$state', 'jsonRpc', 'prodooConfig', '$stateParams', function ($scope, $state, jsonRpc, prodooConfig, $stateParams) {
     
     //dirty but it's ok
     angular.element('#loginPassword').trigger('focus');
@@ -29,4 +29,4 @@ angular.module('prodapps')
         jsonRpc.logout(true);
     };
     $scope.logout();
-});
+}]);
