@@ -7,9 +7,9 @@
     "angular-sanitize": "~1.4.3",
     "angular-ui-router": "~0.2.13",
     "bootstrap-sass-official": "3.3.3",
-    "angular-strap": "2.1.x",
+    "angular-strap": "~2.3.1",
     "angular": "~1.4.3",
-    "angular-notification": "~1.0.1",
+    "angular-notification": "~1.1.1",
     "odoo": "https://github.com/hparfr/angular-odoo.git#develop",
     "ionic": "~1.1.0"
   },
