@@ -20,8 +20,9 @@ angular.module('prodapps')
            builFilteredListSearch();
     });
 
-    $scope.$on('syncAfterDone', function() {
+    $scope.$on('syncAfterDone', function(evt, item) {
         buildFilteredList();
+        goToNextTask(item);
     });
 
     function buildFilteredList() {
@@ -43,6 +44,41 @@ angular.module('prodapps')
                         filterFilter(bigList, filter),
                     'sequence'),
                 prodooConfig.displayLimit);
+    }
+
+    function goToNextTask(item) {
+        //will determine in wich list we are
+        //select the next item
+        //(trigger $scope.clickTask)
+        var filter = $scope.sync.current.filter;
+        var list;
+        var nextItem;
+
+        if (!item)
+            return;
+
+        if (filter.lot_number) {
+            list = 'search';
+        } else if (filter.state === 'done') {
+            list = 'done';
+        } else if (filter.state === '!done') {
+            list = 'notDone';
+        } else {
+            return console.log('etat indefini');
+        }
+
+        nextItem = false;
+        $scope.filteredList[list].some(function (it) {
+            //the list is ordered by sequence
+            if (it.sequence <= item.sequence)
+                return false;
+
+            nextItem = it;
+            return true; //don't continue to iterate
+        });
+
+        if (nextItem)
+            $scope.clickTask(nextItem);
     }
     
     $scope.clickTask = function (item) {
