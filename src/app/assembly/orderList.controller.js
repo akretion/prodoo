@@ -16,15 +16,18 @@ angular.module('prodapps')
     });
 
     $scope.$watch('sync.current.filter.lot_number', function (newVal) {
+        //basically when a search is performed in oderList.html
         if (newVal)
            builFilteredListSearch();
     });
 
+    //catch do() from assemblyCtrl
     $scope.$on('syncAfterDone', function(evt, item) {
         buildFilteredList();
         goToNextTask(item);
     });
 
+    //There is 3 lists of items in DOM : toDo, done, search results
     function buildFilteredList() {
         $scope.filteredList = {
             done : filterAndOrder($scope.sync.data, 'done'),
@@ -34,8 +37,36 @@ angular.module('prodapps')
             builFilteredListSearch();
     }
 
+    //Build the search results list
     function builFilteredListSearch() {
-        $scope.filteredList.search = filterAndOrder($scope.sync.data, $scope.sync.current.filter);
+        //if the guy search for a lot_number
+        //  then we show a list of result with the same sale_name (derived from lot_number)
+        //  and select the item with the good lot_number
+        //if it's not in the form of a lot_number (like incomplete entry)
+        //  then we just search in lot_number
+        //  and don't select anything
+
+        //work on a copy
+        var filter = angular.copy($scope.sync.current.filter);
+        var saleNameRegex = /(.+-.+)-.+/;
+        //if lot_number = DEV-1234-001 then sale_name = DEV-1234
+
+        //get sale_name from lot_number
+        var r = saleNameRegex.exec(filter.lot_number);
+        if (r) {
+            filter.sale_name = r[1]; //regex[1] is our result
+            delete filter.lot_number; //remove lot_number from search
+        } //no need to change anything in !r
+
+        //do the search
+        $scope.filteredList.search = filterAndOrder($scope.sync.data, filter);
+
+        if (r) { //only if we searched by sale_name
+            //after the search, try to select item with the lot_number searched
+            $scope.clickTask($scope.filteredList.search.filter(function (item) {
+               return item.lot_number == r[0];
+            }).pop());
+        }
     }
 
     function filterAndOrder(bigList, filter) {
@@ -57,7 +88,7 @@ angular.module('prodapps')
         if (!item)
             return;
 
-        if (filter.lot_number) {
+        if (filter.sale_name || filter.lot_number) {
             list = 'search';
         } else if (filter.state === 'done') {
             list = 'done';
@@ -82,11 +113,14 @@ angular.module('prodapps')
     }
     
     $scope.clickTask = function (item) {
+        if (!item)
+            return;
+
         //set to current
         $scope.sync.current.item = item;
 
         //scroll to item
-        if (!$scope.sync.current.filter.lot_number)
+        if (!$scope.sync.current.filter.sale_name)
         //don't scroll if it's a search result
         //because all search results are not in "draft" list
         //we can't scroll to them
@@ -103,9 +137,10 @@ angular.module('prodapps')
             $scope.sync.current.filter={state:'!done'};
         if (status === 'done')
             $scope.sync.current.filter={state:'done'};
-        if (status === 'eraseSearch')
-            delete ($scope.sync.current.filter.lot_number);
-
+        if (status === 'eraseSearch') {
+            delete $scope.sync.current.filter.sale_name;
+            delete $scope.sync.current.filter.lot_number;
+        }
         $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
         $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
