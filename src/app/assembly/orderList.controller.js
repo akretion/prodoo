@@ -2,16 +2,15 @@
 angular.module('prodapps')
 .controller('OrderListCtrl', ['$scope', 'limitToFilter', 'filterFilter', 'orderByFilter', 'prodooConfig', '$ionicScrollDelegate', '$timeout', function ($scope, limitToFilter, filterFilter, orderByFilter, prodooConfig, $ionicScrollDelegate, $timeout) {
     //scope.sync is inherited by parent scope (assemblyCtrl)
-    $scope.filteredList = [];
+    $scope.filteredList = { done: [], notDone: []};
 
     $scope.$watch('sync.data', function (newVal, oldVal, scope) {
       //refresh list of order (in the right pane)
       //all items are present in DOM at time
       //one list is shown while the others not
       //limit size of shown item down to prodooConfig.displayLimit : less DOM Injection, less $animate running, better perf
-
         if (newVal == oldVal)
-            return;
+            return; //TODO comprendre pourquoi on tombe jamais là
         buildFilteredList(); 
     });
 
@@ -30,8 +29,8 @@ angular.module('prodapps')
     //There is 3 lists of items in DOM : toDo, done, search results
     function buildFilteredList() {
         $scope.filteredList = {
-            done : filterAndOrder($scope.sync.data, 'done'),
-            notDone : filterAndOrder($scope.sync.data, '!done'),
+            done : filterAndOrder($scope.sync.data, {state: 'done'}),
+            notDone : filterAndOrder($scope.sync.data, {state: '!done'}),
         };
         if ($scope.sync.current.filter.lot_number)
             builFilteredListSearch();
