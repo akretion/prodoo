@@ -5,6 +5,11 @@
         <span class="glyphicon glyphicon-home"></span>Home 
       </a>
     </div>
+    <ul class="nav navbar-nav">
+      <li><a href="javascript:location.reload()">{{ title }}</a></li>
+      <li><a href="javascript:location.reload()"><span class="glyphicon glyphicon-repeat"></span>Reload</a></li>
+
+    </ul>
 <!--
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
       <ul class="nav navbar-nav">
@@ -14,7 +19,6 @@
       </ul>
 -->
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="javascript:location.reload()">Reload</a></li>
         <li><a ui-sref="login">Logout</a></li>
       </ul>
     </div>

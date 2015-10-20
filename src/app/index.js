@@ -4,12 +4,18 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
 .config(function ($stateProvider, $urlRouterProvider, jsonRpcProvider, prodooConfigProvider) {
     $stateProvider
         .state('main', {
-            templateUrl: 'app/main/main.html'
+            templateUrl: 'app/main/main.html',
+            resolve: {
+                'apps': 'apps'
+            }
         })
         .state('main.home', {
             url: '/',
             templateUrl: 'app/main/home.html',
-            controller: 'MainCtrl'
+            controller: 'MainCtrl',
+            resolve: {
+                'apps': 'apps'
+            }
         })
         .state('login', {
             url: '/login',
