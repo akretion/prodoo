@@ -36,16 +36,7 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                 }
             }
         })
-        .state('main.venetian_assembly', {
-            url:'/venetianAssembly/{workcenter:int}',
-            templateUrl: 'app/venetianAssembly/venetianAssembly.html',
-            controller:'VenetianAssemblyCtrl'
-        })
-        .state('main.trolley_assembly', {
-            url:'/trolleyAssembly/{workcenter:int}',
-            templateUrl: 'app/trolleyAssembly/trolleyAssembly.html',
-            controller:'TrolleyAssemblyCtrl'
-        });
+        ;
 
     $urlRouterProvider.otherwise('/');
 
