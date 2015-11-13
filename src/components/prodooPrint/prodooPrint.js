@@ -8,7 +8,7 @@ angular.module('prodapps').provider('prodooPrint',[ function prodooPrintProvider
                     args: ['label', payload.label],
                     kwargs: { options : { 'copies': (qte) ? qte : payload.quantities }}
                 };
-                $http.post(prodooConfig.printServer+'/cups/printData', req);
+                $http.post(prodooConfig.pyWebDriver+'/cups/printData', req);
                 console.log('print !!!!', payload);
             };
     }];

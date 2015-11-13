@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-.controller('AssemblyCtrl', ['$scope', '$state', 'jsonRpc', 'prodooSync', '$notification', 'prodooPrint', '$timeout', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, $timeout) {
+.controller('AssemblyCtrl', ['$scope', '$state', 'jsonRpc', 'prodooSync', '$notification', 'prodooPrint', 'prodooMachine', '$timeout', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, prodooMachine, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     $scope.workcenter = $state.params.workcenter;
     var destroy = prodooSync.syncData({workcenter: $scope.workcenter}, $scope.sync);
@@ -161,7 +161,7 @@ angular.module('prodapps')
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
         $notification('Done');
-        $scope.$broadcast('syncAfterDone');
+        $scope.$broadcast('syncAfterDone', item);
       }, function () {
         $notification('an error has occured');
       }).then(function () {
@@ -175,6 +175,10 @@ angular.module('prodapps')
     $scope.print = function (item, qte) {
         $notification('Printing...');
         prodooPrint(item, qte);
+    };
+    $scope.machine = function(item) {
+        console.log('on envoit sur la machine', item.machine);
+        prodooMachine(item);
     };
 
     $scope.take = function(item) {

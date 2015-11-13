@@ -6,7 +6,7 @@ angular.module('prodapps').provider('prodooConfig', [ function prodooConfigProvi
         db: 'db',
         refreshInterval: 5000,
         fetchLimit: 50,
-        printServer:'',
+        pyWebDriver:'',
         displayLimit: 50
     };
 

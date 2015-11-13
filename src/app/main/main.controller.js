@@ -1,18 +1,10 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('MainCtrl', function ($scope, $state, jsonRpc) {
+  .controller('MainCtrl', ['$scope', '$state', 'apps', function ($scope, $state, apps) {
     $scope.$state = $state;
-    $scope.workcenters = null;
-    $scope.groups = {};
-    jsonRpc.call('mrp.workcenter', 'prodoo_get_workcenter', []).then(function (data) {
-        console.log('data loaded', data);
-        angular.element('#barcode').trigger('focus');
-        $scope.workcenters = data;
-        $scope.workcenters.forEach(function (w) {
-            if (!$scope.groups[w.group])
-                $scope.groups[w.group] = [];
-            $scope.groups[w.group].push(w);
-        });
-    });
-});
+    $scope.workcenters = apps.workcenters;
+    $scope.groups = apps.groups;
+
+    angular.element('#barcode').trigger('focus');
+}]);
