@@ -117,6 +117,9 @@ angular.module('prodapps')
       if (!$scope.sync.current.item)
         return false;
 
+      if (!$scope.sync.current.item._v)
+        return false;
+
       return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
     };
 
