@@ -38,34 +38,40 @@ angular.module('prodapps')
 
     //Build the search results list
     function builFilteredListSearch() {
-        //if the guy search for a lot_number
-        //  then we show a list of result with the same sale_name (derived from lot_number)
-        //  and select the item with the good lot_number
-        //if it's not in the form of a lot_number (like incomplete entry)
-        //  then we just search in lot_number
-        //  and don't select anything
+        //the guy search for a lot_number
+        //  if this lot_number is not found : display nothing
+        //  else (if one item found with lot_number)
+        //      show all workorwers with the same sale_name that this item
+        //      select (clickTask) the item
 
         //work on a copy
         var filter = angular.copy($scope.sync.current.filter);
-        var saleNameRegex = /(.+-.+)-.+/;
-        //if lot_number = DEV-1234-001 then sale_name = DEV-1234
+        var lot_number = filter.lot_number;
+        delete filter.lot_number; //we don't search on this field
+        //but on sale_name;
 
-        //get sale_name from lot_number
-        var r = saleNameRegex.exec(filter.lot_number);
-        if (r) {
-            filter.sale_name = r[1]; //regex[1] is our result
-            delete filter.lot_number; //remove lot_number from search
-        } //no need to change anything in !r
+        //search for the item with same lot_number
+        $scope.sync.data.some(function(item) {
+            if (item.lot_number != lot_number)
+                return false;
+            //found the item
+            filter.sale_name = item.sale_name;
+            return true;
+        });
 
-        //do the search
+        if (!filter.sale_name)
+            return $scope.filteredList.search = []; //no need to continue
+
         $scope.filteredList.search = filterAndOrder($scope.sync.data, filter);
 
-        if (r) { //only if we searched by sale_name
-            //after the search, try to select item with the lot_number searched
-            $scope.clickTask($scope.filteredList.search.filter(function (item) {
-               return item.lot_number == r[0];
-            }).pop());
-        }
+        //click on the good one
+        $scope.filteredList.search.some(function (item) {
+            if (item.lot_number != lot_number)
+                return false
+
+            $scope.clickTask(item);
+            return true;
+        });
     }
 
     function filterAndOrder(bigList, filter) {
