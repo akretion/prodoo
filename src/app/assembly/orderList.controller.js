@@ -64,6 +64,10 @@ angular.module('prodapps')
 
         $scope.filteredList.search = filterAndOrder($scope.sync.data, filter);
 
+        //is selected item already in search restults ? (from a previous search)
+        if ($scope.sync.current.item.sale_name == filter.sale_name)
+            return;
+
         //click on the good one
         $scope.filteredList.search.some(function (item) {
             if (item.lot_number != lot_number)
