@@ -2,7 +2,7 @@
 angular.module('prodapps')
 .controller('OrderListCtrl', ['$scope', 'limitToFilter', 'filterFilter', 'orderByFilter', 'prodooConfig', '$ionicScrollDelegate', '$timeout', function ($scope, limitToFilter, filterFilter, orderByFilter, prodooConfig, $ionicScrollDelegate, $timeout) {
     //scope.sync is inherited by parent scope (assemblyCtrl)
-    $scope.filteredList = { done: [], notDone: []};
+    $scope.filteredList = { notDone: []};
 
     $scope.$watch('sync.data', function (newVal, oldVal, scope) {
       //refresh list of order (in the right pane)
@@ -26,10 +26,9 @@ angular.module('prodapps')
         goToNextTask(item);
     });
 
-    //There is 3 lists of items in DOM : toDo, done, search results
+    //There is 2 lists of items in DOM : toDo, search results
     function buildFilteredList() {
         $scope.filteredList = {
-            done : filterAndOrder($scope.sync.data, {state: 'done'}),
             notDone : filterAndOrder($scope.sync.data, {state: '!done'}),
         };
         if ($scope.sync.current.filter.lot_number)
@@ -71,7 +70,7 @@ angular.module('prodapps')
         //click on the good one
         $scope.filteredList.search.some(function (item) {
             if (item.lot_number != lot_number)
-                return false
+                return false;
 
             $scope.clickTask(item);
             return true;
@@ -97,15 +96,10 @@ angular.module('prodapps')
         if (!item)
             return;
 
-        if (filter.sale_name || filter.lot_number) {
+        if (filter.sale_name || filter.lot_number)
             list = 'search';
-        } else if (filter.state === 'done') {
-            list = 'done';
-        } else if (filter.state === '!done') {
+        else
             list = 'notDone';
-        } else {
-            return console.log('etat indefini');
-        }
 
         nextItem = false;
         $scope.filteredList[list].some(function (it) {
@@ -141,15 +135,9 @@ angular.module('prodapps')
     };
 
 
-    $scope.setFilter = function (status) {
-        if (status === 'toDo')
-            $scope.sync.current.filter={state:'!done'};
-        if (status === 'done')
-            $scope.sync.current.filter={state:'done'};
-        if (status === 'eraseSearch') {
-            delete $scope.sync.current.filter.sale_name;
-            delete $scope.sync.current.filter.lot_number;
-        }
+    $scope.eraseSearch = function (status) {
+        delete $scope.sync.current.filter.sale_name;
+        delete $scope.sync.current.filter.lot_number;
         $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
         $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
