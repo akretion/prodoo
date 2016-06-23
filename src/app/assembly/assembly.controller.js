@@ -180,7 +180,6 @@ angular.module('prodapps')
         prodooPrint(item, qte);
     };
     $scope.machine = function(item) {
-        console.log('on envoit sur la machine', item.machine);
         prodooMachine(item);
     };
 
