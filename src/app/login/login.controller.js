@@ -8,9 +8,17 @@ angular.module('prodapps')
 
     $scope.login = function (loginPassword) {
         //login and password are combined and separated by a space
+        //or a token (without space) is used
         //they should be scanned
-        var login = loginPassword.split(' ')[0];
-        var password = loginPassword.split(' ')[1];
+        var seperator = ' '
+        
+        if (loginPassword.indexOf(seperator) != -1 ) {
+            var login = loginPassword.split(seperator)[0];
+            var password = loginPassword.split(seperator)[1];
+        } else { //token based auth
+            var login = 'based_on_token';
+            var password = loginPassword;
+        }
 
         $scope.error = "Loading...";
         jsonRpc.login(prodooConfig.db,login,password).then(function () {
