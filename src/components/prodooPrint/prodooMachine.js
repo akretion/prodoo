@@ -13,6 +13,8 @@ angular.module('prodapps').provider('prodooMachine',[ function prodooMachineProv
                 Beep.play();
                 if (req.type == 'serial') {
                     $http.post(prodooConfig.pyWebDriver+'/hw_proxy/serial_write', req);
+                } else if (req.type == 'opc') {
+                    $http.post(prodooConfig.pyWebDriver+'/hw_proxy/opcua_write', req);                    
                 } else if (req.type == 'url') {
                     $http.post(req.url, req.data);
                 }
