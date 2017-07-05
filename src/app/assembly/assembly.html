@@ -67,17 +67,18 @@
 
             <form name="grid" ng-submit="formSubmitted=1">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter">
-                    <table class="table">
+                    <table class="table table-condensed" style="word-break: break-all;">
                         <tr>
                             <th ng-repeat="field in fields">{{ field.name }}</th>
                             <th colspan="2">Operations</th>
                             <th>Rack</th>
-                            <th><button style="visibility:hidden">Confirm</button></th>
+                            <th></th>
                         </tr>
                         <tbody ng-repeat="line in sync.current.item._v.lines track by $index" ng-form="f{{$index}}">
                             <tr ng-hide="isLineValid(grid, 'f'+$index) && line.lock" ng-class="{false: 'locked'}[line.lock]">
                                 <td ng-repeat="s in line.scans track by $index">
-                                    <input class="haute-ligne" required="true" 
+                                    <input class="haute-ligne" required="true"
+                                        size="16"
                                         ng-model="line.scans[$index]"
                                         ng-focus="focusOnLineScan(line, $index)" 
                                         ng-blur="lockOnValidLine(line, grid, 'f'+$parent.$index)"
