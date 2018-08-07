@@ -1,0 +1,40 @@
+version: "2"
+
+volumes:
+  target: {}
+  cache: {}
+
+services:
+  watcher:
+    build:
+      context: ../..
+      dockerfile: ./etc/docker/Dockerfile.assemble
+    command: /os/bin/watch.sh
+    ports:
+        - "20170:20170"
+    volumes_from:
+      - source
+      - target
+
+  assembler:
+    build:
+      context: ../..
+      dockerfile: ./etc/docker/Dockerfile.assemble
+    command: /os/bin/build.sh
+    volumes_from:
+      - source
+      - target
+      
+  source:
+    image: 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/base:stable
+    entrypoint: /bin/true
+    volumes:
+      -  ../../src:/os/build/src
+      -  ../../dist:/os/build/dist
+      -  ../../etc:/os/build/etc
+
+  target:
+    image: 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/base:stable
+    entrypoint: /bin/true
+    volumes:
+      -  ../../target:/os/target
