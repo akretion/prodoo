@@ -9,4 +9,8 @@ rm -rvf $OS_BUILD/dist
 
 cd $OS_BUILD
 npm install
-npm run dev
+PATH=$PATH:./node_modules/.bin/
+npm install bower
+bower install --allow-root
+cp ./prodooConfig.js /opt/ostore/prodoo/src/components/prodooConfig/prodooConfig.js
+gulp build

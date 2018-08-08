@@ -7,11 +7,21 @@ OS_TARGET=/os/target
 rm -rf $OS_TARGET/*
 rm -rvf $OS_BUILD/dist
 
-# Install and build component
+# legacy build
 cd $OS_BUILD
 npm install
-npm run build
+npm install bower
+bower install --allow-root
+cp ./prodooConfig.js /opt/ostore/prodoo/src/components/prodooConfig/prodooConfig.js
+RUN gulp build
+
+
+# default config
+
+# Install and build component
+# cd $OS_BUILD
+# npm install
+# npm run build
 
 # Create component artifact in target path
-tar czf $OS_TARGET/app.tar.gz --exclude .git* --exclude "*.log" .
-
+# tar czf $OS_TARGET/app.tar.gz --exclude .git* --exclude "*.log" .

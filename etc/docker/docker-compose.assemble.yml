@@ -11,7 +11,7 @@ services:
       dockerfile: ./etc/docker/Dockerfile.assemble
     command: /os/bin/watch.sh
     ports:
-        - "20170:20170"
+        - "20170:80"
     volumes_from:
       - source
       - target
@@ -21,6 +21,8 @@ services:
       context: ../..
       dockerfile: ./etc/docker/Dockerfile.assemble
     command: /os/bin/build.sh
+    environment:
+      - "odoo:localhost:20160"
     volumes_from:
       - source
       - target
