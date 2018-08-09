@@ -20,11 +20,11 @@ pipeline {
         sh 'rake test'
       }
       // Post Junit result
-      post {
-        always {
-          junit 'test/test-results.xml'
-        }
-      }
+      //post {
+      //  always {
+      //    junit 'test/test-results.xml'
+      //  }
+      //}
     }
 
     /*

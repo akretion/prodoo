@@ -22,9 +22,3 @@ Build
 
 	gulp build
 
-## usage
-
-    $ rake watch
-    $ rake assemble
-    $ rake package
-    $ docker run --name prodoo -d -p "20170:20170" 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/prodoo
