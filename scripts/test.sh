@@ -1,6 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash 
 
-echo '==> Start testing'
-echo '==> End testing'
-
-exit 0
+cd $OS_BUILD
+npm test

@@ -4,9 +4,8 @@ var gulp = require('gulp');
 
 gulp.paths = {
   src: 'src',
-  dist: '/os/target',
+  dist: 'dist',
   tmp: '.tmp',
-  build: 'build'
 };
 
 require('require-dir')('./gulp');

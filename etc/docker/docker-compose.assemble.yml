@@ -1,111 +1,42 @@
-
 version: "2"
 
-services:
+volumes:
+  target: {}
+  cache: {}
 
-# #####################################################
-# Base services
-  base_integration:
-    mem_limit: 2g
+services:
+  watcher:
     build:
       context: ../..
-      dockerfile: etc/docker/Dockerfile.assemble
-
-  base_volume:
-    mem_limit: 1g
-    image: ubuntu
-    entrypoint: /bin/true
-
-# #####################################################
-# Integration services
-  assembler:
-    extends:
-      service: base_integration
-    command: /os/bin/assemble.sh
-    depends_on:
-      - source
-      - target
-    volumes_from:
-      - source
-      - target
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_APP=${OS_APP}
-      - OS_BUILD=${OS_BUILD}
-
-  watcher:
-    extends:
-      service: base_integration
-    command: /os/bin/start.sh
-    hostname: prodoo
-    depends_on:
-      - source
-      - target
-    volumes_from:
-      - source
-      - target
+      dockerfile: ./etc/docker/Dockerfile.assemble
+    command: /os/bin/watch.sh
     ports:
-      - 8000:8000
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_APP=${OS_APP}
-      - OS_BUILD=${OS_BUILD}
-
-  packager:
-    extends:
-      service: base_integration
-    command: /os/bin/package.sh
-    depends_on:
-      - target
-    volumes_from:
-      - target
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_PUBLISH=${OS_PUBLISH}
-
-  tester:
-    extends:
-      service: base_integration
-    command: /os/bin/test.sh
-    depends_on:
-      - source
-      - target
+        - "20170:80"
     volumes_from:
       - source
       - target
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_APP=${OS_APP}
-      - OS_BUILD=${OS_BUILD}
 
-  cleaner:
-    extends:
-      service: base_integration
-    command: /os/bin/clean.sh
-    depends_on:
-      - source
-      - target
+  assembler:
+    build:
+      context: ../..
+      dockerfile: ./etc/docker/Dockerfile.assemble
+    command: /os/bin/build.sh
+    environment:
+      - "odoo:localhost:20160"
     volumes_from:
       - source
       - target
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_APP=${OS_APP}
-      - OS_BUILD=${OS_BUILD}
-
-# #####################################################
-# Volume services
+      
   source:
-    extends:
-      service: base_volume
+    image: 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/base:stable
+    entrypoint: /bin/true
     volumes:
       -  ../../src:/os/build/src
+      -  ../../dist:/os/build/dist
       -  ../../etc:/os/build/etc
-      -  ../../test:/os/build/test
 
   target:
-    extends:
-      service: base_volume
+    image: 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/base:stable
+    entrypoint: /bin/true
     volumes:
-      -  ../../dist:/os/target
-      -  ../../publish:/os/publish
+      -  ../../target:/os/target
