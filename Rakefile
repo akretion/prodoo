@@ -91,7 +91,7 @@ end
 # ------------------------------------------------------------------------------
 # Tag
 task :tag do
-  version = `grep -m1 version src/package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'`
+  version = `grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'`
   begin
     sh "docker image pull #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{version}"
     # exit 1
