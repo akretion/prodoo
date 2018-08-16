@@ -1,4 +1,0 @@
-[submodule "src"]
-	path = src
-	url = https://github.com/akretion/prodapps.git
-	branch = develop

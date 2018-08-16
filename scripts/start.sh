@@ -13,6 +13,12 @@ rm -rf $OS_BUILD/src/package-lock.json
 # assemble webapp and put in proper directory
 cd $OS_BUILD/src
 
+# check if config file exist
+if [ -f src/components/prodooConfig/prodooConfig.js ]; then
+  # restore original project config file
+  rm -rf src/components/prodooConfig/prodooConfig.js
+fi
+
 # copy prodoo config file
 cp src/components/prodooConfig/prodooConfig.js.dev src/components/prodooConfig/prodooConfig.js
 
