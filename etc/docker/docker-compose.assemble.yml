@@ -36,7 +36,7 @@ services:
   watcher:
     extends:
       service: base_integration
-    command: /os/bin/start.sh
+    command: /os/bin/watch.sh
     hostname: prodoo
     depends_on:
       - source
@@ -51,18 +51,6 @@ services:
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
       - OS_DO_BUILD=${OS_DO_BUILD}
-
-  packager:
-    extends:
-      service: base_integration
-    command: /os/bin/package.sh
-    depends_on:
-      - target
-    volumes_from:
-      - target
-    environment:
-      - OS_TARGET=${OS_TARGET}
-      - OS_PUBLISH=${OS_PUBLISH}
 
   tester:
     extends:
@@ -108,5 +96,4 @@ services:
     extends:
       service: base_volume
     volumes:
-      -  ../../dist:/os/target
-      -  ../../publish:/os/publish
+      -  ../../.dist:/os/target

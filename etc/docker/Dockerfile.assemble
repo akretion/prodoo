@@ -10,29 +10,29 @@ RUN apt-get upgrade -y
 #
 # ASSEMBLE
 #
-COPY scripts/assemble.sh /os/bin/
+COPY tasks/assemble.sh /os/bin/
 RUN chmod +x /os/bin/assemble.sh
 
 #
 # TEST
 #
-COPY scripts/test.sh /os/bin/
+COPY tasks/test.sh /os/bin/
 RUN chmod +x /os/bin/test.sh
 
 #
 # CLEAN
 #
-COPY scripts/clean.sh /os/bin/
+COPY tasks/clean.sh /os/bin/
 RUN chmod +x /os/bin/clean.sh
 
 #
 # WATCH
 #
-COPY scripts/start.sh /os/bin/
-RUN chmod +x /os/bin/start.sh
+COPY tasks/watch.sh /os/bin/
+RUN chmod +x /os/bin/watch.sh
 
 #
 # PACKAGE
 #
-COPY scripts/package.sh /os/bin/
+COPY tasks/package.sh /os/bin/
 RUN chmod +x /os/bin/package.sh
