@@ -1,13 +1,11 @@
 FROM 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/webapp
-MAINTAINER OliverStore <informatique@oliverstore.com>
-
 
 # Image blueprint
 ARG OSTORE_IMAGE_NAME=prodoo
 ARG OSTORE_IMAGE_VERSION=latest
 
 # Add app structure
-ADD ./dist/ $OSTORE_APP
+ADD .dist/ $OSTORE_APP
 
 WORKDIR ${OSTORE_ANSIBLE}
 RUN ssh-agent bash \
@@ -18,6 +16,9 @@ RUN ssh-agent bash \
 
 RUN ansible-playbook main.yml
 
-CMD ["nginx", "-g", "daemon off;"]
+# copy the run script, set proper privileges and run 
+COPY scripts/run.sh $OSTORE_BINS
+RUN chmod +x $OSTORE_BINS/run.sh
+CMD run.sh
 
 WORKDIR $OSTORE_APP

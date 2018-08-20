@@ -5,11 +5,7 @@ debug="./node_modules/.bin/gulp debug"
 
 if [ "$OS_DO_BUILD" = true ] ; then
   # delete contnet of build watch dir
-  rm -rf $OS_BUILD/src/build
-  rm -rf $OS_BUILD/src/node_modules
-  rm -rf $OS_BUILD/src/bower_components
-  rm -rf $OS_BUILD/src/.tmp
-  rm -rf $OS_BUILD/src/package-lock.json
+  /os/bin/clean.sh
 fi
 
 # assemble webapp and put in proper directory
@@ -26,7 +22,7 @@ if [ "$OS_DO_BUILD" = true ] ; then
   npm install light-server
 
   # add path to exec
-  # PATH=$PATH:./node_modules/.bin/
+  PATH=$PATH:./node_modules/.bin/
 
   if [ -f ./.git ]; then
     # work around for bower and git submodule
@@ -35,7 +31,7 @@ if [ "$OS_DO_BUILD" = true ] ; then
   fi
 
   # install all bower components
-  ./node_modules/.bin/bower install --allow-root
+  bower install --allow-root
 
   if [ -f ./.git_old ]; then
     # geting back original file structure
@@ -45,24 +41,20 @@ if [ "$OS_DO_BUILD" = true ] ; then
 
 fi
 
-# check if config file exist
-if [ -f src/components/prodooConfig/prodooConfig.js ]; then
-  # restore original project config file
-  rm -rf src/components/prodooConfig/prodooConfig.js
-fi
-
 # copy prodoo config file
 cp $OS_BUILD/etc/config/prodooConfig.js.dev src/components/prodooConfig/prodooConfig.js
 
-# check if config file exist
+# check if gulp gilpfile old exist
 if [ ! -f ./gulpfile.js.old ]; then
-  # restore original project config file
+  # backup original gulpfile
   mv ./gulpfile.js ./gulpfile.js.old
+
+  # copy new gulpfile
   cp $OS_BUILD/etc/config/gulp/gulpfile.js ./gulpfile.js
 fi
 
 if [ ! -f ./gulp/debug.js ]; then
-  # restore original project config file
+  # copy gulp debug file
   cp $OS_BUILD/etc/config/gulp/debug.js ./gulp/debug.js
 fi
 
