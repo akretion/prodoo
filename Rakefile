@@ -89,7 +89,7 @@ end
 # Package
 task :package do
   sh "eval `aws ecr get-login --profile ostore-registry-reader --region eu-west-1 --no-include-email`"
-  sh "docker build -f #{DOCKERFILE_PACKAGE} -t #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{BUILD_ID} #{PROJECT_DIR}"
+  sh "docker build --no-cache -f #{DOCKERFILE_PACKAGE} -t #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{BUILD_ID} #{PROJECT_DIR}"
 end
 
 # ------------------------------------------------------------------------------
