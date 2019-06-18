@@ -2,11 +2,11 @@
 
 angular.module('prodapps').provider('prodooConfig', [ function prodooConfigProvider() {
     this.config = {
-        odooServer: '/odoo/',
+        odooServer: '{{ odoo_path }}',
         db: 'sd_production',
         refreshInterval: 5000,
         fetchLimit: 50,
-        pyWebDriver:'',
+        pyWebDriver: '{{ pyWebDriver_path }}',
         displayLimit: 50
     };
 

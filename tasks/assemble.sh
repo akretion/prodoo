@@ -3,14 +3,10 @@
 # clear project
 /os/bin/clean.sh
 
-# assemble webapp and put in proper directory
 cd $OS_BUILD/src
 
-# for debug purpose
-# tail -f /dev/null
-
 # copy prodoo config file
-cp $OS_BUILD/etc/config/prodooConfig.js.dist src/components/prodooConfig/prodooConfig.js
+cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist src/components/prodooConfig/prodooConfig.js
 
 # install all node dep
 npm install
@@ -24,7 +20,7 @@ npm install light-server
 # add path to exec
 PATH=$PATH:./node_modules/.bin/
 
-# work around for bower and git submodule
+# !!!!!! work around for bower and git submodule
 mv .git .git_old
 
 # install all bower components

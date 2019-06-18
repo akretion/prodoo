@@ -42,7 +42,7 @@ if [ "$OS_DO_BUILD" = true ] ; then
 fi
 
 # copy prodoo config file
-cp $OS_BUILD/etc/config/prodooConfig.js.dev src/components/prodooConfig/prodooConfig.js
+cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dev src/components/prodooConfig/prodooConfig.js
 
 # check if gulp gilpfile old exist
 if [ ! -f ./gulpfile.js.old ]; then
@@ -62,4 +62,4 @@ fi
 $debug &
 
 # start proxy server
-./node_modules/.bin/light-server -c $OS_BUILD/etc/config/lightrc.json
+./node_modules/.bin/light-server -c $OS_BUILD/etc/config/dev_server/lightrc.json
