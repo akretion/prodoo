@@ -1,41 +1,28 @@
 #!/bin/bash
 
-# clear project
-/os/bin/clean.sh
+# 
+# INCLUDES 
+# 
 
-# assemble webapp and put in proper directory
-cd $OS_BUILD/src
+source extras/bash/bash-utils.sh
 
-# for debug purpose
-# tail -f /dev/null
+# 
+# VARS
+# 
 
-# copy prodoo config file
-cp $OS_BUILD/etc/config/prodooConfig.js.dist src/components/prodooConfig/prodooConfig.js
 
-# install all node dep
-npm install
+# 
+# LOGIC
+# 
 
-# install bower
-npm install bower
+Stage "Assemble"
 
-# install live roload and proxy server
-npm install light-server
+Step "Build the docker image"
 
-# add path to exec
-PATH=$PATH:./node_modules/.bin/
+git submodule init
+git submodule update
+docker-compose -p ${DEV_PROJECT} -f ${GPS_PROJECT_DIR}/etc/docker/docker-compose.assemble.yml up --build assembler
 
-# work around for bower and git submodule
-mv .git .git_old
+Check_errors $?
 
-# install all bower components
-bower install --allow-root
-
-# geting back original file structure
-mv .git_old .git
-
-# copy new gulp file
-mv ./gulpfile.js ./gulpfile.js.old
-cp $OS_BUILD/etc/config/gulp/gulpfile.js ./gulpfile.js
-
-# build app
-gulp build
+Done

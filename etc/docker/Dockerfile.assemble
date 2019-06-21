@@ -1,4 +1,4 @@
-FROM node
+FROM node:8
 
 # File Author / Maintainer
 MAINTAINER Marcin Wojtysiak <m.wojtysiak@oliverstore.com>
@@ -7,32 +7,22 @@ MAINTAINER Marcin Wojtysiak <m.wojtysiak@oliverstore.com>
 RUN apt-get update
 RUN apt-get upgrade -y
 
+COPY --from=hairyhenderson/gomplate:v2.5.0-slim /gomplate /usr/bin/gomplate
+
 #
 # ASSEMBLE
 #
-COPY tasks/assemble.sh /os/bin/
+COPY scripts/assemble.sh /os/bin/
 RUN chmod +x /os/bin/assemble.sh
-
-#
-# TEST
-#
-COPY tasks/test.sh /os/bin/
-RUN chmod +x /os/bin/test.sh
 
 #
 # CLEAN
 #
-COPY tasks/clean.sh /os/bin/
+COPY scripts/clean.sh /os/bin/
 RUN chmod +x /os/bin/clean.sh
 
 #
 # WATCH
 #
-COPY tasks/watch.sh /os/bin/
+COPY scripts/watch.sh /os/bin/
 RUN chmod +x /os/bin/watch.sh
-
-#
-# PACKAGE
-#
-COPY tasks/package.sh /os/bin/
-RUN chmod +x /os/bin/package.sh

@@ -1,24 +1,37 @@
-FROM 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/webapp
+FROM 721728311103.dkr.ecr.eu-west-1.amazonaws.com/oliverstore/docker-nginx-proxy:1.0.0
+LABEL MAINTAINER OliverStore<informatique@oliverstore.com>
 
-# Image blueprint
-ARG OSTORE_IMAGE_NAME=prodoo
-ARG OSTORE_IMAGE_VERSION=latest
+# Component args
+ARG COMPONENT_NAME
+ARG COMPONENT_TYPE
+
+# Prodoo build args
+ARG PRODOO_PROXY_PATH
+ARG PRODOO_APP_ROOT
+ARG PRODOO_PROXY_URL
+
+ENV OS_COMPONENT_NAME $COMPONENT_NAME
+ENV OS_COMPONENT_TYPE $COMPONENT_TYPE
+
+ENV GPS_PROJECT_NAME=$COMPONENT_NAME
+
+ENV NGINX_PROXY_USER=www-data
+
+LABEL os:project:name="$OS_COMPONENT_NAME" \
+      os:component:name="$OS_COMPONENT_NAME" \
+      os:component:type="$OS_COMPONENT_TYPE"
+
+# RUN
+COPY scripts/run.sh $OS_BINS/run.sh
+RUN chmod +x $OS_BINS/run.sh
 
 # Add app structure
-ADD .dist/ $OSTORE_APP
+ADD .dist/ $OS_APP
 
-WORKDIR ${OSTORE_ANSIBLE}
-RUN ssh-agent bash \
-      -c 'ssh-add ${OSTORE_KEYS}/${OSTORE_IMAGE_GIT_SSH_KEYNAME} \
-            && git clone  --branch ${OSTORE_IMAGE_NAME} --single-branch ${OSTORE_IMAGE_GIT_SSH_REPO_URL}  tmp-repo \
-            && cp -r tmp-repo/* . \
-            && rm -rf tmp-repo'
+# Copy all needed config files
+COPY ./etc/config/nginx/ $OS_CONFIG/sites-enabled/
 
-RUN ansible-playbook main.yml
+# Init
+CMD $OS_BINS/run.sh
 
-# copy the run script, set proper privileges and run 
-COPY scripts/run.sh $OSTORE_BINS
-RUN chmod +x $OSTORE_BINS/run.sh
-CMD run.sh
-
-WORKDIR $OSTORE_APP
+WORKDIR $OS_APP

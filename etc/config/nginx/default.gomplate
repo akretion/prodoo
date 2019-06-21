@@ -1,0 +1,19 @@
+server {
+   listen 80;
+   server_name _;
+   root "{{ getenv "PRODOO_APP_ROOT" "/var/www/app/web" | print }}";
+   index index.html;
+   location / {
+       try_files $uri $uri/ /index.html;
+
+   }
+   location /{{ getenv "PRODOO_PROXY_PATH" "odoo" | print }}/ {
+     rewrite ^/{{ getenv "PRODOO_PROXY_PATH" "odoo" | print }}(/.*)$ $1 break;
+     proxy_pass {{ getenv "PRODOO_PROXY_URL" "odoo.olst.io" | print }};
+     proxy_set_header Host $host;
+     proxy_set_header X-Real-IP $remote_addr;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_redirect    off;
+   }
+
+}

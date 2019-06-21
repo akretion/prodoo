@@ -1,35 +1,26 @@
 #!/bin/bash
 
-echo "Start CLEANING script"
+# 
+# INCLUDES 
+# 
 
-echo "Cleaning targer dir"
-rm -rf $OS_TARGET/*
+source extras/bash/bash-utils.sh
 
-echo "Cleaning src .tmp dir"
-rm -rf $OS_BUILD/src/.tmp
+# 
+# VARS
+# 
 
-echo "Cleaning src build dir"
-rm -rf $OS_BUILD/src/build
 
-echo "Cleaning bower components"
-rm -rf $OS_BUILD/src/bower_components
+# 
+# LOGIC
+# 
 
-echo "Cleaning node modules"
-rm -rf $OS_BUILD/src/node_modules
+Stage "Cleaning"
 
-echo "Cleaning package lock "
-rm -rf $OS_BUILD/src/package-lock.json
+Step "Build the docker image"
 
-echo "Cleaning prodoo config file"
-rm -rf $OS_BUILD/src/src/components/prodooConfig/prodooConfig.js
+docker-compose -p ${DEV_PROJECT} -f ${GPS_PROJECT_DIR}/etc/docker/docker-compose.assemble.yml up cleaner 
 
-echo "Restoring original gulp gulpfile"
-# check if gulp gulpfile exist
-if [ -f $OS_BUILD/src/gulpfile.js.old ]; then
-  # restore original project config file
-  rm -rf $OS_BUILD/src/gulpfile.js
-  mv $OS_BUILD/src/gulpfile.js.old $OS_BUILD/src/gulpfile.js
-fi
+Check_errors $?
 
-echo "Cleaning gulp project files"
-rm -rf $OS_BUILD/src/gulp/debug.js
+Done

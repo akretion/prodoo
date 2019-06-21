@@ -1,109 +1,91 @@
-require 'pathname'
+require "pathname"
 
 # ------------------------------------------------------------------------------
 # RAKE CONFIG
-
-PROJECT_NAME = "prodoo"
 PROJECT_DIR = Pathname.new(".")
-DEV_PROJECT = "#{PROJECT_NAME}dev"
-
-COMPOSE_FILE_ASSEMBLE = PROJECT_DIR + "etc/docker/docker-compose.assemble.yml"
-
-DOCKERFILE_PACKAGE = PROJECT_DIR + "etc/docker/Dockerfile"
+PROJECT_NAME = "prodoo"
+PROJECT_TYPE = "application"
+GPS_ENV_PREFIX = "GPS_"
+OS_ENV_PREFIX = "OS_"
+ENV_PREFIX = "PRODOO_"
 
 DOCKER_REGISTRY = "721728311103.dkr.ecr.eu-west-1.amazonaws.com"
 DOCKER_ORG_NAME = "oliverstore"
-DOCKER_REPO_NAME = "prodoo"
+DOCKER_REPO_NAME = "#{PROJECT_NAME}"
+DOCKER_IMAGE_REPO_URL = "#{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}"
 
-BUILD_ID = "latest"
+def run_task(name, envs = nil)
+  # Set defaults
+  envs ||= {}
 
+  # Gather all envs used in GPS (env var named as GPS_*)
+  # and passed to the rake task as
+  gps_envs = envs.select do |k, v|
+    k.start_with?(OS_ENV_PREFIX) || k.start_with?(ENV_PREFIX) || k.start_with?(GPS_ENV_PREFIX)
+  end
 
+  envvars = gps_envs.clone
 
-# ------------------------------------------------------------------------------
-# help
-desc "help you to start"
-task :help do
-  puts "
+  with_envs = {
+    "GPS_COMPONENT_NAME" => "#{PROJECT_NAME}",
+    "GPS_COMPONENT_TYPE" => "#{PROJECT_TYPE}",
+    "GPS_PROJECT_NAME" => "#{PROJECT_NAME}",
+    "GPS_PROJECT_DIR" => "#{PROJECT_DIR}",
+    "GPS_PROJECT_DOCKER_IMAGE_URL" => "#{DOCKER_IMAGE_REPO_URL}",
+    "GPS_AWS_PROFILE" => "ostore-operator",
+    "DEV_PROJECT" => "#{PROJECT_NAME}dev"
 
-  Prodoo
+  }.each do |k, v|
+    envvars[k.to_s] = v
+  end
 
-  Prerequise: Have a docker installed vXX
-
-  -> to build the docker use:
-    rake assemble
-
-  -> to build the docker with or without --build option:
-    env CACHE=true rake assemble
-
-  -> to start prodoo
-    rake watch
-
-  -> to package prodoo
-    rake package
-
-  -> to tag and push to repository
-    rake tag
-  "
-end
-
-# ------------------------------------------------------------------------------
-# Assemble
-desc "assemble #{DEV_PROJECT}"
-task :assemble do
-  CACHE = ENV["CACHE"] == "true" ? "" : "--build"
-  sh "git submodule init"
-  sh "git submodule update"
-  sh "docker-compose -p #{DEV_PROJECT} -f #{COMPOSE_FILE_ASSEMBLE} up #{CACHE} assembler"
-  exit `docker inspect -f   "{{ .State.ExitCode }}" #{DEV_PROJECT}_assembler_1`.to_i
-end
-
-# ------------------------------------------------------------------------------
-# Test
-desc "test #{DEV_PROJECT}"
-task :test do
-  CACHE = ENV["CACHE"] == "true" ? "" : "--build"
-  sh "docker-compose -p #{DEV_PROJECT} -f #{COMPOSE_FILE_ASSEMBLE} up #{CACHE} tester"
-  exit `docker inspect -f   "{{ .State.ExitCode }}" #{DEV_PROJECT}_tester_1`.to_i
+  exec(envvars, "bash ./tasks/#{name}.sh")
 end
 
 # ------------------------------------------------------------------------------
 # Clean
-desc "clean #{DEV_PROJECT}"
-task :clean do
-  CACHE = ENV["CACHE"] == "true" ? "" : "--build"
-  sh "docker-compose -p #{DEV_PROJECT} -f #{COMPOSE_FILE_ASSEMBLE} up #{CACHE} cleaner"
-  exit `docker inspect -f   "{{ .State.ExitCode }}" #{DEV_PROJECT}_cleaner_1`.to_i
+# ------------------------------------------------------------------------------
+desc "Clean project #{PROJECT_NAME}"
+task :clean do |t|
+  run_task(t.name)
+end
+
+# ------------------------------------------------------------------------------
+# Assemble
+# ------------------------------------------------------------------------------
+desc "Assemble the project and create artefact"
+task :assemble do |t|
+  run_task(t.name)
 end
 
 # ------------------------------------------------------------------------------
 # Watch
-desc "watch #{DEV_PROJECT}"
-task :watch do
-  CACHE = ENV["CACHE"] == "true" ? "" : "--build"
-  sh "git submodule init"
-  sh "git submodule update"
-  sh "docker-compose -p #{DEV_PROJECT} -f #{COMPOSE_FILE_ASSEMBLE} up #{CACHE} watcher"
+# ------------------------------------------------------------------------------
+desc "Run app in dev mode with life data"
+task :watch do |t|
+  run_task(t.name)
 end
 
 # ------------------------------------------------------------------------------
 # Package
-task :package do
-  sh "eval `aws ecr get-login --profile ostore-registry-reader --region eu-west-1 --no-include-email`"
-  sh "docker build --no-cache -f #{DOCKERFILE_PACKAGE} -t #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{BUILD_ID} #{PROJECT_DIR}"
+# ------------------------------------------------------------------------------
+desc "Create the dist package"
+task :package do |t|
+  run_task(t.name)
 end
 
 # ------------------------------------------------------------------------------
 # Tag
-task :tag do
-  version = `grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g'`
-  begin
-    sh "docker image pull #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{version}"
-    # exit 1
-  rescue => exception
-    # The image doesn't exist
-    sh "docker tag #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{BUILD_ID} #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{version}"
-    sh "eval `aws ecr get-login --profile ostore-registry-reader --region eu-west-1 --no-include-email`"
-    sh "docker push #{DOCKER_REGISTRY}/#{DOCKER_ORG_NAME}/#{DOCKER_REPO_NAME}:#{version}"
-    exit 0
-  end
+# ------------------------------------------------------------------------------
+desc "Tag the dist package"
+task :tag do |t|
+  run_task(t.name, ENV)
+end
+
+# ------------------------------------------------------------------------------
+# Publish
+# ------------------------------------------------------------------------------
+
+task :publish do |t|
+  run_task(t.name, ENV)
 end
