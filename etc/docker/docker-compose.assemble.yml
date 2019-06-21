@@ -32,6 +32,8 @@ services:
       - OS_TARGET=${OS_TARGET}
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
+      - PRODOO_PROXY_PATH="odoo"
+      - PRODOO_PYWEBDRIVER_PATH="https://localhost"
 
   watcher:
     extends:
