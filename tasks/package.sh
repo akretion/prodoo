@@ -35,3 +35,5 @@ docker build --no-cache --force-rm  -f ${GPS_PROJECT_DIR}/etc/docker/Dockerfile 
 Check_errors $?
 
 Done
+
+exit 0

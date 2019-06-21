@@ -39,3 +39,5 @@ Log "Image tag as $GPS_PROJECT_DOCKER_IMAGE_URL:$TAG_VERSION"
 Check_errors $?
 
 Done
+
+exit 0
