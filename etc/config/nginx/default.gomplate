@@ -7,8 +7,8 @@ server {
        try_files $uri $uri/ /index.html;
 
    }
-   location /{{ getenv "PRODOO_PROXY_PATH" "odoo" | print }}/ {
-     rewrite ^/{{ getenv "PRODOO_PROXY_PATH" "odoo" | print }}(/.*)$ $1 break;
+   location /odoo/ {
+     rewrite ^/odoo(/.*)$ $1 break;
      proxy_pass {{ getenv "PRODOO_PROXY_URL" "odoo.olst.io" | print }};
      proxy_set_header Host $host;
      proxy_set_header X-Real-IP $remote_addr;
