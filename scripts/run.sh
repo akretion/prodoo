@@ -6,8 +6,6 @@ Stage "Run"
 
 Step "Check env vars requirements"
 : "${OS_ENV:?OS_ENV is required}"
-: "${PRODOO_PROXY_PATH:?PRODOO_PROXY_PATH is required}"
-: "${PRODOO_APP_ROOT:?PRODOO_APP_ROOT is required}"
 : "${PRODOO_PROXY_URL:?PRODOO_PROXY_URL is required}"
 
 Step "Bootstrap the application"
