@@ -17,7 +17,7 @@ To build prodoo artefact we need to follow some rules and procedure:
  1.3 rake tag\
  1.4 rake publish\
 
-2. CI Jenkins
+2. CI Jenkins\
 This process is only for master branch of the repository. There is no automatic detection of changes in repo so the process need to be launched manualy from Jenkins dashboard, The Jenkins job is called `prodoo`
 
 ### Running prodoo docker image.
