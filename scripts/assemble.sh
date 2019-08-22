@@ -13,7 +13,7 @@ cp $OS_BUILD/etc/config/prodoo/build_package.json ./package.json
 
 # copy prodoo config file
 gomplate --file $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist.gomplate --out $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist
-cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist src/components/prodooConfig/prodooConfig.js
+cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist .src/components/prodooConfig/prodooConfig.js
 rm -rf $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist
 
 # install all node dep
@@ -31,15 +31,3 @@ cp $OS_BUILD/etc/config/gulp/gulpfile.js ./gulpfile.js
 
 # build app
 gulp build
-
-# Restore original package.json
-if [ -f $OS_BUILD/src/package.json.backup ]; then
-  rm -rf $OS_BUILD/src/package.json
-  mv $OS_BUILD/src/package.json.backup $OS_BUILD/src/package.json
-fi
-
-# Restore gulp original file
-if [ -f $OS_BUILD/src/gulpfile.js.old ]; then
-  rm -rf $OS_BUILD/src/gulpfile.js
-  mv $OS_BUILD/src/gulpfile.js.old $OS_BUILD/src/gulpfile.js
-fi
