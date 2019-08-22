@@ -19,23 +19,11 @@ rm -rf $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist
 # install all node dep
 npm install
 
-# install bower
-npm install bower
-
-# install live roload and proxy server
-npm install light-server
-
 # add path to exec
 PATH=$PATH:./node_modules/.bin/
 
-# !!!!!! work around for bower and git submodule
-mv .git .git_old
-
 # install all bower components
 bower install --allow-root
-
-# geting back original file structure
-mv .git_old .git
 
 # copy new gulp file
 mv ./gulpfile.js ./gulpfile.js.old
@@ -48,4 +36,10 @@ gulp build
 if [ -f $OS_BUILD/src/package.json.backup ]; then
   rm -rf $OS_BUILD/src/package.json
   mv $OS_BUILD/src/package.json.backup $OS_BUILD/src/package.json
+fi
+
+# Restore gulp original file
+if [ -f $OS_BUILD/src/gulpfile.js.old ]; then
+  rm -rf $OS_BUILD/src/gulpfile.js
+  mv $OS_BUILD/src/gulpfile.js.old $OS_BUILD/src/gulpfile.js
 fi

@@ -19,7 +19,7 @@ Stage "Cleaning"
 
 Step "Build the docker image"
 
-docker-compose -p ${DEV_PROJECT} -f ${GPS_PROJECT_DIR}/etc/docker/docker-compose.assemble.yml up cleaner 
+docker-compose -p ${DEV_PROJECT} -f ${GPS_PROJECT_DIR}/etc/docker/docker-compose.assemble.yml up --build cleaner 
 
 Check_errors $?
 

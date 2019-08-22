@@ -2,11 +2,6 @@
 
 echo "Start CLEANING script"
 
-echo "Restore .git dir in src submodule"
-if [ -d $OS_BUILD/src/.git_old ]; then
-  mv $OS_BUILD/src/.git_old $OS_BUILD/src/.git
-fi
-
 echo "Cleaning targer dir"
 rm -rf $OS_TARGET/*
 

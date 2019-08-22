@@ -12,6 +12,12 @@ RUN curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gompl
 RUN chmod 755 /usr/local/bin/gomplate
 
 #
+# EXTRAS
+#
+COPY extras/bash/bash-utils.sh /os/extras/files/bash/helpers.bash
+RUN chmod +x /os/extras/files/bash/helpers.bash
+
+#
 # ASSEMBLE
 #
 COPY scripts/assemble.sh /os/bin/

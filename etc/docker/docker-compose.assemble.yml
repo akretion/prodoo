@@ -32,6 +32,8 @@ services:
       - OS_TARGET=${OS_TARGET}
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
+      - OS_EXTRAS=${OS_EXTRAS}
+      - GIT_DIR=.
 
   watcher:
     extends:
@@ -51,6 +53,8 @@ services:
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
       - OS_DO_BUILD=${OS_DO_BUILD}
+      - OS_EXTRAS=${OS_EXTRAS}
+      - GIT_DIR=.
 
   tester:
     extends:
@@ -66,6 +70,7 @@ services:
       - OS_TARGET=${OS_TARGET}
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
+      - OS_EXTRAS=${OS_EXTRAS}
 
   cleaner:
     extends:
@@ -81,6 +86,7 @@ services:
       - OS_TARGET=${OS_TARGET}
       - OS_APP=${OS_APP}
       - OS_BUILD=${OS_BUILD}
+      - OS_EXTRAS=${OS_EXTRAS}
 
 # #####################################################
 # Volume services
