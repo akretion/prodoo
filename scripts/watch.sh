@@ -12,6 +12,13 @@ fi
 cd $OS_BUILD/src
 
 if [ "$OS_DO_BUILD" = true ] ; then
+
+  # check if pathed package.json is applayed
+  if [ ! -f $OS_BUILD/src/package.json.backup ]; then
+    mv ./package.json ./package.json.backup
+    cp $OS_BUILD/etc/config/prodoo/build_package.json ./package.json
+  fi
+
   # install all node dep
   npm install
 
@@ -24,7 +31,7 @@ if [ "$OS_DO_BUILD" = true ] ; then
   # add path to exec
   PATH=$PATH:./node_modules/.bin/
 
-  if [ -f ./.git ]; then
+  if [ -d ./.git ]; then
     # work around for bower and git submodule
     echo "renaming git config file to workaround the bower problem and submodule"
     mv ./.git ./.git_old
@@ -33,7 +40,7 @@ if [ "$OS_DO_BUILD" = true ] ; then
   # install all bower components
   bower install --allow-root
 
-  if [ -f ./.git_old ]; then
+  if [ -d ./.git_old ]; then
     # geting back original file structure
     echo "getting back the original config git file"
     mv .git_old .git
@@ -56,6 +63,12 @@ fi
 if [ ! -f ./gulp/debug.js ]; then
   # copy gulp debug file
   cp $OS_BUILD/etc/config/gulp/debug.js ./gulp/debug.js
+fi
+
+# Restore original package.json
+if [ -f $OS_BUILD/src/package.json.backup ]; then
+  rm -rf $OS_BUILD/src/package.json
+  mv $OS_BUILD/src/package.json.backup $OS_BUILD/src/package.json
 fi
 
 # run gulp debug command

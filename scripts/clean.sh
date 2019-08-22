@@ -2,6 +2,11 @@
 
 echo "Start CLEANING script"
 
+echo "Restore .git dir in src submodule"
+if [ -d $OS_BUILD/src/.git_old ]; then
+  mv $OS_BUILD/src/.git_old $OS_BUILD/src/.git
+fi
+
 echo "Cleaning targer dir"
 rm -rf $OS_TARGET/*
 
@@ -19,6 +24,12 @@ rm -rf $OS_BUILD/src/node_modules
 
 echo "Cleaning package lock "
 rm -rf $OS_BUILD/src/package-lock.json
+
+echo "Restore original package.json "
+if [ -f $OS_BUILD/src/package.json.backup ]; then
+  rm -rf $OS_BUILD/src/package.json
+  mv $OS_BUILD/src/package.json.backup $OS_BUILD/src/package.json
+fi
 
 echo "Cleaning prodoo config file"
 rm -rf $OS_BUILD/src/src/components/prodooConfig/prodooConfig.js
