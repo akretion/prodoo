@@ -20,9 +20,14 @@ pipeline {
       }
     }
 
-    stage('publish') {
+    stage("publish") {
+
+      when {
+        tag '*'
+      }
+
       steps {
-        sh 'rake publish'
+        sh "rake publish GPS_VERSION_TAG=${env.BRANCH_NAME}"
       }
     }
 
