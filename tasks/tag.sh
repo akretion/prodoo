@@ -18,7 +18,8 @@ source extras/bash/bash-utils.sh
 Stage "Tag"
 
 Step "Get version"
-TAG_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+TAG_VERSION="${GPS_VERSION_TAG}"
+# TAG_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')
 
 Step "Tag to the docker image as $GPS_PROJECT_DOCKER_IMAGE_URL:$TAG_VERSION"
 Task "Retrieving the last built docker image"
