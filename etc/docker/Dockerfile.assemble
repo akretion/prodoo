@@ -1,15 +1,12 @@
 FROM node:8
 
-# File Author / Maintainer
-MAINTAINER Marcin Wojtysiak <m.wojtysiak@oliverstore.com>
-
 # update and upgrade system
 RUN apt-get update
 RUN apt-get upgrade -y
 
 # Get gomplate
-RUN curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.5.0/gomplate_linux-amd64-slim
-RUN chmod 755 /usr/local/bin/gomplate
+# RUN curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.5.0/gomplate_linux-amd64-slim
+# RUN chmod 755 /usr/local/bin/gomplate
 
 #
 # EXTRAS
