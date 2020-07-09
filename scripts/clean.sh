@@ -26,9 +26,6 @@ if [ -f $OS_BUILD/src/package.json.backup ]; then
   mv $OS_BUILD/src/package.json.backup $OS_BUILD/src/package.json
 fi
 
-echo "Cleaning prodoo config file"
-rm -rf $OS_BUILD/src/src/components/prodooConfig/prodooConfig.js
-
 echo "Restoring original gulp gulpfile"
 # check if gulp old gulpfile exist
 if [ -f $OS_BUILD/src/gulpfile.js.old ]; then

@@ -11,11 +11,6 @@ cd $OS_BUILD/src
 mv ./package.json ./package.json.backup
 cp $OS_BUILD/etc/config/prodoo/build_package.json ./package.json
 
-# copy prodoo config file
-gomplate --file $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist.gomplate --out $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist
-cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist $OS_BUILD/src/src/components/prodooConfig/prodooConfig.js
-rm -rf $OS_BUILD/etc/config/prodoo/prodooConfig.js.dist
-
 # install all node dep
 npm install
 

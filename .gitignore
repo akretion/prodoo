@@ -10,3 +10,4 @@ build/
 src/components/prodooConfig/*.js
 *lock.json
 .editorconfig
+.env

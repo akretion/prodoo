@@ -40,9 +40,6 @@ if [ "$OS_DO_BUILD" = true ] ; then
 
 fi
 
-Task "Copy prodoo config file"
-cp $OS_BUILD/etc/config/prodoo/prodooConfig.js.dev src/components/prodooConfig/prodooConfig.js
-
 Step "check if gulp gilpfile old exist"
 if [ ! -f ./gulpfile.js.old ]; then
   Task "Backup original gulpfile"
