@@ -11,7 +11,7 @@ pipeline {
     stage("package") {
          
       when {
-        tag '*'
+        expression { env.TAG_NAME != null }
       }
 
       steps {
@@ -23,7 +23,7 @@ pipeline {
     stage("publish") {
 
       when {
-        tag '*'
+        expression { env.TAG_NAME != null }
       }
 
       steps {
