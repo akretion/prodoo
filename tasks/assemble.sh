@@ -17,9 +17,6 @@ source extras/bash/bash-utils.sh
 
 Stage "Assemble"
 
-git submodule init
-git submodule update
-
 docker-compose -p ${DEV_PROJECT} -f ${GPS_PROJECT_DIR}/etc/docker/docker-compose.assemble.yml up --build assembler
 
 Check_errors $?
