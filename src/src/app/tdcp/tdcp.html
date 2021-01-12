@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <h2>Technical Description Check Point (TDCP)</h2>
+
+    <div class="input-group">
+        <div class="input-group-addon" >
+            <button ng-click="goBack()" class="btn btn-default" type="button">Return</button>
+            <button ng-click="clear()" class="btn btn-default" type="button">Clear</button>
+        </div>
+        <input ng-model="tdcp.lot_number" ng-model-options="{ debounce: 100 }" class="form-control haute-ligne" id="tdcpSearchInput" placeholder="search" ng-focus="eraseSearch()" autocomplete="off">
+
+    </div>
+    <ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y" style="padding-right: 15px;">
+        <ul class="list-group tab" ng-show="tdcp.lot_number" style="padding-right: 15px;">
+            <li ng-repeat="item in tdcp.search" class="list-group-item list-link">
+                <h3>{{ item.name}}</h3>
+                <h4 ng-hide="workcenter">Technical description</h4>   
+                <div ng-hide="workcenter" ng-bind-html="item.table_tech_description"></div>
+                <h4 ng-show="workcenter">Short description</h4>
+                <div ng-show="workcenter" ng-bind-html="item.short_description"></div>
+                <br/>
+                <h4 ng-show="workcenter">Step technical description</h4>
+                <div ng-show="workcenter" ng-bind-html="item.description"></div>
+            </li>
+        </ul>
+    </ion-scroll>
+</div>
+
+

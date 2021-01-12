@@ -1,0 +1,38 @@
+<div class="input-group">
+    <div class="input-group-addon" >
+        <label for="searchInput">
+            <span class="glyphicon glyphicon-search"></span>
+        </label>
+    </div>
+    <input ng-model="sync.current.filter.lot_number" ng-model-options="{ debounce: 100 }" class="form-control haute-ligne" id="searchInput" placeholder="search" ng-focus="eraseSearch()">
+</div>
+
+<ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y">
+    <div ng-show="!sync.current.filter.lot_number">
+        <ul class="list-group tab">
+            <li ng-repeat="item in filteredList.notDone" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
+                <div class="alert" role="alert" ng-class="{'1': 'alert-danger' , '2': 'alert-warning' ,'3': 'alert-success' }[item.alert_level]">{{ item.lot_number }} - {{ item.name}}</div>
+                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+                <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+                <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
+                <span class="label pull-right" style="font-size:100%;" ng-show="item.brand" ng-style="{'background-color': item.brand.color }">{{ item.brand.label}}</span>
+                <br />
+                <span ng-repeat="field in item.components">{{ field.name}} {{ field.rack}}</span>
+                <div ng-bind-html="item.short_description"></div>
+            </li>
+             <li ng-hide="filteredList.notDone">No order</li>
+        </ul>
+    </div>
+
+     <ul class="list-group tab" ng-show="sync.current.filter.lot_number">
+        <li ng-repeat="item in filteredList.search" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]">
+            {{ item.lot_number }} - {{ item.name}}
+            <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+            <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
+            <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
+            <br />
+            <div ng-bind-html="item.short_description"></div>
+        </li>
+        <li ng-hide="filteredList.search">No order</li>
+    </ul>
+</ion-scroll>
