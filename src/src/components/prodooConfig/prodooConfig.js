@@ -2,7 +2,7 @@
 
 angular.module('prodapps').provider('prodooConfig', [ function prodooConfigProvider() {
     this.config = {
-        odooServer: '',
+        odooServer: '/odoo',
         db: 'sd_production',
         refreshInterval: 5000,
         fetchLimit: 50,
