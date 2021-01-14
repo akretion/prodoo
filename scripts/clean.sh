@@ -11,6 +11,9 @@ rm -rf $OS_BUILD/src/.tmp
 echo "Cleaning src build dir"
 rm -rf $OS_BUILD/src/build
 
+echo "Cleaning src dist dir"
+rm -rf $OS_BUILD/src/dist
+
 echo "Cleaning bower components"
 rm -rf $OS_BUILD/src/bower_components
 

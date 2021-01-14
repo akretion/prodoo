@@ -1,4 +1,0 @@
-[submodule "src"]
-	path = src
-	url = https://github.com/Stores-Discount/prodapps.git
-	branch = master

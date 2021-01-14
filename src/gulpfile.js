@@ -4,13 +4,12 @@ var gulp = require('gulp');
 
 gulp.paths = {
   src: 'src',
-  dist: '/os/target',
+  dist: 'dist',
   tmp: '.tmp',
-  build: 'build'
 };
 
 require('require-dir')('./gulp');
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('build');
+    gulp.start('build');
 });
