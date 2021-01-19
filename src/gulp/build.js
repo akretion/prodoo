@@ -5,7 +5,7 @@ var gulp = require('gulp');
 var paths = gulp.paths;
 
 var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
+  pattern: ['gulp-*', 'uglify-save-license', 'del']
 });
 
 
@@ -47,7 +47,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
-    .pipe($.replace('../bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts'))
+    .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/', '../fonts/'))
     .pipe($.csso())
     .pipe(cssFilter.restore())
     .pipe(assets.restore())
@@ -70,8 +70,8 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-  return gulp.src($.mainBowerFiles())
-    .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+  return gulp.src(paths.src + '/assets/libs/bootstrap-sass-official_3.3.3/fonts/*')
+    .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.dist + '/fonts/'));
 });
