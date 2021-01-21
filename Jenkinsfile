@@ -6,6 +6,7 @@ pipeline {
           sh "docker pull node:10"
           sh "docker images"
       }
+    }
     stage('assemble') {
       steps {
         sh 'rake assemble'
