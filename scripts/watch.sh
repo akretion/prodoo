@@ -12,18 +12,13 @@ Task "Clean the env"
 
 cd $OS_BUILD/src
 
-Task "Build app"
-if [ "$OS_DO_BUILD" = true ] ; then
-
-  Step "Install dep"
-  npm install
-
-fi
+Step "Check libs and dependencies, if needed install them"
+npm install
 
 # add path to exec
 PATH=$PATH:./node_modules/.bin/
 
-Step "Run gulp debug command"
+Step "Build the app in debug mode"
 $debug &
 
 Step "Start proxy server"

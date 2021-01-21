@@ -33,35 +33,37 @@ gulp.task('html', ['inject', 'partials'], function () {
     addRootSlash: false
   };
 
-  var htmlFilter = $.filter('*.html');
-  var jsFilter = $.filter('**/*.js');
-  var cssFilter = $.filter('**/*.css');
+  var htmlFilter = $.filter('**/*.html', {restore: true});
+  var jsFilter = $.filter('**/*.js', {restore: true});
+  var cssFilter = $.filter('**/*.css', {restore: true});
   var assets;
 
   return gulp.src(paths.tmp + '/serve/*.html')
-    .pipe($.inject(partialsInjectFile, partialsInjectOptions))
-    .pipe(assets = $.useref.assets())
-    .pipe($.rev())
-    .pipe(jsFilter)
-    .pipe($.ngAnnotate())
-    .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
-    .pipe(jsFilter.restore())
-    .pipe(cssFilter)
-    .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/', '../fonts/'))
-    .pipe($.csso())
-    .pipe(cssFilter.restore())
-    .pipe(assets.restore())
-    .pipe($.useref())
-    .pipe($.revReplace())
-    .pipe(htmlFilter)
-    .pipe($.minifyHtml({
-      empty: true,
-      spare: true,
-      quotes: true
-    }))
-    .pipe(htmlFilter.restore())
-    .pipe(gulp.dest(paths.dist + '/'))
-    .pipe($.size({ title: paths.dist + '/', showFiles: true }));
+  .pipe($.inject(partialsInjectFile, partialsInjectOptions))
+  .pipe(assets = $.useref.assets())
+  .pipe($.rev())
+  .pipe(jsFilter)
+  .pipe($.ngAnnotate())
+  .pipe($.uglify({mangle:false}).on('error', function(e){
+    console.log(e);
+  }))
+  .pipe(jsFilter.restore)
+  .pipe(cssFilter)
+  .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/', '../fonts/'))
+  .pipe($.csso())
+  .pipe(cssFilter.restore)
+  .pipe(assets.restore())
+  .pipe($.useref())
+  .pipe($.revReplace())
+  .pipe(htmlFilter)
+  .pipe($.minifyHtml({
+    empty: true,
+    spare: true,
+    quotes: true
+  }))
+  .pipe(htmlFilter.restore)
+  .pipe(gulp.dest(paths.build + '/'))
+  .pipe($.size({ title: paths.build + '/', showFiles: true }));
 });
 
 gulp.task('images', function () {
