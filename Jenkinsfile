@@ -1,7 +1,11 @@
 pipeline {
   agent any
   stages {
-
+    stage('setup') {
+      steps {
+          sh "docker pull node:10"
+          sh "docker images"
+      }
     stage('assemble') {
       steps {
         sh 'rake assemble'
