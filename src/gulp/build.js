@@ -62,8 +62,8 @@ gulp.task('html', ['inject', 'partials'], function () {
     quotes: true
   }))
   .pipe(htmlFilter.restore)
-  .pipe(gulp.dest(paths.build + '/'))
-  .pipe($.size({ title: paths.build + '/', showFiles: true }));
+  .pipe(gulp.dest(paths.dist + '/'))
+  .pipe($.size({ title: paths.dist + '/', showFiles: true }));
 });
 
 gulp.task('images', function () {
