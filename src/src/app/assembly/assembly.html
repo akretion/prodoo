@@ -53,7 +53,6 @@
                 </div>
             </div>
         </div>
-
         <!-- end start button -->
 
         <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item._v.started || !sync.current.item.btnStartEnable">
@@ -289,7 +288,6 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default haute-ligne" ng-show="sync.current.item.machine.type" ng-click="machine(sync.current.item)"><span class="glyphicon glyphicon-flag"></span></button>
-                                        <button type="button" class="btn btn-default haute-ligne" ng-show="sync.current.item.quality_form_url" ng-click="openInNewTab(sync.current.item)"><span class="glyphicon glyphicon-comment"></span></button>
                                     </div> 
                                 </td>
                                 <td>
@@ -310,7 +308,11 @@
                                         ng-blur="lockOnValidLine(line, grid, 'f'+$index)">
                                     </input>
                                 </td>
-
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default haute-ligne" ng-show="sync.current.item.quality_form_url" ng-click="openInNewTab(sync.current.item)"><span class="glyphicon glyphicon-comment"></span></button>
+                                    </div> 
+                                </td>
                                 <td>
                                     <button class="btn pull-right haute-ligne" 
                                         ng-click="line.lock=true" 
