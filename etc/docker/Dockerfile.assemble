@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:10
 
 # update and upgrade system
 RUN apt-get update

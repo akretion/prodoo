@@ -4,11 +4,7 @@
   "bind": "0.0.0.0",
   "interval": 500,
   "delay": 0,
-<<<<<<< HEAD
-  "proxy": "http://172.27.0.2:8069",
-=======
-  "proxy": "http://172.27.0.3:8069",
->>>>>>> M2-2046
+  "proxy": "http://staging-odoo.olst.io",
   "proxypaths": [ "/web" ],
   "noReload": false,
   "quiet": false,

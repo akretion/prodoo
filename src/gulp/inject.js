@@ -6,8 +6,6 @@ var paths = gulp.paths;
 
 var $ = require('gulp-load-plugins')();
 
-var wiredep = require('wiredep').stream;
-
 gulp.task('inject', ['styles'], function () {
 
   var injectStyles = gulp.src([
@@ -26,15 +24,10 @@ gulp.task('inject', ['styles'], function () {
     addRootSlash: false
   };
 
-  var wiredepOptions = {
-    directory: 'bower_components',
-    exclude: [/bootstrap-sass-official/, /bootstrap\.css/, /bootstrap\.css/, /foundation\.css/, /ionic.*\.css/]
-  };
-
+  console.log('dupa');
   return gulp.src(paths.src + '/*.html')
     .pipe($.inject(injectStyles, injectOptions))
     .pipe($.inject(injectScripts, injectOptions))
-    .pipe(wiredep(wiredepOptions))
     .pipe(gulp.dest(paths.tmp + '/serve'));
 
 });
