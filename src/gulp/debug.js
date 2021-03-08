@@ -56,7 +56,7 @@ gulp.task('imagesdev', function () {
 });
 
 gulp.task('fontsdev', function () {
-  return gulp.src(paths.src + '/assets/libs/bootstrap-sass-official_3.3.7/fonts/*')
+  return gulp.src(paths.src + '/assets/libs/bootstrap-sass-official_3.3.7/fonts/bootstrap/*')
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.build + '/fonts/'));
