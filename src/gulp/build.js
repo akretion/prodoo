@@ -49,7 +49,7 @@ gulp.task('html', ['inject', 'partials'], function () {
   }))
   .pipe(jsFilter.restore)
   .pipe(cssFilter)
-  .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/', '../fonts/'))
+  .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/bootstrap/', '../fonts/'))
   .pipe($.csso())
   .pipe(cssFilter.restore)
   .pipe(assets.restore())
