@@ -6,7 +6,7 @@ angular.module('prodapps').provider('prodooPrint',[ function prodooPrintProvider
             return function (payload, qte) {
                 payload._v.labels.forEach(function (label) {
                     var req = {
-                        args: ['label', label],
+                        args: [label['printer'], label['data']],
                         kwargs: { options : { 'copies': (qte) ? qte : payload.quantities }}
                     };
                     Beep.play();
