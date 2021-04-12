@@ -33,7 +33,7 @@ gulp.task('htmldev', ['inject', 'partials'], function () {
     // }))
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
-    .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.3/fonts/', '../fonts/'))
+    .pipe($.replace('../assets/libs/bootstrap-sass-official_3.3.7/fonts/bootstrap/', '../fonts/'))
     .pipe($.csso())
     .pipe(cssFilter.restore)
     .pipe(assets.restore())
@@ -56,7 +56,7 @@ gulp.task('imagesdev', function () {
 });
 
 gulp.task('fontsdev', function () {
-  return gulp.src(paths.src + '/assets/libs/bootstrap-sass-official_3.3.3/fonts/*')
+  return gulp.src(paths.src + '/assets/libs/bootstrap-sass-official_3.3.7/fonts/bootstrap/*')
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.build + '/fonts/'));
