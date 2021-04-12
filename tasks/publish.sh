@@ -56,6 +56,9 @@ if [[ $? != 0 ]]; then # This is a new image
   docker push $GPS_PROJECT_DOCKER_IMAGE_URL:$_TAG_VERSION
   Check_errors $?
 
+  Task "Remove pushed image from CI"
+  docker rmi $GPS_PROJECT_DOCKER_IMAGE_URL:$_TAG_VERSION
+
 else 
   Err "The image $GPS_PROJECT_DOCKER_IMAGE_URL:$_TAG_VERSION] is already present on ECR.\nYou must Upgrade the version and try again.\n\nReason: $_IMAGE_EXIST_STATUS"
 fi;

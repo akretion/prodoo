@@ -1,12 +1,15 @@
 FROM node:10
 
-# update and upgrade system
-RUN apt-get update
-RUN apt-get upgrade -y
+# Component args
+ARG COMPONENT_NAME
+ARG COMPONENT_BUILD_ID
 
-# Get gomplate
-# RUN curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.5.0/gomplate_linux-amd64-slim
-# RUN chmod 755 /usr/local/bin/gomplate
+ENV OS_COMPONENT_NAME $COMPONENT_NAME
+ENV OS_COMPONENT_BUILD_ID $COMPONENT_BUILD_ID
+
+LABEL os:project:name="$OS_COMPONENT_NAME" \
+      os:component:name="$OS_COMPONENT_NAME"\
+      os:component:build_id="$OS_COMPONENT_BUILD_ID"
 
 #
 # EXTRAS
