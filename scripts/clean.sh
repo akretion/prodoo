@@ -1,23 +1,25 @@
 #!/bin/bash
 
-echo "Start CLEANING script"
+source $OS_EXTRAS/files/bash/helpers.bash
 
-echo "Cleaning targer dir"
+Step "Cleanup"
+
+Task "Cleaning targer dir"
 rm -rf $OS_TARGET/*
 
-echo "Cleaning src .tmp dir"
+Task "Cleaning src .tmp dir"
 rm -rf $OS_BUILD/src/.tmp
 
-echo "Cleaning src build dir"
+Task "Cleaning src build dir"
 rm -rf $OS_BUILD/src/build
 
-echo "Cleaning src dist dir"
+Task "Cleaning src dist dir"
 rm -rf $OS_BUILD/src/dist
 
 if [ "$OS_DO_BUILD" = true ] ; then
-    echo "Cleaning node modules"
+    Task "Cleaning node modules"
     rm -rf $OS_BUILD/src/node_modules
 fi
 
-echo "Cleaning package lock "
+Task "Cleaning package lock "
 rm -rf $OS_BUILD/src/package-lock.json

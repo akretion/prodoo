@@ -2,8 +2,6 @@
 
 source $OS_EXTRAS/files/bash/helpers.bash
 
-Stage "Watch"
-
 Step "Prepare"
 Task "Set up the env"
 
@@ -24,6 +22,7 @@ if [ "$WATCH_DO_CLEAN" = true ] ; then
 
 fi
 
+Step "Build app"
 Task "Build the app in debug mode"
 $debug &
 
