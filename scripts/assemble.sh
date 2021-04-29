@@ -2,16 +2,19 @@
 
 source $OS_EXTRAS/files/bash/helpers.bash
 
-# clear project
+Step "Preparation"
+Task "Clen env"
 /os/bin/clean.sh
 
+Task "Enter working dir"
 cd $OS_BUILD/src
 
-# install all node dep
+Task "Install node libs"
 npm install
 
-# add path to exec
+Task "Add node bin to system path"
 PATH=$PATH:./node_modules/.bin/
 
-# build app
+Step "Building"
+Task "Build the app"
 gulp build --verbose
