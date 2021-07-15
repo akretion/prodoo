@@ -4,7 +4,16 @@ angular.module('prodapps')
 .controller('AssemblyCtrl', ['$scope', '$state', 'jsonRpc', 'prodooSync', '$notification', 'prodooPrint', 'prodooMachine', '$timeout', function ($scope, $state, jsonRpc, prodooSync, $notification, prodooPrint, prodooMachine, $timeout) {
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     $scope.workcenter = $state.params.workcenter;
-    var destroy = prodooSync.syncData({workcenter: $scope.workcenter}, $scope.sync);
+    var destroy = prodooSync.syncData(
+      { workcenter: $scope.workcenter, 
+        current_list: function() {  return formatCurrentIds($scope.sync.data)},
+      },
+      // {
+      //   workcenter: $scope.workcenter,
+      //   current_list: formatCurrentIds
+      // }, 
+      $scope.sync
+    );
     $scope.$on('$destroy', destroy);
 
     $scope.fields = [];
@@ -266,7 +275,7 @@ angular.module('prodapps')
       delete $scope.scrap.avaiable;
 
       $scope.scrap.add = false;
-  };
+    };
 
     $scope.print = function (item, qte) {
         $notification('Printing...');
@@ -332,15 +341,6 @@ angular.module('prodapps')
       item._v.raw_materials.input = ''; // erase field
     };
 
-    $scope.start = function(item) {
-      //monitor the begin of each work operation
-      //the end of the work operation managed by odoo during prodoo_action_done
-      item._v.started = true;
-      //don't block the user with a sync request
-      //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
-    }
-
     function fetchPdf(item) {
       // load a pdf async
       return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
@@ -358,5 +358,20 @@ angular.module('prodapps')
       }
       return a;
     }
+    function formatCurrentIds(array) {
+      var current_ids = [];
+      if (array != null){
+        if (array.length > 0) {
+          for (var i = 0; i < array.length; i++) {
+            current_ids.push(array[i].id)
+          } 
+          return current_ids
+        } else {
+          return []
+        }
+      } else {
+        return []
+      }
 
+    }
 }]);
