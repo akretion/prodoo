@@ -102,9 +102,9 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		odooRpc.getDbList = function() {
 			return odooRpc.sendRequest('/web/database/get_list', {});
 		};
-		odooRpc.syncDataImport = function(model, func_key, base_domain, filter_domain, limit, object) {
+		odooRpc.syncDataImport = function(model, func_key, base_domain, filter_domain, limit, object, current_list) {
 			return odooRpc.call(model, 'get_sync_data', [
-				func_key, object.timekey, base_domain, filter_domain, limit
+				func_key, object.timekey, base_domain, filter_domain, limit, current_list
 			], {}).then(function(result) {
 					//if (object.timekey === result.timekey) TODO: add mutlidomain before uncomment
 					// return; //no change since last run
@@ -186,7 +186,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 				errorCallback = function(err) { nextSync(); };
 			}
 
-			function sync() {
+		function sync() {
 
 				odooRpc.syncDataImport(
 					params.model,
@@ -194,8 +194,9 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 					params.base_domain,
 					params.filter_domain,
 					params.limit,
-					object)
-				.then(nextSync)
+					object,
+					params.current_list())
+				.then(nextSync)	
 				.then(runWatchers)
 				.catch(errorCallback);
 			}

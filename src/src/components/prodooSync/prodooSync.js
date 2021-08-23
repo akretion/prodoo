@@ -20,6 +20,7 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 ],
                 limit: prodooConfig.fetchLimit,
                 interval: prodooConfig.refreshInterval,
+                current_list: options.current_list
             };
 
             /*jsonRpc.call(param.model, 'get_foremost_data', [ param.func_key, [].concat(param.base_domain, param.filter_domain), 20]).then(function (d) {               var key;
@@ -36,8 +37,6 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
                 //we need it as array
                 //plus
                 //  we want set current.item
-
-                console.log(objectRef);
                 //objectRef.data.splice(0, objectRef.data.length);
                 objectRef.data = [];
                 var item, key;
