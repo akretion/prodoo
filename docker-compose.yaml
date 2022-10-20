@@ -1,0 +1,20 @@
+version: "3.7"
+networks:
+  traefik:
+    external: true
+services:
+  prodoo:
+    image: node:6.0
+    user: "1000:1000"
+
+    volumes:
+      - ./src/:/work
+      - .npm:/.npm
+      - .config:/.config
+      - .cache:/.cache
+      - .local:/.local
+    ports:
+      - 127.0.0.1:8069:8069
+      - 127.0.0.1:8072:8072
+    entrypoint: /bin/bash
+    working_dir: /work

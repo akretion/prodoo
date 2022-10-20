@@ -1,13 +1,6 @@
-node_modules/
-publish/*.*
-!publish/
-bower_components/
+#node_modules/
 .sass-cache/
 .tmp/
-dist/
-.dist/
-build/
-src/components/prodooConfig/*.js
 *lock.json
 .editorconfig
 .env
