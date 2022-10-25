@@ -39,7 +39,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 				encodeURIComponent("password") + '=' + encodeURIComponent(password) + '&' +
 				encodeURIComponent("csrf_token") + '=' + encodeURIComponent(csrf);
 
-				return $http.post('/', 
+				return $http.post('/web/login', 
 					data, 
 					{
 					headers: {

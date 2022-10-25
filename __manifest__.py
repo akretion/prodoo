@@ -8,6 +8,7 @@
     "description": "Prodoo application",
     "depends": [
         "web",
+        "custom_prodoo",
     ],
     "installable": True,
     "application": True,
