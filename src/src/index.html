@@ -5,25 +5,13 @@
     <title>prodapps</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-    <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
     <link rel="stylesheet" href="app/vendor.css">
-    <!-- bower:css -->
-    <!-- run `gulp wiredep` to automaticaly populate bower styles dependencies -->
-    <!-- endbower -->
-    <!-- endbuild -->
+    <link rel="stylesheet" href="app/index.css">
 
-    <!-- build:css({.tmp/serve,src}) styles/app.css -->
-    <!-- inject:css -->
-    <!-- css files will be automaticaly insert here -->
-    <!-- endinject -->
-    <!-- endbuild -->
   </head>
   <body>
     <div ui-view></div>
 
-    <!-- build:js(src) scripts/vendor.js -->
     <script src="assets/libs/jquery_3.6.0/jquery.js"></script>
     <script src="assets/libs/angular_1.8.2/angular.js"></script>
     <script src="assets/libs/angular_animate_1.8.2/angular-animate.js"></script>
@@ -35,17 +23,23 @@
     <script src="assets/libs/angular-notification_1.1.1/angular-notification.js"></script>
     <script src="assets/libs/ionic_1.3.3/js/ionic.js"></script>
     <script src="assets/libs/ionic_1.3.3/js/ionic-angular.js"></script>
-    <!-- endbuild -->
 
-    <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
-    <!-- inject:js -->
-    <!-- js files will be automaticaly insert here -->
-    <!-- endinject -->
 
-    <!-- inject:partials -->
-    <!-- angular templates will be automatically converted in js and inserted here -->
-    <!-- endinject -->
-    <!-- endbuild -->
+    <script src="app/index.js"></script>
+    <script src="components/prodooConfig/prodooConfig.js"></script>
+    <script src="components/prodooSync/prodooSync.js"></script>
+    <script src="components/prodooPrint/prodooPrint.js"></script>
+    <script src="components/navbar/navbar.controller.js"></script>
+    <script src="app/main/main.controller.js"></script>
+    <script src="app/main/apps.service.js"></script>
+    <script src="app/login/login.controller.js"></script>
+    <script src="app/configuration/configuration.controller.js"></script>
+    <script src="app/tdcp/tdcp.controller.js"></script>
+    <script src="app/assembly/assembly.controller.js"></script>
+    <script src="app/assembly/enterFocus.directive.js"></script>
+    <script src="app/assembly/ensureValue.directive.js"></script>
+    <script src="app/assembly/orderList.controller.js"></script>
+
 
   </body>
 </html>
