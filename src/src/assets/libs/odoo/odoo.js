@@ -26,42 +26,76 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		*		reject promise if credentials ko (with {title: wrong_login})
 		*		reject promise in other cases (http issues, server error)   
 		*/
-		odooRpc.login = function(db, login, password) {
-			var params = {
-				db : db,
-				login : login,
-				password : password
-			};
+		odooRpc.login = function(login, password) {
+			return $http.get('/web/login', {withCredentials: true}).then(function (odooLogin) {
 
-			return odooRpc.sendRequest('/web/session/authenticate', params).then(function(result) {
-				if (!result.uid) {
-					cookies.delete_sessionId();
-					return $q.reject({ 
-						title: 'wrong_login',
-						message:"Username and password don't match",
-						fullTrace: result
-					});
+				var body = odooLogin.data;
+				const parser = new DOMParser();
+				var parsed = parser.parseFromString(body, 'text/html');
+				var input = parsed.querySelector('form');
+				var csrf = input["csrf_token"].value;
+				var data = 
+				encodeURIComponent("login") + '=' + encodeURIComponent(login) + '&' +
+				encodeURIComponent("password") + '=' + encodeURIComponent(password) + '&' +
+				encodeURIComponent("csrf_token") + '=' + encodeURIComponent(csrf);
+
+				return $http.post('/', 
+					data, 
+					{
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+					},
+				//	withCredentials: true
+				});
+			}).then(function(response) {
+				var message = "";
+				var fullTrace = "";
+				var title = "";
+
+				if (response.status == 200) {
+					if (response.data.error) {
+						title = "Odoo Server Error";
+						if (response.data.error.message == "Odoo Server Error") {
+							message = response.data.error.data.name
+							fullTrace = response.data.error.data;
+						}
+					} else {
+
+						// try to parse response to find a form login
+						const parser = new DOMParser();
+						var parsed = parser.parseFromString(response.data, 'text/html');
+						var input = parsed.querySelector('form');
+						if (input && input.action.indexOf("/web/login") != -1) {
+							console.log('wrong long or errror');
+							title = 'wrong_login',
+							message = "Username and password don't match",
+							fullTrace= "";
+						} else {
+							console.log('probably logged');
+							return true;
+						}
+					}
+				} else {
+					console.log('do not know')
 				}
-				odooRpc.context = result.user_context;
-				cookies.set_sessionId(result.session_id);
-				return result;
+				return $q.reject({
+					title: title,
+					message: message,
+					fullTrace: fullTrace,
+				});
+
 			});
+
 		};
 
 		/**
 		* check if logged in or not
-		* @param force 
-		* 		if false -> check the cookies and return boolean
-		*		if true -> check with the server if still connected return promise
-		* @return boolean || promise
+		* @return boolean || promise
 		*
 		*/
-		odooRpc.isLoggedIn = function (force) {
-			if (!force)
-				return cookies.get_sessionId().length > 0;
-
+		odooRpc.isLoggedIn = function () {
 			return odooRpc.getSessionInfo().then(function (result) {
-				cookies.set_sessionId(result.session_id);
+				console.log('getSessionInfo', result)
 				return !!(result.uid); 
 			});
 		};
@@ -70,7 +104,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		* logout (delete cookie)
 		* @param force
 		*		if true try to connect with falsy ids
-		* @return null || promise 
+		* @return null || promise 
 		*/
 		odooRpc.logout = function (force) {
 			cookies.delete_sessionId();
@@ -231,9 +265,6 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 			* add session_id in the request (for Odoo v7 only) 
 			*/
 			function buildRequest(url, params) {
-				odooRpc.uniq_id_counter += 1;
-				if (odooRpc.shouldManageSessionId)
-					params.session_id = cookies.get_sessionId();
 
 				var json_data = {
 					jsonrpc: '2.0',
@@ -242,14 +273,12 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 				};
 				var headers = {
 					'Content-Type': 'application/json',
-					'X-Openerp-Session-Id': cookies.get_sessionId()
 				}
 				return {
 					'method' : 'POST',
-					'url' : odooRpc.odoo_server + url,
+					'url' : url,
 					'data' : JSON.stringify(json_data),
 					'headers': headers,
-					'id': ("r" + odooRpc.uniq_id_counter),
 				};
 			}
 

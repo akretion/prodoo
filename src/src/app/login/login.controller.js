@@ -21,7 +21,7 @@ angular.module('prodapps')
         }
 
         $scope.error = "Loading...";
-        jsonRpc.login(prodooConfig.db,login,password).then(function () {
+        jsonRpc.login(login,password).then(function () {
             var nextStep = $state.current.data;
             $scope.error = "Ok";
             if (nextStep.state)

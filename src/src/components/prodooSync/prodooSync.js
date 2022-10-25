@@ -9,7 +9,7 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
         sync.syncData = function(options, objectRef) {
         
             var param = {
-                model: 'mrp.production.workcenter.line',
+                model: 'mrp.workorder',
                 func_key: 'prodoo',
                 base_domain: [
                     ['workcenter_id', '=', options.workcenter]
