@@ -4,3 +4,4 @@
 *lock.json
 .editorconfig
 .env
+.cache

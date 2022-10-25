@@ -8,7 +8,7 @@ services:
     user: "1000:1000"
 
     volumes:
-      - ./src/:/work
+      - ./static/:/work
       - .npm:/.npm
       - .config:/.config
       - .cache:/.cache

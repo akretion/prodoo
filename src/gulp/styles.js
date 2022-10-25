@@ -29,7 +29,7 @@ gulp.task('styles', function () {
     addRootSlash: false
   };
 
-  var indexFilter = $.filter('index.scss');
+  var indexFilter = $.filter(['index.scss'], {restore: true});
 
   return gulp.src([
     paths.src + '/app/index.scss',
@@ -45,5 +45,5 @@ gulp.task('styles', function () {
       console.error(err.toString());
       this.emit('end');
     })
-    .pipe(gulp.dest(paths.tmp + '/serve/app/'));
+    .pipe(gulp.dest(paths.tmp));
 });

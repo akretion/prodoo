@@ -15,14 +15,9 @@ gulp.task('inject', ['styles'], function () {
     '!' + paths.tmp + '/serve/app/vendor.css'
   ], { read: false });
 
-  var injectScripts = gulp.src([
-    paths.src + '/{app,components}/**/*.js',
-    '!' + paths.src + '/{app,components}/**/*.spec.js',
-    '!' + paths.src + '/{app,components}/**/*.mock.js'
-  ]).pipe($.angularFilesort());
 
   var injectOptions = {
-    ignorePath: [paths.src, paths.tmp + '/serve'],
+    ignorePath: [paths.src, paths.tmp],
     addRootSlash: false
   };
 
@@ -31,10 +26,9 @@ gulp.task('inject', ['styles'], function () {
     exclude: [/bootstrap-sass-official/, /bootstrap\.css/, /bootstrap\.css/, /foundation\.css/, /ionic.*\.css/]
   };
 
-  return gulp.src(paths.src + '/*.html')
+  return gulp.src(paths.src)
     .pipe($.inject(injectStyles, injectOptions))
-    .pipe($.inject(injectScripts, injectOptions))
     .pipe(wiredep(wiredepOptions))
-    .pipe(gulp.dest(paths.tmp + '/serve'));
+    .pipe(gulp.dest(paths.tmp));
 
 });
