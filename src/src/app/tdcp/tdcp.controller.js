@@ -27,7 +27,7 @@ angular.module('prodapps')
           'table_tech_description'
         ]
       } else {
-        var model = 'mrp.production.workcenter.line';
+        var model = 'mrp.workorder';
         var domain = [
           [
             'production_number',

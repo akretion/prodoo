@@ -150,7 +150,7 @@ angular.module('prodapps')
     $scope.book = function(item) {
       //assign the task to the current workcenter
       item._v.lock = true;
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_book', [item.id]).then(function () {
+      jsonRpc.call('mrp.workorder', 'prodoo_book', [item.id]).then(function () {
         //do the changes
         $notification('Done');
       }, function () {
@@ -199,7 +199,7 @@ angular.module('prodapps')
         return r.rack; 
       });
 
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
+      jsonRpc.call('mrp.workorder', 'prodoo_action_done', [item.id, item.rack ]).then(function () {
         item.state = 'done';
         $notification('Done');
         $scope.$broadcast('syncAfterDone', item);
@@ -223,7 +223,7 @@ angular.module('prodapps')
 
       $notification('Saving scrap');
 
-      jsonRpc.call('mrp.production.workcenter.line', 'scrap_add', [item.id,$scope.scrap]).then(function () {
+      jsonRpc.call('mrp.workorder', 'scrap_add', [item.id,$scope.scrap]).then(function () {
         $notification('Scrap saved');
         // clear scrap data
         $scope.scrap = {add: false};
@@ -238,7 +238,7 @@ angular.module('prodapps')
       $scope.scrap.add = false
       
       $notification('Searching scrap');
-      jsonRpc.call('mrp.production.workcenter.line', 'scrap_search', [item.id,$scope.scrap]).then(function (data) {
+      jsonRpc.call('mrp.workorder', 'scrap_search', [item.id,$scope.scrap]).then(function (data) {
         $scope.scrap.search = true;
         $scope.scrap.avaiable = data;
       }, function () {
@@ -251,7 +251,7 @@ angular.module('prodapps')
     $scope.useScrap = function(scrapItemtoUse, item) {
 
       $notification('Take scrap for use');
-      jsonRpc.call('mrp.production.workcenter.line', 'scrap_use', [item.id,scrapItemtoUse]).then(function (data) {
+      jsonRpc.call('mrp.workorder', 'scrap_use', [item.id,scrapItemtoUse]).then(function (data) {
         $scope.scrap.search = false;
         $scope.scrap.add = false;
         $scope.scrap.avaiable = {};
@@ -293,7 +293,7 @@ angular.module('prodapps')
 
     $scope.take = function(item) {
       item._v.lock = true;
-      jsonRpc.call('mrp.production.workcenter.line', 'book', [[item.id], $scope.workcenter]).then(function (hasSucceed) {
+      jsonRpc.call('mrp.workorder', 'book', [[item.id], $scope.workcenter]).then(function (hasSucceed) {
         console.log('voici le result', hasSucceed);
         if (hasSucceed) {
           item.workcenter_id = $scope.workcenter;
@@ -316,13 +316,13 @@ angular.module('prodapps')
       item._v.started = true;
       //don't block the user with a sync request
       //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
+      jsonRpc.call('mrp.workorder', 'prodoo_action_start', [item.id]);
     }
 
     $scope.resign = function (item, reason) {
       //user says he can't continue the process,
       // he must choose between a list of options
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_resign', [item.id, reason]);
+      jsonRpc.call('mrp.workorder', 'prodoo_action_resign', [item.id, reason]);
       item._v.started = false;
       item.resign_reason = reason;
     }
@@ -343,7 +343,7 @@ angular.module('prodapps')
 
     function fetchPdf(item) {
       // load a pdf async
-      return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
+      return item._v.labels || jsonRpc.call('mrp.workorder', 'get_pdf', [item.id]).then(function (d) {
         item._v.labels = d;
 
       });
