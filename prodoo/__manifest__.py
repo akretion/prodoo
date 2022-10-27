@@ -8,7 +8,9 @@
     "description": "Prodoo application",
     "depends": [
         "web",
-        "custom_prodoo",
+        # actually depend on custom module to work but we prefer to avoid having a
+        # direct dependency on a custom module
+        "base",
     ],
     "installable": True,
     "application": True,
