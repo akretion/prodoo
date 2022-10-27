@@ -11,7 +11,7 @@ services:
       - ./prodoo/static/:/work
       - ./gulp/:/work/gulp/
       - ./gulpfile.js:/work/gulpfile.js
-      - ./node_modules:/work/nodes_modules/
+      - ./node_modules:/work/node_modules/
       - ./bower_components:/work/bower_components/
       - ./bower.json:/work/bower.json
       - ./package.json:/work/package.json
