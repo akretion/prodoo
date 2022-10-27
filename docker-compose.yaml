@@ -8,7 +8,13 @@ services:
     user: "1000:1000"
 
     volumes:
-      - ./static/:/work
+      - ./prodoo/static/:/work
+      - ./gulp/:/work/gulp/
+      - ./gulpfile.js:/work/gulpfile.js
+      - ./node_modules:/work/nodes_modules/
+      - ./bower_components:/work/bower_components/
+      - ./bower.json:/work/bower.json
+      - ./package.json:/work/package.json
       - .npm:/.npm
       - .config:/.config
       - .cache:/.cache
