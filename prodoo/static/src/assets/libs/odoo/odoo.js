@@ -72,7 +72,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 							fullTrace= "";
 						} else {
 							console.log('probably logged');
-							return true;
+							return $q.when();
 						}
 					}
 				} else {
