@@ -358,37 +358,16 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 				return $http(req).then(handleOdooErrors, handleHttpErrors);
 			}
 
-			/** (internal) determine if session_id shoud be managed by this lib
-			* more info: 
-			*	in v7 session_id is returned by the server in the payload 
-			*		and it should be added in each request's paylaod.
-			*		it's 
-			*
-			*	in v8 session_id is set as a cookie by the server
-			*		therefor the browser send it on each request automatically
-			*
-			*	in both case, we keep session_id as a cookie to be compliant with other odoo web clients 
-			*
-			*/
-			function preflight() {
-				//preflightPromise is a kind of cache and is set only if the request succeed
-				return preflightPromise || http('/web/webclient/version_info', {}).then(function (reason) {
-					odooRpc.shouldManageSessionId = (reason.result.server_serie < "8"); //server_serie is string like "7.01"
-					preflightPromise = $q.when(); //runonce
-				});
-			}
-
-			return preflight().then(function () {
-				return http(url, params).then(function(response) {
-					var subRequests = [];
-					if (response.result.type === "ir.actions.act_proxy") {
-						angular.forEach(response.result.action_list, function(action) {
-							subRequests.push($http.post(action['url'], action['params']));
-						});
-						return $q.all(subRequests);
-					} else
-						return response.result;
-				});
+			
+			return http(url, params).then(function(response) {
+				var subRequests = [];
+				if (response.result.type === "ir.actions.act_proxy") {
+					angular.forEach(response.result.action_list, function(action) {
+						subRequests.push($http.post(action['url'], action['params']));
+					});
+					return $q.all(subRequests);
+				} else
+					return response.result;
 			});
 		};
 
@@ -399,6 +378,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		var session_id; //cookies doesn't work with Android Default Browser / Ionic
 		return {
 			delete_sessionId: function() {
+				console.log('cookie delete_sessionId')
 				session_id = null;
 				document.cookie  = 'session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 			},

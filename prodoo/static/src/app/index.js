@@ -35,7 +35,15 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                     templateUrl: 'app/assembly/orderList.html'
                 }
             }
-        })        
+        })
+        .state('main.replenish', {
+            url: '/replenish/{workcenter:int}',
+            templateUrl: 'app/replenish/replenish.html',
+            controller: 'ReplenishCtrl',
+            resolve: {
+                'apps': 'apps',
+            }
+        })
         .state('main.configuration', {
             url: '/configuration',
             templateUrl: 'app/configuration/configuration.html',

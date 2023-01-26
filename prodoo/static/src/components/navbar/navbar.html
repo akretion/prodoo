@@ -6,7 +6,8 @@
       </a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="javascript:()">{{ title }}</a></li>
+      <li><a ui-sref="main.assembly({workcenter: workcenter_id})">{{ title }}</a></li>
+      <li><a ng-show="workcenter_id" ui-sref="main.replenish({workcenter: workcenter_id})">Replenish</a></li>
       <li><a href="javascript:location.reload()"><span class="glyphicon glyphicon-repeat"></span>Reload</a></li>
     </ul>
 <!--
