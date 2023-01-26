@@ -12,7 +12,7 @@ angular.module('prodapps')
     $scope.save = function() {
       $scope.error = 'Wait...';
 
-      jsonRpc.call('stock.replenish', 'add_line', [$scope.workcenter.id, $scope.replenishLine.barcode, $scope.replenishLine.qty]).then(function () {
+      jsonRpc.call('stock.replenish', 'add_line', [$scope.workcenter, $scope.replenishLine.barcode, $scope.replenishLine.qty]).then(function () {
         //do the changes
         $scope.error = 'DONE';
       }, function (err) {
