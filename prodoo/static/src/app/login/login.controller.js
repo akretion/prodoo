@@ -21,14 +21,19 @@ angular.module('prodapps')
         }
 
         $scope.error = "Loading...";
-        jsonRpc.login(login,password).then(function () {
+        jsonRpc.login(login,password).then(function (response) {
             var nextStep = $state.current.data;
-            $scope.error = "Ok";
+            $scope.error = "Ok. Please wait while reload";
             if (nextStep.state)
               $state.go(nextStep.state, nextStep.params);
-            else
-              $state.go('main.home');
+            else {
+//                $state.go('main');
+                // do not know why state.go do not work
+                // brute force it
+              window.location.reload();
+            }
         }, function () {
+           console.log('on error')
             $scope.error = "Authentication failed for " + login;
         });
     };
@@ -36,5 +41,5 @@ angular.module('prodapps')
         console.log('logout');
         jsonRpc.logout(true);
     };
-    $scope.logout();
+    $state.go('main.home');
 }]);

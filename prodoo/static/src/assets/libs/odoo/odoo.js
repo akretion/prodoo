@@ -5,10 +5,7 @@ angular.module('odoo', []);
 angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 
 	this.odooRpc = {
-		odoo_server: "",
-		uniq_id_counter: 0,
 		context: {'lang': 'fr_FR'},
-		shouldManageSessionId: false, //try without first
 		errorInterceptors: []
 	};
 
@@ -20,7 +17,6 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 
 		/**
 		* login
-		*		update cookie (session_id) in both cases
 		* @return promise
 		*		resolve promise if credentials ok
 		*		reject promise if credentials ko (with {title: wrong_login})
@@ -38,54 +34,15 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 				encodeURIComponent("login") + '=' + encodeURIComponent(login) + '&' +
 				encodeURIComponent("password") + '=' + encodeURIComponent(password) + '&' +
 				encodeURIComponent("csrf_token") + '=' + encodeURIComponent(csrf);
-
-				return $http.post('/web/login', 
-					data, 
-					{
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded",
-					},
-				//	withCredentials: true
-				});
-			}).then(function(response) {
-				var message = "";
-				var fullTrace = "";
-				var title = "";
-
-				if (response.status == 200) {
-					if (response.data.error) {
-						title = "Odoo Server Error";
-						if (response.data.error.message == "Odoo Server Error") {
-							message = response.data.error.data.name
-							fullTrace = response.data.error.data;
-						}
-					} else {
-
-						// try to parse response to find a form login
-						const parser = new DOMParser();
-						var parsed = parser.parseFromString(response.data, 'text/html');
-						var input = parsed.querySelector('form');
-						if (input && input.action.indexOf("/web/login") != -1) {
-							console.log('wrong long or errror');
-							title = 'wrong_login',
-							message = "Username and password don't match",
-							fullTrace= "";
-						} else {
-							console.log('probably logged');
-							return $q.when();
-						}
+				return odooRpc.sendRequest(
+					odooLogin.config.url, {},  {
+						'method' : 'POST',
+						'url' : odooLogin.config.url,
+						'data' : data,
+						'headers': {'Content-Type': 'application/x-www-form-urlencoded'},
 					}
-				} else {
-					console.log('do not know')
-				}
-				return $q.reject({
-					title: title,
-					message: message,
-					fullTrace: fullTrace,
-				});
-
+				);
 			});
-
 		};
 
 		/**
@@ -95,7 +52,6 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		*/
 		odooRpc.isLoggedIn = function () {
 			return odooRpc.getSessionInfo().then(function (result) {
-				console.log('getSessionInfo', result)
 				return !!(result.uid); 
 			});
 		};
@@ -107,7 +63,6 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		* @return null || promise 
 		*/
 		odooRpc.logout = function (force) {
-			cookies.delete_sessionId();
 			if (force)
 				return odooRpc.getSessionInfo().then(function (r) { //get db from sessionInfo
 					if (r.db)
@@ -133,9 +88,6 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 			return odooRpc.sendRequest('/web/webclient/version_info', {});
 		};
 
-		odooRpc.getDbList = function() {
-			return odooRpc.sendRequest('/web/database/get_list', {});
-		};
 		odooRpc.syncDataImport = function(model, func_key, base_domain, filter_domain, limit, object, current_list) {
 			return odooRpc.call(model, 'get_sync_data', [
 				func_key, object.timekey, base_domain, filter_domain, limit, current_list
@@ -258,11 +210,10 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		/**
 		* base function
 		*/
-		odooRpc.sendRequest = function(url, params) {
+		odooRpc.sendRequest = function(url, params, forceReq=undefined) {
 
 			/** (internal) build request for $http
 			* keep track of uniq_id_counter
-			* add session_id in the request (for Odoo v7 only) 
 			*/
 			function buildRequest(url, params) {
 
@@ -291,48 +242,63 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 			*		if error : reject with a custom errorObj
 			*/
 			function handleOdooErrors(response) {
-				if (!response.data.error)
-					return response.data;
-
+				
 				var error = response.data.error;
 				var errorObj = {
 					title: '',
 					message:'',
 					fullTrace: error
 				};
-
-				if (error.code === 200 && error.message === "Odoo Server Error" && error.data.name === "werkzeug.exceptions.NotFound") {
-					errorObj.title = 'page_not_found';
-					errorObj.message = 'HTTP Error';
-				} else if ( (error.code === 100 && error.message === "Odoo Session Expired") || //v8
-							(error.code === 300 && error.message === "OpenERP WebClient Error" && error.data.debug.match("SessionExpiredException")) //v7
-						) {
-							errorObj.title ='session_expired';
-							cookies.delete_sessionId();
-				} else if ( (error.message === "Odoo Server Error" && /FATAL:  database "(.+)" does not exist/.test(error.data.message))) {
-					errorObj.title = "database_not_found";
-					errorObj.message = error.data.message;
-				} else if ( (error.data.name === "openerp.exceptions.AccessError")) {
-					errorObj.title = 'AccessError';
-					errorObj.message = error.data.message;
-				} else {
-					var split = ("" + error.data.fault_code).split('\n')[0].split(' -- ');
-					if (split.length > 1) {
-						error.type = split.shift();
-						error.data.fault_code = error.data.fault_code.substr(error.type.length + 4);
-					}
-
-					if (error.code === 200 && error.type) {
-						errorObj.title = error.type;
-						errorObj.message = error.data.fault_code.replace(/\n/g, "<br />");
+				var ct = response.headers()['content-type'];
+				if (ct.startsWith("text/html")) {
+					if(response.status === 200) {
+						//here we do not know from the request
+						//if loggin is successfull
+						//search in the rseponse
+						
+						const parser = new DOMParser();
+						var parsed = parser.parseFromString(response.data, 'text/html');
+						var canary = parsed.querySelector('.o_web_client')
+						if (canary) {
+							//no error
+							return response.data;
+						} else {	
+							errorObj.title = "Not Logged";
+							errorObj.message = "Not logged";				
+						}
 					} else {
-						errorObj.title = error.message;
-						errorObj.message = error.data.debug.replace(/\n/g, "<br />");
+						errorObj.title = "Unkown Error";
+						errorObj.message = "Mal formatted return from server";	
+					}
+				} else if (ct.startsWith("application/json")) {
+					error = response.data.error;
+					errorObj["fullTrace"] = error;
+					if (!error) {
+						// no error
+						return response.data.result;
+					}
+					if (error.code == 100) {
+						if (error.data.name === "odoo.http.SessionExpiredException") {
+							errorObj.title ='SessionExpired';
+							errorObj.message = error.data.message;
+						}
+					} else if (error.code == 200) {
+						if (error.data.name === "odoo.exceptions.AccessError") {
+							errorObj.title = 'AccessError';
+							errorObj.message = error.data.message;	
+						} else if (error.data.name === "odoo.exceptions.UserError") {
+							errorObj.title = 'UserError';
+							errorObj.message = error.data.message;
+						} else if (error.data.name === "werkzeug.exceptions.NotFound") {
+							errorObj.title = 'page_not_found';
+							errorObj.message = 'HTTP Error';	
+						}
 					}
 				}
 				odooRpc.errorInterceptors.forEach(function (i) {
 					i(errorObj);
 				});
+				console.log('on reject !');
 				return $q.reject(errorObj)
 			}
 
@@ -353,46 +319,22 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 			/**
 			*	(internal) wrapper around $http for handling errors and build request
 			*/
-			function http(url, params) {
-				var req = buildRequest(url, params);
+			function http(url, params, forceReq) {
+				var req;
+				if (forceReq) {
+					req = forceReq;
+				} else {
+					req = buildRequest(url, params);
+				}
 				return $http(req).then(handleOdooErrors, handleHttpErrors);
 			}
 
 			
-			return http(url, params).then(function(response) {
-				var subRequests = [];
-				if (response.result.type === "ir.actions.act_proxy") {
-					angular.forEach(response.result.action_list, function(action) {
-						subRequests.push($http.post(action['url'], action['params']));
-					});
-					return $q.all(subRequests);
-				} else
-					return response.result;
-			});
-		};
+			return http(url, params, forceReq);
+		}
 
 		return odooRpc;
 	}];
 
-	var cookies = (function() {
-		var session_id; //cookies doesn't work with Android Default Browser / Ionic
-		return {
-			delete_sessionId: function() {
-				console.log('cookie delete_sessionId')
-				session_id = null;
-				document.cookie  = 'session_id=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-			},
-			get_sessionId: function () {
-				return document.cookie.split('; ')
-				.filter(function (x) { return x.indexOf('session_id') === 0; })
-				.map(function (x) { return x.split('=')[1]; })
-				.pop() || session_id || "";
-			},
-			set_sessionId: function (val) {
-				document.cookie = 'session_id=' + val;
-				session_id = val;
-			}
-		};
-	}());
 });
 

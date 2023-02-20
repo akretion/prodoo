@@ -70,26 +70,28 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         if (toState.name === 'login')
             return;
+        //jsonRpc.isLoggedIn();
 
-        if (!jsonRpc.isLoggedIn()) {
-            console.log('not logged in');
-            event.preventDefault();
-            //keep in memory desired app/workcenter
-            //in order to redirect after login
-            $state.get('login').data.params = toParams;
-            $state.get('login').data.state = toState.name;
-            $state.go('login');
-        }
         //modal workaround for bootstrap
         angular.element('body').on('shown.bs.modal', function (e) {
             angular.element(e.currentTarget).find('[autofocus]').focus();
         });
         jsonRpc.errorInterceptors.push(function (e) {
             console.log('Error with webservice: ', e);
-            if (e.title =='session_expired')
+            if (e.title =='SessionExpired')
               $state.go('login');
             else
               $notification('Webservice error: ' + e.title);
+        });
+
+        jsonRpc.errorInterceptors.push(function (e) {
+            // console.log('not logged in');
+            // event.preventDefault();
+            // //keep in memory desired app/workcenter
+            // //in order to redirect after login
+            // $state.get('login').data.params = toParams;
+            // $state.get('login').data.state = toState.name;
+            // $state.go('login');
         });
     });
 });
