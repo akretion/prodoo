@@ -15,6 +15,8 @@ angular.module('prodapps')
       jsonRpc.call('stock.replenish', 'add_line', [$scope.workcenter, $scope.replenishLine.barcode, $scope.replenishLine.qty]).then(function () {
         //do the changes
         $scope.error = 'DONE';
+        $scope.replenishLine.qty = 0;
+        $scope.replenishLine.barcode = undefined;
       }, function (err) {
         console.log(err)
         $scope.error = 'an error has occured';
