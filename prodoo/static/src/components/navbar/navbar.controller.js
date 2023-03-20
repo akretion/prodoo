@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('NavbarCtrl', ['$scope', '$state', '$stateParams', 'apps', function ($scope, $state, $stateParams, apps) {
+  .controller('NavbarCtrl', ['$scope', '$state', '$stateParams', 'apps', 'jsonRpc', function ($scope, $state, $stateParams, apps, jsonRpc) {
     var workcenters;
 
     $scope.workcenter_id = 0;
@@ -33,5 +33,17 @@ angular.module('prodapps')
     	return workcenter_id && workcenters.filter(function (w) {
 	    		return w.id === workcenter_id;
 	    }).pop().name;
+    }
+
+    $scope.logout = function() {
+      // really dirty
+      // logout should be called from route.go(logout)
+      // do not know why, but we have to do a full reload
+      // of the page in order to show the login form
+      jsonRpc.logout(true).then(function () {}, function() {}).then(
+        function() {
+          window.location.reload()
+        }
+      );
     }
   }]);

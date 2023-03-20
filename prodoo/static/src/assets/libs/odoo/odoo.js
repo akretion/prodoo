@@ -63,12 +63,7 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 		* @return null || promise 
 		*/
 		odooRpc.logout = function (force) {
-			if (force)
-				return odooRpc.getSessionInfo().then(function (r) { //get db from sessionInfo
-					if (r.db)
-						return odooRpc.login(r.db, '', '');
-				});
-			return $q.when();
+			return $http.get('/web/session/logout');
 		};
 
 		odooRpc.searchRead = function(model, domain, fields) {
