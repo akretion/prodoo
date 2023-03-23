@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <h1>Replenish</h1>
 
-    <form class="form-horizontal" ng-submit="save()">
+    <form (keydown.enter)="$event.preventDefault()" class="form-horizontal" ng-submit="save()">
         Workcenter: {{ title }}        
         <div class="form-group">
           <label for="product" class="col-sm-2 control-label">Product</label>
