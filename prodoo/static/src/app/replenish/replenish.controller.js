@@ -9,6 +9,11 @@ angular.module('prodapps')
     
     $scope.replenishLine = { qty: '0', barcode: undefined };
 
+    // trigger focus on first input in order to let the
+    // user enter a new entry.
+    // no need to wait for the return of submit()
+    angular.element("#product")[0].focus()
+
     $scope.save = function() {
       $scope.error = 'Wait...';
 
