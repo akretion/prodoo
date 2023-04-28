@@ -22,6 +22,8 @@ angular.module('prodapps')
         $scope.error = 'DONE';
         $scope.replenishLine.qty = 0;
         $scope.replenishLine.barcode = undefined;
+        angular.element("#product")[0].focus()
+
       }, function (err) {
         console.log(err)
         $scope.error = 'an error has occured';
