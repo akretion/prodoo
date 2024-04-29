@@ -287,8 +287,12 @@ angular.module('prodapps')
     };
 
     $scope.openInNewTab = function(item) {
-      var prep_url = item.quality_form_url+item.quality_form_order_number_id+'='+item.lot_number;
-      window.open(prep_url, '_blank');
+      var prep_url = item.quality_form_url;
+      var suffix = '';
+      if (item.quality_form_order_number_id) {
+          suffix = item.quality_form_order_number_id+'='+item.lot_number;
+      }
+      window.open(prep_url+suffix, '_blank');
     };
 
     $scope.take = function(item) {
