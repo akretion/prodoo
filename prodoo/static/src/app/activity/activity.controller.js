@@ -15,13 +15,18 @@ angular.module('prodapps')
     $scope.getUserActivity = function() {
         jsonRpc.call("mrp.workorder", "prodoo_get_user_activity", [false]).then(
             function (x) {
-                $scope.startDate = x.start_date;
-                $scope.endDate = x.end_date;
-                $scope.activities = x.activities;
+                $scope.startDate = new Date(Date.parse(x.start_date));
+                $scope.endDate = new Date(Date.parse(x.end_date));
+                $scope.totalQty = 0;
+                $scope.activities = x.activities.map(function(activity) {
+                    activity.start = new Date(Date.parse(activity.start));
+                    $scope.totalQty+= activity.qty;
+                    return activity;
+                });
                 $scope.pauses = x.pauses;
 
-                if (x.start_date && x.end_date) {
-                  $scope.duration = x.end_date - x.start_date;
+                if ($scope.endDate && $scope.startDate) {
+                  $scope.duration = $scope.endDate - $scope.startDate;
                 }
 
                 refreshCounter();
