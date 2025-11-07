@@ -60,6 +60,14 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                 'apps': 'apps'
             }
         })
+        .state('main.activity', {
+            url: '/activity',
+            templateUrl: 'app/activity/activity.html',
+            controller: 'ActivityCtrl',
+            resolve: {
+                'apps': 'apps'
+            }
+        })        
         ;
 
     $urlRouterProvider.otherwise('/');
