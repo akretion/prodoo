@@ -26,7 +26,7 @@ angular.module('prodapps')
                 $scope.pauses = x.pauses;
 
                 if ($scope.endDate && $scope.startDate) {
-                    diff_in_sec = ($scope.endDate - $scope.startDate / 1000);
+                    var diff_in_sec = ($scope.endDate - $scope.startDate / 1000);
                     $scope.duration = Math.round(diff_in_sec/(60*60)) +  'h ' + Math.round(diff_in_sec/60) + 'min'  
                 }
 
