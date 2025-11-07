@@ -6,7 +6,7 @@
 
     <div ng-hide="duration">No order done yet today</div>
     <div ng-show="duration">
-        <div>First order finished at {{ startDate }} — Last order finished at {{ endDate }} ({{ duration }}. Total Quantity: {{ totalQty}} </div>
+        <div>First order finished at {{ startDate | date: 'HH:mm' }} — Last order finished at {{ endDate  | date: 'HH:mm'}} ({{ duration | date: 'HH:mm' }}). Total Quantity: {{ totalQty}} </div>
         <ul>
             <li ng-repeat="line in activities">
                 {{ line.start | date: 'HH:mm' }} to {{ line.end }} - {{line.name}} - qty: {{ line.qty }}
