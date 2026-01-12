@@ -35,21 +35,6 @@ angular.module('prodapps')
         );
     }
 
-    $scope.addPause = function(duration) {
-        //todo: may be add a bit of throttling
-        jsonRpc.call("mrp.workorder", "add_pause", [false], {duration: duration}).then(function(x) {
-            $scope.getUserActivity();
-        });
-    };
-
-    $scope.removePause = function(index) {
-        // remove pause directly in local first
-        $scope.pauses.splice(index, 1);
-        jsonRpc.call("mrp.workorder", "remove_pause", [false], {pause_id: index}).then(function(x) {
-            $scope.getUserActivity();
-        });
-    };
-
     function refreshCounter() {
           // $scope.$watch may be ?
         $scope.totalPauses = $scope.pauses.reduce(function( acc, current) {

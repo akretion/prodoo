@@ -12,13 +12,5 @@
                 {{ line.start | date: 'HH:mm' }} to {{ line.end }} - {{line.name}} - qty: {{ line.qty }}
             </li>
         </ul>
-        <div>Pauses</div>
-        <button ng-click="addPause(5)">+5 min</button>
-        <button ng-click="addPause(15)">+15 min</button>
-        <button ng-click="addPause(30)">+30 min</button>
-        <div>Total Pauses {{ totalPauses }} min </div>
-        <ul>
-            <li ng-repeat="pause in pauses track by $index">{{ pause.duration }} min <a style="fa:trash" ng-click="removePause(pause.id)">x</a></li>
-        </ul>
     </div>
 </div>
