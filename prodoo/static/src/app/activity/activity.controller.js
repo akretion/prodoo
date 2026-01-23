@@ -4,8 +4,6 @@ angular.module('prodapps')
 .controller('ActivityCtrl', ['$scope', '$state', 'jsonRpc', function ($scope, $state, jsonRpc) {
  
     $scope.activityLog = null;
-    $scope.pauses = null
-    $scope.totalPauses = null;
     $scope.loggedUser = "";
 
     jsonRpc.getSessionInfo().then(function (x) {
@@ -14,32 +12,29 @@ angular.module('prodapps')
 
     $scope.getUserActivity = function() {
         jsonRpc.call("mrp.workorder", "prodoo_get_user_activity", [false]).then(
-            function (x) {
-                $scope.startDate = new Date(Date.parse(x.start_date));
-                $scope.endDate = new Date(Date.parse(x.end_date));
-                $scope.totalQty = 0;
-                $scope.activities = x.activities.map(function(activity) {
-                    activity.start = new Date(Date.parse(activity.start));
-                    $scope.totalQty+= activity.qty;
-                    return activity;
-                });
-                $scope.pauses = x.pauses;
+    function (x) {
+        console.log("Données reçues d'Odoo :", x);
 
-                if ($scope.endDate && $scope.startDate) {
-                    var diff_in_sec = ($scope.endDate - $scope.startDate / 1000);
-                    $scope.duration = Math.round(diff_in_sec/(60*60)) +  'h ' + Math.round(diff_in_sec/60) + 'min'  
-                }
+        // 1. On récupère les dates
+        $scope.startDate = x.start_date ? new Date(x.start_date.replace(/-/g, '/')) : null;
+        $scope.endDate = x.end_date ? new Date(x.end_date.replace(/-/g, '/')) : null;
+        
+        // 2. On récupère les totaux et les groupes (plus de .map() sur activities !)
+        $scope.totalQty = x.total_qty || 0;
+        $scope.workcenterGroups = x.workcenter_groups || [];
 
-                refreshCounter();
-            }
-        );
-    }
+        // 3. Calcul de la durée corrigé
+        if ($scope.endDate && $scope.startDate) {
+            // getTime() assure qu'on manipule des nombres (millisecondes)
+            var diff_in_sec = ($scope.endDate.getTime() - $scope.startDate.getTime()) / 1000;
+            
+            var hours = Math.floor(diff_in_sec / 3600);
+            var minutes = Math.floor((diff_in_sec % 3600) / 60);
+            $scope.duration = hours + 'h ' + minutes + 'min';
+        }
 
-    function refreshCounter() {
-          // $scope.$watch may be ?
-        $scope.totalPauses = $scope.pauses.reduce(function( acc, current) {
-            return acc + current.duration;
-        }, 0);
+    },
+);
     }
 
     $scope.getUserActivity();
