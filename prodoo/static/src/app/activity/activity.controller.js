@@ -5,6 +5,8 @@ angular.module('prodapps')
  
     $scope.activityLog = null;
     $scope.loggedUser = "";
+    $scope.reasons = [];
+    $scope.selectedReason = null;
 
     jsonRpc.getSessionInfo().then(function (x) {
         $scope.loggedUser = x.name;
@@ -15,6 +17,7 @@ angular.module('prodapps')
     function (x) {
         console.log("Données reçues d'Odoo :", x);
 
+        $scope.reasons = x.reasons || [];
         // 1. On récupère les dates
         $scope.startDate = x.start_date ? new Date(x.start_date.replace(/-/g, '/')) : null;
         $scope.endDate = x.end_date ? new Date(x.end_date.replace(/-/g, '/')) : null;
@@ -36,7 +39,13 @@ angular.module('prodapps')
     },
 );
     }
-
+$scope.setPauseReason = function() {
+        if (!$scope.selectedReason) return;
+        jsonRpc.call("mrp.workorder", "prodoo_set_pause_reason", [$scope.selectedReason])
+            .then(function() {
+                alert("Reason updated: " + $scope.selectedReason);
+            });
+    };
     $scope.getUserActivity();
 
   }]
