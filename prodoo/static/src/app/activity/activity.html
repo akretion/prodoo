@@ -42,9 +42,16 @@
         <div ng-click="group.expanded = !group.expanded"
              style="padding: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fcfcfc;">
             <span style="font-weight: bold; font-size: 1.1em;">{{ group.name }}</span>
-            <div>
-                <span style="background: #e9ecef; padding: 4px 10px; border-radius: 12px; font-weight: bold; margin-right: 10px;">{{ group.total_qty }} u.</span>
-                <span style="color: #999;">{{ group.expanded ? '▼' : '▶' }}</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+            <span ng-show="group.duration > 0"
+                  style="color: #666; font-size: 0.9em; background: #f0f0f0; padding: 4px 8px; border-radius: 12px; border: 1px solid #eee;">
+                🕒 {{ group.duration }} min
+            </span>
+
+            <span style="background: #e9ecef; padding: 4px 10px; border-radius: 12px; font-weight: bold;">
+                {{ group.total_qty }} u.
+            </span>
+            <span style="color: #999; margin-left: 5px;">{{ group.expanded ? '▼' : '▶' }}</span>
             </div>
         </div>
 
