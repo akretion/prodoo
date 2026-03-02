@@ -16,6 +16,7 @@
                 <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
                 <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
                 <span class="label pull-right" style="font-size:100%;" ng-show="item.brand" ng-style="{'background-color': item.brand.color }">{{ item.brand.label}}</span>
+                <span class="label pull-right" style="font-size:100%;" ng-show="item.urgent" ng-style="{'background-color': item.urgent.color }">{{ item.urgent.label}}</span>
                 <br />
                 <span ng-repeat="field in item.components">{{ field.name}} {{ field.rack}}</span>
                 <div ng-bind-html="item.short_description"></div>
@@ -31,6 +32,7 @@
             <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
             <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
             <span class="label pull-right" style="font-size:100%;" ng-show="item.brand" ng-style="{'background-color': item.brand.color }">{{ item.brand.label}}</span>
+            <span class="label pull-right" style="font-size:100%;" ng-show="item.urgent" ng-style="{'background-color': item.urgent.color }">{{ item.urgent.label}}</span>
             <br />
             <div ng-bind-html="item.short_description"></div>
         </li>
