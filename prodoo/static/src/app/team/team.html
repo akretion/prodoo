@@ -4,7 +4,7 @@
     	<label>Add a member
 		<input type="password" placeholder="Scan badges" ng-model="loginPassword" ng-model-options="{updateOn : 'change blur'}" ng-change="addMember(loginPassword)"></label><input type="button" value="add" ng-click="addMember(loginPassword)">
 		<ul>
-			<li ng-repeat="member in tempTeam">{{ member }}</li>
+            <li ng-repeat="member in tempTeam"  style="margin-left: 5px;">{{ member }}</li>
 		</ul>
 		<form class="form" name="form"  ng-submit="saveTeam()">
 			<input type="reset" ng-disabled="tempTeam.length == 0" ng-click="reset()"> <input type="submit">
@@ -12,7 +12,7 @@
 	</div>
 	<div>
 		<h3>Actual team</h3>
-		<p>Team leader {{ leader }}</p>
+        <p>Table account {{ leader }}</p>
 		<ul>
 			<li ng-repeat="member in actualTeam">{{ member }}</li>
 			<li ng-show="actualTeam.length== 0">No team members</li>
