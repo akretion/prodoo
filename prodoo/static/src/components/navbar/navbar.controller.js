@@ -5,11 +5,16 @@ angular.module('prodapps')
     var workcenters;
 
     $scope.workcenter_id = 0;
+    $scope.loggedUser = "";
 
     apps.then(function (x) {
     	workcenters = x.workcenters;
     	//try if loading directly
 		  $scope.title = guessTitle($stateParams.workcenter)
+    });
+
+    jsonRpc.getSessionInfo().then(function (x) {
+      $scope.loggedUser = x.name;
     });
 
     $scope.$on('$stateChangeSuccess', function () {

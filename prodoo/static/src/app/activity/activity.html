@@ -1,0 +1,67 @@
+<div class="container-fluid" style="font-family: sans-serif; color: #333; padding: 15px;">
+
+    <div style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2em;">⏸️</span>
+            <strong style="color: #666; white-space: nowrap;">Pause Reason:</strong>
+        </div>
+        
+        <select ng-model="selectedReason" 
+                ng-options="r.name as r.name for r in reasons"
+                style="flex-grow: 1; height: 35px; border-radius: 4px; border: 1px solid #ccc; padding: 0 10px; min-width: 150px;">
+            <option value="">-- Select reason for break --</option>
+        </select>
+        
+        <button ng-click="setPauseReason()" 
+                ng-disabled="!selectedReason"
+                style="height: 35px; padding: 0 20px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+            Confirm
+        </button>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <h2 style="margin-top: 0; font-size: 1.1em; color: #888; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+            Activity : {{ loggedUser }}
+        </h2>
+        
+        <div ng-hide="totalQty > 0" style="color: #999; font-style: italic;">No orders completed today.</div>
+
+        <div ng-show="totalQty > 0" style="display: flex; gap: 40px;">
+            <div>
+                <small style="color: #888; display: block; margin-bottom: 4px;">Time Span</small>
+                <strong style="font-size: 1.1em;">{{ startDate | date: 'HH:mm' }} - {{ endDate | date: 'HH:mm' }}</strong>
+            </div>
+            <div>
+                <small style="color: #888; display: block; margin-bottom: 4px;">Total Products</small>
+                <strong style="font-size: 1.3em; color: #28a745;">{{ totalQty }} <span style="font-size: 0.7em; font-weight: normal; color: #333;">units</span></strong>
+            </div>
+        </div>
+    </div>
+
+    <div ng-repeat="group in workcenterGroups" style="margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; background: white;">
+        <div ng-click="group.expanded = !group.expanded"
+             style="padding: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fcfcfc;">
+            <span style="font-weight: bold; font-size: 1.1em;">{{ group.name }}</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+            <span ng-show="group.duration > 0"
+                  style="color: #666; font-size: 0.9em; background: #f0f0f0; padding: 4px 8px; border-radius: 12px; border: 1px solid #eee;">
+                🕒 {{ group.duration }} min
+            </span>
+
+            <span style="background: #e9ecef; padding: 4px 10px; border-radius: 12px; font-weight: bold;">
+                {{ group.total_qty }} u.
+            </span>
+            <span style="color: #999; margin-left: 5px;">{{ group.expanded ? '▼' : '▶' }}</span>
+            </div>
+        </div>
+
+        <div ng-show="group.expanded" style="border-top: 1px solid #eee;">
+            <div ng-repeat="line in group.details" style="padding: 10px 15px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; font-size: 0.9em;">
+                <span style="min-width: 50px; color: #888; font-weight: bold;">{{ line.finish_time | date: 'HH:mm' }}</span>
+                <span style="flex-grow: 1; margin-left: 15px; color: #444;">{{ line.name }}</span>
+                <strong style="margin-left: 10px; color: #333;">{{ line.qty }} <small style="font-weight: normal; color: #999;">units</small></strong>
+            </div>
+        </div>
+    </div>
+
+</div>
