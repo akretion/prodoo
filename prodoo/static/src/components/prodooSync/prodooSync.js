@@ -10,20 +10,13 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
         
             var param = {
                 model: 'mrp.workorder',
-                func_key: 'prodoo',
-                base_domain: [
-                    ['workcenter_id', '=', options.workcenter]
-                ],
-                filter_domain: [
-                    ['production_state', 'not in', ['draft', 'cancel']],
-                    ['full_done', '=', false]
-                ],
+                workcenter_id: options.workcenter,
                 limit: prodooConfig.fetchLimit,
                 interval: prodooConfig.refreshInterval,
                 current_list: options.current_list
             };
 
-            /*jsonRpc.call(param.model, 'get_foremost_data', [ param.func_key, [].concat(param.base_domain, param.filter_domain), 20]).then(function (d) {               var key;
+            /*jsonRpc.call(param.model, workcenter_id, 20]).then(function (d) {               var key;
                 objectRef.data = [];
                 for(key in d) {
                     objectRef.data.push(d[key]);
