@@ -10,14 +10,15 @@
       <li><a ng-show="workcenter_id" ui-sref="main.replenish({workcenter: workcenter_id})">Replenish</a></li>
       <li><a href="javascript:location.reload()"><span class="glyphicon glyphicon-repeat"></span>Reload</a></li>
     </ul>
-<!--
+
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
       <ul class="nav navbar-nav">
-        <li class="active"><a ng-href="#">Home</a></li>
-        <li><a ng-href="#">About</a></li>
-        <li><a ng-href="#">Contact</a></li>
+        <li class="active"><a ng-href="#" ng-click="changeTeam()">Change Team</a></li>
+        <li><a disabled>
+          <span ng-repeat="member in team.members">{{ member }} </span>
+        </a></li>
       </ul>
--->
+
       <ul class="nav navbar-nav navbar-right">
         <li><a ui-sref="main.activity">{{ loggedUser }}</a></li>
         <li><a ui-sref="main.tdcp({ workcenter: workcenter_id })">Technical Description Check Point (TDCP)</a></li>

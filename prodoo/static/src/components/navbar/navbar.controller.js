@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prodapps')
-  .controller('NavbarCtrl', ['$scope', '$state', '$stateParams', 'apps', 'jsonRpc', function ($scope, $state, $stateParams, apps, jsonRpc) {
+  .controller('NavbarCtrl', ['$scope', '$state', '$stateParams', 'apps', 'jsonRpc', 'teamProvider', function ($scope, $state, $stateParams, apps, jsonRpc, teamProvider) {
     var workcenters;
 
     $scope.workcenter_id = 0;
@@ -38,6 +38,14 @@ angular.module('prodapps')
     	return workcenter_id && workcenters.filter(function (w) {
 	    		return w.id === workcenter_id;
 	    }).pop().name;
+    }
+
+    console.log(teamProvider);
+    $scope.team = teamProvider;
+
+    $scope.changeTeam = function() {
+        console.log('affiche la modale de changement d equipe')
+        $state.go('main.changeTeam');
     }
 
     $scope.logout = function() {

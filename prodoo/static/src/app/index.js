@@ -68,6 +68,11 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                 'apps': 'apps'
             }
         })        
+        .state('main.changeTeam', {
+            url: '/team',
+            templateUrl: 'app/team/team.html',
+            controller: 'TeamCtrl',
+        })
         ;
 
     $urlRouterProvider.otherwise('/');
