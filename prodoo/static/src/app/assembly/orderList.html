@@ -12,7 +12,7 @@
         <ul class="list-group tab">
             <li ng-repeat="item in filteredList.notDone" class="list-group-item list-link" ng-click="clickTask(item)" ng-class="{true: 'active'}[sync.current.item==item]" id="item{{ item.id }}">
                 <div class="alert" role="alert" ng-class="{'1': 'alert-danger' , '2': 'alert-warning' ,'3': 'alert-success' }[item.alert_level]">{{ item.lot_number }} - {{ item.name}}</div>
-                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.qty }}</span>
+                <span class="badge badge-default pull-right" style="font-size:100%;">{{ item.cumulated_qty }} / {{ item.total_qty }}</span>
                 <span class="label label-danger pull-right" style="font-size:100%;" ng-show="item.pending">Pending</span>
                 <span class="label label-success pull-right" style="font-size:100%;" ng-show="item.workcenter_id != workcenter">Bookable</span>
                 <span class="label pull-right" style="font-size:100%;" ng-show="item.brand" ng-style="{'background-color': item.brand.color }">{{ item.brand.label}}</span>
