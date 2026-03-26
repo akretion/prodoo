@@ -38,6 +38,8 @@ angular.module('prodapps')
             builFilteredListSearch();
     }
 
+    var lastSearchedLot = null;
+
     //Build the search results list
     function builFilteredListSearch() {
         //the guy search for a lot_number
@@ -65,16 +67,22 @@ angular.module('prodapps')
             return $scope.filteredList.search = []; //no need to continue
 
         $scope.filteredList.search = filterAndOrder($scope.sync.data, filter);
+        // Do not apply logic if the filter (lot number) did not change, in order
+        // to keep manual selection from the user. (filter on -001 but then manually
+        // click on -002 casse)
+        if (lot_number !== lastSearchedLot) {
 
-        //click on the good one
-        $scope.filteredList.search.some(function (item) {
-            if (item.lot_number != lot_number)
-                return false;
+            //click on the good one
+            $scope.filteredList.search.some(function (item) {
+                if (item.lot_number != lot_number)
+                    return false;
+                lastSearchedLot = lot_number;
 
-            $scope.clickTask(item);
-            return true;
-        });
-    }
+                $scope.clickTask(item);
+                return true;
+            });
+        }
+   }
 
     function filterAndOrder(bigList, filter) {
         return limitToFilter(
@@ -137,6 +145,7 @@ angular.module('prodapps')
     $scope.eraseSearch = function (status) {
         delete $scope.sync.current.filter.sale_name;
         delete $scope.sync.current.filter.lot_number;
+        lastSearchedLot = null;
         $ionicScrollDelegate.$getByHandle('leftScroll').scrollTop();
         $ionicScrollDelegate.$getByHandle('rightScroll').scrollTop();
     };
