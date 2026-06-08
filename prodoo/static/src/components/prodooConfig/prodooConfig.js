@@ -2,10 +2,10 @@
 
 angular.module('prodapps').provider('prodooConfig', [ function prodooConfigProvider() {
     this.config = {
-        refreshInterval: 10000,
-        fetchLimit: 50,
+        refreshInterval: 15000,
+        fetchLimit: 150,
         pyWebDriver:'https://localhost',
-        displayLimit: 50
+        displayLimit: 150
     };
 
     this.$get = [function () {
