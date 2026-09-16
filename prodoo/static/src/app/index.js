@@ -75,6 +75,31 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
     jsonRpcProvider.odooRpc.odoo_server = prodooConfigProvider.config.odooServer;
 })
 .run(function ($rootScope, $state, jsonRpc, prodooConfig, $notification) {
+
+    //error titles which mean that the request could not be linked to a valid
+    //user session (see the error handling in odoo.js). The prodoo session is
+    //the Odoo one: it may be closed from another browser or by the automatic
+    //logout (user_automatic_logout_custom). In that case every call to Odoo
+    //fails and the screen simply keeps its old data, so we go back to the
+    //login page as soon as we detect it.
+    function isSessionOver(e) {
+        return !!(e && ['SessionExpired', 'Not Logged', 'page_not_found'].indexOf(e.title) !== -1);
+    }
+
+    //registered only once: doing it in the $stateChangeStart handler below
+    //would add the same interceptor again at every state change
+    jsonRpc.errorInterceptors.push(function (e) {
+        console.log('Error with webservice: ', e);
+        if (isSessionOver(e)) {
+            if ($state.current.name !== 'login')
+                $state.go('login');
+        } else {
+            //other errors have nothing to do with the session
+            //(UserError, server unreachable...): just warn the user, as before
+            $notification('Webservice error: ' + e.title);
+        }
+    });
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
         if (toState.name === 'login')
             return;
@@ -83,23 +108,6 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
         //modal workaround for bootstrap
         angular.element('body').on('shown.bs.modal', function (e) {
             angular.element(e.currentTarget).find('[autofocus]').focus();
-        });
-        jsonRpc.errorInterceptors.push(function (e) {
-            console.log('Error with webservice: ', e);
-            if (e.title =='SessionExpired')
-              $state.go('login');
-            else
-              $notification('Webservice error: ' + e.title);
-        });
-
-        jsonRpc.errorInterceptors.push(function (e) {
-            // console.log('not logged in');
-            // event.preventDefault();
-            // //keep in memory desired app/workcenter
-            // //in order to redirect after login
-            // $state.get('login').data.params = toParams;
-            // $state.get('login').data.state = toState.name;
-            // $state.go('login');
         });
     });
 });

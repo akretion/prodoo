@@ -41,5 +41,12 @@ angular.module('prodapps')
         console.log('logout');
         jsonRpc.logout(true);
     };
-    $state.go('main.home');
+    //the login page is also where we land when the session is over
+    //(see the error interceptor in app/index.js): in that case we must stay
+    //here, otherwise the application list would be reloaded and its calls
+    //would fail again and again, in a loop.
+    jsonRpc.isLoggedIn().then(function (loggedIn) {
+        if (loggedIn)
+            $state.go('main.home');
+    }, angular.noop);
 }]);
