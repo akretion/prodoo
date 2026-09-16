@@ -7,10 +7,60 @@ angular.module('prodapps')
     $scope.loggedUser = "";
     $scope.reasons = [];
     $scope.selectedReason = null;
+    $scope.teamMembers = [];
+    $scope.teamLoading = false
 
     jsonRpc.getSessionInfo().then(function (x) {
         $scope.loggedUser = x.name;
     })
+
+    $scope.getTeam = function(x) {
+        $scope.teamLoading = true;
+        jsonRpc.call("mrp.team", "get_team", [false]).then(
+        function (x) {
+            $scope.teamName = x.name;
+            $scope.teamMembers = x.members;
+            $state.get('login').data.teamName = $scope.teamName;
+            $scope.teamLoading = false;
+        });
+    };
+    $scope.rmTeamMember = function(x) {
+        console.log("remove user", x);
+        var newMembers = $scope.teamMembers.filter( y => y.id != x ).map(function (x) { return x.login});
+        $scope.teamLoading = true;        
+        jsonRpc.call("mrp.team", "create_team", [false, newMembers]).then(
+            function (x) {
+                $scope.teamName = x.name;
+                $scope.teamMembers = x.members;
+                $state.get('login').data.teamName = $scope.teamName;
+                $scope.teamLoading = false;
+            }
+        );
+    }
+    $scope.addTeamMember = function(x) {
+        console.log("call erp instead", x, $scope.teamMembers);
+        var newLogin = null;
+        var seperator = ' '
+        
+        if ($scope.newPlayer.indexOf(seperator) != -1 ) {
+            //remove password from call
+            newLogin = $scope.newPlayer.split(seperator)[0];
+        } else { //token based auth
+            newLogin = 'based_on_token' + $scope.newPlayer;
+        }
+
+        var memberLogins = $scope.teamMembers.map(function (x) { return x.login }).concat(newLogin);
+        $scope.teamLoading = true;
+        jsonRpc.call("mrp.team", "create_team", [false, memberLogins]).then(
+            function (x) {
+                $scope.teamName = x.name;
+                $scope.teamMembers = x.members;
+                $state.get('login').data.teamName = $scope.teamName;
+                $scope.newPlayer = "";
+                $scope.teamLoading = false;
+            }
+        );
+    }
 
     $scope.getUserActivity = function() {
         jsonRpc.call("mrp.workorder", "prodoo_get_user_activity", [false]).then(
@@ -47,6 +97,7 @@ $scope.setPauseReason = function() {
             });
     };
     $scope.getUserActivity();
+    $scope.getTeam()
 
   }]
 );

@@ -6,7 +6,7 @@ angular.module('prodapps')
 
     $scope.workcenter_id = 0;
     $scope.loggedUser = "";
-
+    $scope.teamName = "";
     apps.then(function (x) {
     	workcenters = x.workcenters;
     	//try if loading directly
@@ -17,6 +17,11 @@ angular.module('prodapps')
       $scope.loggedUser = x.name;
     });
 
+    jsonRpc.call("mrp.team", "get_team", [false]).then(function (x) {
+      $scope.teamName = x.name;
+      $state.get('login').data.teamName = $scope.teamName;
+    });
+   
     $scope.$on('$stateChangeSuccess', function () {
       
       if ($stateParams.workcenter == undefined || $stateParams.workcenter == null){
@@ -30,7 +35,9 @@ angular.module('prodapps')
         $scope.title = guessTitle($stateParams.workcenter)
       } else {
         $scope.title = '';
-      }    
+      }
+      // get team name from login state
+      $scope.teamName = $state.get('login').data.teamName;
 
     });
 

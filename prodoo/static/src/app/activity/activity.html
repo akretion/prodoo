@@ -1,5 +1,6 @@
 <div class="container-fluid" style="font-family: sans-serif; color: #333; padding: 15px;">
 
+
     <div style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
         <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 1.2em;">⏸️</span>
@@ -17,6 +18,35 @@
                 style="height: 35px; padding: 0 20px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; white-space: nowrap;">
             Confirm
         </button>
+    </div>
+
+
+    <div style="background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 12px 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <h2 style="margin-top: 0; font-size: 1.1em; color: #888; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+            Team {{teamName}}
+        </h2>
+        
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2em;">team logo</span>
+            <strong style="color: #666; white-space: nowrap;" ng-hide="!teamLoading">Loading...</strong>
+
+            <strong style="color: #666; white-space: nowrap;" ng-hide="teamMembers.length">No team members</strong>
+            <strong style="color: #666; white-space: nowrap;" ng-show="teamMembers.length">Team members</strong>
+
+            <ul ng-repeat="player in teamMembers">
+                <li>{{ player.login }} <button ng-click="rmTeamMember(player.id)">Remove</button></li>
+            </ul>
+        </div>
+        <div>
+            <form>
+            Add a member <input type="password" placeholder="login" ng-model="newPlayer" ng-submit="addTeamMember(newPlayer)">
+            <button ng-click="addTeamMember(newPlayer)" 
+                    ng-disabled="!newPlayer"
+                    style="height: 35px; padding: 0 20px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; white-space: nowrap;">
+                Add
+            </button>
+            </form>
+        </div>
     </div>
 
     <div style="background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
