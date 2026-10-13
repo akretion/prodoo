@@ -13,7 +13,7 @@ angular.module('prodapps')
     );
     $scope.$on('$destroy', destroy);
     
-    $scope.scan = {}
+    $scope.scan = { enableConfirm: false}
 
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
@@ -71,6 +71,8 @@ angular.module('prodapps')
         scannedLines.map( (x) => {
           x.package_name = definitePackageName
         })
+        $scan.enableConfirm = false; // disallow to send the form
+        // need fill up the form to continue
         $scope.$broadcast('syncAfterDone', item);
       }, function () {
         $notification('an error has occured');
@@ -99,7 +101,8 @@ angular.module('prodapps')
           line.scanned = true;
           // reset form
           scan.scanned = '';
-          scan.error = false
+          scan.error = false;
+          scan.enableConfirm = true; // alow to send the form
         }
       })
       if (scan.scanned) {
@@ -117,6 +120,7 @@ angular.module('prodapps')
       })
       $scope.scan.error = false;
       $scope.scan.scanned = '';
+      $scan.enableConfirm = false; // disallow to send the form
     };
 
     function fetchPdf(item) {

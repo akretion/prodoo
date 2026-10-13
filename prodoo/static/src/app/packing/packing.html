@@ -57,13 +57,12 @@
             </div>
         </form>
         <form name="grid" ng-submit="do(sync.current.item)">
-
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
                     <button 
                         type="submit"
                         class="btn btn-success haute-ligne" 
-                        ng-disabled="sync.current.item.pending"
+                        ng-disabled="sync.current.item.pending || !scan.enableConfirm"
                         data-toggle="modal" data-target="#casier-modal"> Confirm
                     </button>
                 </div>
