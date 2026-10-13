@@ -281,7 +281,12 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
 						} else if (error.data.name === "odoo.exceptions.UserError") {
 							errorObj.title = 'UserError';
 							errorObj.message = error.data.message;
-						} else if (error.data.name === "werkzeug.exceptions.NotFound") {
+						}
+					} else if (error.code == 404) {
+						//odoo could not match the request in a database context:
+						//the session is not usable anymore (unknown database,
+						//no database in the session...)
+						if (error.data.name === "werkzeug.exceptions.NotFound") {
 							errorObj.title = 'page_not_found';
 							errorObj.message = 'HTTP Error';	
 						}
@@ -301,7 +306,15 @@ angular.module('odoo').provider('jsonRpc', function jsonRpcProvider() {
  			*	@return promise
 			*/
 			function handleHttpErrors(reason) {
-				var errorObj = {title:'http', fullTrace: reason, message:'HTTP Error'};
+				var title = 'http';
+				if (reason && reason.status === 404) {
+					//the request could not be routed at all: on a json call, it
+					//means that odoo could not attach the request to a database
+					//(no more valid session, so no database): see the session
+					//error handling in the prodoo app (app/index.js)
+					title = 'page_not_found';
+				}
+				var errorObj = {title: title, fullTrace: reason, message:'HTTP Error'};
 				odooRpc.errorInterceptors.forEach(function (i) {
 					i(errorObj);
 				});
