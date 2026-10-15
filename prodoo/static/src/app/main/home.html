@@ -28,8 +28,12 @@
         <div ng-repeat="g in groups" class="col-md-4 workcenter-group list-group-item">
             <h2>{{ g[0].group }}</h2>
             <ul class="list-unstyled">
-                <li ng-repeat="w in g" class="workcenter-list" ><a ng-href="{{ $state.href('main.assembly', {workcenter: w.id}) }}">{{w.name}}</a>  | 
-                <a ng-href="{{ $state.href('main.replenish', { workcenter: w.id}) }}" >Replenish</a>
+                <li ng-repeat="w in g" class="workcenter-list" >
+                    <div ng-if="!w.packaging">
+                    <a ng-href="{{ $state.href('main.assembly', {workcenter: w.id}) }}">{{w.name}}</a>  | 
+                    <a ng-href="{{ $state.href('main.replenish', { workcenter: w.id}) }}" >Replenish</a>
+                    </div>
+                    <a ng-href="{{ $state.href('main.packing', { workcenter: w.id}) }}" class=" haute-ligne" ng-show="w.packaging">{{ w.name }} (packing)</a>
                 </li>
             </ul>
         </div>

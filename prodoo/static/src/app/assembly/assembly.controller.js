@@ -5,7 +5,8 @@ angular.module('prodapps')
     $scope.sync = { data: null, current: { filter: { 'state':'!done'}}};
     $scope.workcenter = $state.params.workcenter;
     var destroy = prodooSync.syncData(
-      { workcenter: $scope.workcenter, 
+      { workcenter: $scope.workcenter,
+        method: 'get_sync_data',
         current_list: function() {  return formatCurrentIds($scope.sync.data)},
       },
       // {
