@@ -67,7 +67,8 @@
                     </button>
                 </div>
             </div>
-
+        </form>
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
             <div>
                 <h3>Group packing</h3>
                 <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
@@ -82,7 +83,7 @@
                     </tr>
                 </table>
             </div>
-        </form>
+        </ion-scroll>
     </div>
 </div>
 </div>
