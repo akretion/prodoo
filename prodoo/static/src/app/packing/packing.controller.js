@@ -63,7 +63,6 @@ angular.module('prodapps')
 
       console.log(scannedLines, scannedLines.join(","))
       jsonRpc.call('mrp.workorder', 'prodoo_validate_pack', [scannedLines.map(x => x.id)]).then(function (result) {
-        item.state = 'done';
         var definitePackageName = result
         console.log("result:", result)
         // TODO: grab pack number and set it to scans
@@ -71,6 +70,12 @@ angular.module('prodapps')
         scannedLines.map( (x) => {
           x.package_name = definitePackageName
         })
+
+        // all line scanned = done
+        if (item._v.lines.any( line => !line.package_name.length) {
+          item.state = 'done';
+        }
+
         $scan.enableConfirm = false; // disallow to send the form
         // need fill up the form to continue
         $scope.$broadcast('syncAfterDone', item);
