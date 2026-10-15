@@ -72,14 +72,19 @@
             <div>
                 <h3>Group packing</h3>
                 <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
-                    <tr ng-class="{true: 'success'}[!!line.package_name]">
+                    <tr ng-if="!line.package_name || line.package_name=='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
                         <td>{{ line.name }}</td>
                         <td>{{ line.lot_number}} </td>
                         <td>{{ line.rack }}</td>
                         <td>{{ line.package_name }}</td>
                     </tr>
-                    <tr>
-                       <td colspan="4" ng-bind-html="line.description"></td>
+                </table>
+                <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
+                    <tr ng-if="line.package_name && line.package_name!='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
+                        <td>{{ line.name }}</td>
+                        <td>{{ line.lot_number}} </td>
+                        <td>{{ line.rack }}</td>
+                        <td>{{ line.package_name }}</td>
                     </tr>
                 </table>
             </div>
