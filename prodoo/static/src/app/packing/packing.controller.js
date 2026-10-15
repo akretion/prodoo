@@ -63,13 +63,19 @@ angular.module('prodapps')
 
       console.log(scannedLines, scannedLines.join(","))
       jsonRpc.call('mrp.workorder', 'prodoo_validate_pack', [scannedLines.map(x => x.id)]).then(function (result) {
-        var definitePackageName = result
+        // we expect { "name":"packnname", "data": "base64 of print", "printer": "name of the printer"}
+        var definitePackageName = result.name
         console.log("result:", result)
         // TODO: grab pack number and set it to scans
         $notification('Done');
         scannedLines.map( (x) => {
           x.package_name = definitePackageName
         })
+
+        // print
+        prodooPrint( {
+          "labels": [result];
+        }, 1);
 
         // all line scanned = done
         if (item._v.lines.any( line => !line.package_name.length) {
