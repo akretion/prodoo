@@ -54,7 +54,10 @@ angular.module('prodapps')
       $notification('Pending');
       item._v.lock = true;
       var scannedLines = item._v.lines.filter( line => {
-          return line.scanned
+          // only the lines scanned for the package being built ('PACK' is the
+          // placeholder set by scanSomething), never the ones already packed by
+          // a previous Confirm: prodoo_validate_pack refuses them
+          return line.scanned && line.package_name === 'PACK'
       });
       if (!scannedLines.length) {
         console.error("No scanned lines found to sent")
@@ -70,21 +73,28 @@ angular.module('prodapps')
         $notification('Done');
         scannedLines.map( (x) => {
           x.package_name = definitePackageName
+          x.scanned = false; // packed: leave the package in progress
         })
 
         // print
-        prodooPrint( {
-          "labels": [result];
+        // prodooPrint expects the labels in payload._v.labels (see
+        // components/prodooPrint/prodooPrint.js), each label being
+        // {name, printer, data} which is what prodoo_validate_pack returns.
+        prodooPrint({
+          _v: {
+            labels: [result]
+          }
         }, 1);
 
-        // all line scanned = done
-        if (item._v.lines.any( line => !line.package_name.length) {
+        // all line scanned = done, otherwise stay on this group to scan the
+        // remaining lines
+        if (!item._v.lines.some( line => !line.package_name)) {
           item.state = 'done';
+          $scope.$broadcast('syncAfterDone', item);
         }
 
-        $scan.enableConfirm = false; // disallow to send the form
+        $scope.scan.enableConfirm = false; // disallow to send the form
         // need fill up the form to continue
-        $scope.$broadcast('syncAfterDone', item);
       }, function () {
         $notification('an error has occured');
       }).then(function () {
@@ -131,7 +141,7 @@ angular.module('prodapps')
       })
       $scope.scan.error = false;
       $scope.scan.scanned = '';
-      $scan.enableConfirm = false; // disallow to send the form
+      $scope.scan.enableConfirm = false; // disallow to send the form
     };
 
     function fetchPdf(item) {
