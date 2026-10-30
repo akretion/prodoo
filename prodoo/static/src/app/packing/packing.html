@@ -1,0 +1,95 @@
+<div  style="position: fixed; width: 100%; height: 100%;">
+<div class="container-fluid" >
+<style>
+    .list-group.active {
+        display:none;
+    }
+    .draft {
+        color: #666;
+    }
+
+    tbody.ng-invalid-ensure-value.ng-dirty {
+      background-color:#f2dede;
+    }
+    .haute-ligne {
+        height: 3.5em;
+    }
+
+@-moz-keyframes spin { 0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(359deg); } }
+@-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); } }
+@-o-keyframes spin { 0% { -o-transform: rotate(0deg); }
+  100% { -o-transform: rotate(359deg); } }
+@-ms-keyframes spin { 0% { -ms-transform: rotate(0deg); }
+  100% { -ms-transform: rotate(359deg); } }
+@keyframes spin { 0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); } }
+
+</style>
+
+<div class="row big-list">
+    <div ng-if="!sync.data"><h1>Loading
+        <span class="glyphicon glyphicon-refresh" style="animation-timing-function: steps(8, start); animation: 1s linear 0s normal none infinite running spin; "></span>
+        </h1>
+    </div>
+    <div ng-show="sync.data.length == 0"><h2>No data</h2></div>
+</div>
+
+<div class="row big-list" ng-show="sync.data.length">
+    <div class="col-md-5 col-no-padding">
+        <div ui-view="orderList"></div>
+    </div>
+    <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">            
+        <!-- Submit and confirm operations -->
+        <form name="grid" ng-submit="scanSomething(scan)">
+
+            <div class="well">
+                <h3>{{ sync.current.item.name}}</h3>
+                <div ng-bind-html="sync.current.item.group_description"></div>
+                <h2>Packs</h2>
+                <input type="text" ng-model="scan.scanned" ng-change="scan.error = false" />
+                <div ng-show="scan.error">not found</div>
+                <div class="btn-group">
+                    <input type="reset" value="Reset package" ng-click="resetScan()" />
+                </div>
+
+            </div>
+        </form>
+        <form name="grid" ng-submit="do(sync.current.item)">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button 
+                        type="submit"
+                        class="btn btn-success haute-ligne" 
+                        ng-disabled="sync.current.item.pending || !scan.enableConfirm"
+                        data-toggle="modal" data-target="#casier-modal"> Confirm
+                    </button>
+                </div>
+            </div>
+        </form>
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
+            <div>
+                <h3>Group packing</h3>
+                <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
+                    <tr ng-if="!line.package_name || line.package_name=='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
+                        <td>{{ line.name }}</td>
+                        <td>{{ line.lot_number}} </td>
+                        <td>{{ line.rack }}</td>
+                        <td>{{ line.package_name }}</td>
+                    </tr>
+                </table>
+                <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
+                    <tr ng-if="line.package_name && line.package_name!='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
+                        <td>{{ line.name }}</td>
+                        <td>{{ line.lot_number}} </td>
+                        <td>{{ line.rack }}</td>
+                        <td>{{ line.package_name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </ion-scroll>
+    </div>
+</div>
+</div>
+</div>
