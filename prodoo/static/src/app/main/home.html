@@ -12,7 +12,8 @@
             </div>
             <div class="form-group col-xs-offset-1">
                 <div ng-repeat="workcenter in workcenters | filter:{id:barcode}:true" ng-show="barcode">
-                  <a ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}" class=" haute-ligne">{{ workcenter.name }}</a>
+                  <a ng-if="!workcenter.packaging" ng-href="{{ $state.href('main.assembly', { workcenter: workcenter.id}) }}" class=" haute-ligne">{{ workcenter.name }}</a>
+                  <a ng-if="workcenter.packaging" ng-href="{{ $state.href('main.packing', { workcenter: workcenter.id}) }}" class=" haute-ligne">{{ workcenter.name }}</a>
             </div>
           </div>
         </form>
