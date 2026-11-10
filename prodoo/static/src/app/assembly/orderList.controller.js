@@ -56,7 +56,7 @@ angular.module('prodapps')
 
         //search for the item with same lot_number
         $scope.sync.data.some(function(item) {
-            if (item.lot_number != lot_number)
+            if (!matchesLotNumber(item, lot_number))
                 return false;
             //found the item
             filter.sale_name = item.sale_name;
@@ -74,7 +74,7 @@ angular.module('prodapps')
 
             //click on the good one
             $scope.filteredList.search.some(function (item) {
-                if (item.lot_number != lot_number)
+                if (!matchesLotNumber(item, lot_number))
                     return false;
                 lastSearchedLot = lot_number;
 
@@ -83,6 +83,18 @@ angular.module('prodapps')
             });
         }
    }
+
+    //An assembly item is a single workorder and carries its own lot_number.
+    //A packing item is a group of workorders: it has no lot_number of its own
+    //(lot_number/sale_name hold the sale order reference used to group them),
+    //the lot_number of each workorder is in item.lines.
+    function matchesLotNumber(item, lot_number) {
+        if (item.lot_number == lot_number)
+            return true;
+        return (item.lines || []).some(function (line) {
+            return line.lot_number == lot_number;
+        });
+    }
 
     function filterAndOrder(bigList, filter) {
         return limitToFilter(
