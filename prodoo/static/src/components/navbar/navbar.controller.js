@@ -5,12 +5,15 @@ angular.module('prodapps')
     var workcenters;
 
     $scope.workcenter_id = 0;
+    // workcenters with prodoo_packing_step have their own screen
+    $scope.workcenter_packaging = false;
     $scope.loggedUser = "";
     $scope.teamName = "";
     apps.then(function (x) {
     	workcenters = x.workcenters;
     	//try if loading directly
 		  $scope.title = guessTitle($stateParams.workcenter)
+		  $scope.workcenter_packaging = isPackaging($stateParams.workcenter)
     });
 
     jsonRpc.getSessionInfo().then(function (x) {
@@ -33,8 +36,10 @@ angular.module('prodapps')
       //try if comming from another page
       if ($scope.workcenter_id > 0) {
         $scope.title = guessTitle($stateParams.workcenter)
+        $scope.workcenter_packaging = isPackaging($scope.workcenter_id)
       } else {
         $scope.title = '';
+        $scope.workcenter_packaging = false;
       }
       // get team name from login state
       $scope.teamName = $state.get('login').data.teamName;
@@ -45,6 +50,13 @@ angular.module('prodapps')
     	return workcenter_id && workcenters.filter(function (w) {
 	    		return w.id === workcenter_id;
 	    }).pop().name;
+    }
+
+    function isPackaging(workcenter_id) {
+      var workcenter = workcenters && workcenter_id && workcenters.filter(function (w) {
+        return w.id === workcenter_id;
+      }).pop();
+      return !!(workcenter && workcenter.packaging);
     }
 
     $scope.logout = function() {

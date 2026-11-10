@@ -10,6 +10,7 @@ angular.module('prodapps').provider('prodooSync', [function prodooSyncProvider()
         
             var param = {
                 model: 'mrp.workorder',
+                method: options.method,
                 workcenter_id: options.workcenter,
                 limit: prodooConfig.fetchLimit,
                 interval: prodooConfig.refreshInterval,
