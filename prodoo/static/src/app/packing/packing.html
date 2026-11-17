@@ -15,6 +15,13 @@
         height: 3.5em;
     }
 
+    /* the three tables of the group (to pack / waiting / packed) must share
+       the same column widths: with table-layout fixed the widths come from
+       the colgroup only, not from the content of each table */
+    .pack-lines table {
+        table-layout: fixed;
+    }
+
 @-moz-keyframes spin { 0% { -moz-transform: rotate(0deg); }
   100% { -moz-transform: rotate(359deg); } }
 @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); }
@@ -72,10 +79,11 @@
             </div>
         </form>
         <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
-            <div>
+            <div class="pack-lines">
                 <h3>Group packing</h3>
-                <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
-                    <tr ng-if="isPackable(line)" ng-class="{true: 'success'}[!!line.package_name]">
+                <table class="table">
+                    <colgroup><col style="width:40%"><col style="width:25%"><col style="width:15%"><col style="width:20%"></colgroup>
+                    <tr ng-repeat="line in sync.current.item._v.lines track by $index" ng-if="isPackable(line)" ng-class="{true: 'success'}[!!line.package_name]">
                         <td>{{ line.name }}</td>
                         <td>{{ line.lot_number}} </td>
                         <td>{{ line.rack }}</td>
@@ -84,8 +92,9 @@
                 </table>
                 <div ng-if="anyPending(sync.current.item)">
                     <h4>Waiting for a previous operation</h4>
-                    <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table draft">
-                        <tr ng-if="isPending(line)">
+                    <table class="table draft">
+                        <colgroup><col style="width:40%"><col style="width:25%"><col style="width:15%"><col style="width:20%"></colgroup>
+                        <tr ng-repeat="line in sync.current.item._v.lines track by $index" ng-if="isPending(line)">
                             <td>{{ line.name }}</td>
                             <td>{{ line.lot_number}} </td>
                             <td>{{ line.rack }}</td>
@@ -95,8 +104,9 @@
                 </div>
                 <div ng-if="anyDone(sync.current.item)">
                     <h4>Packed</h4>
-                    <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
-                        <tr ng-if="isDone(line)" class="success">
+                    <table class="table">
+                        <colgroup><col style="width:40%"><col style="width:25%"><col style="width:15%"><col style="width:20%"></colgroup>
+                        <tr ng-repeat="line in sync.current.item._v.lines track by $index" ng-if="isDone(line)" class="success">
                             <td>{{ line.name }}</td>
                             <td>{{ line.lot_number}} </td>
                             <td>{{ line.rack }}</td>
