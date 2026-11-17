@@ -40,6 +40,35 @@ angular.module('prodapps')
 
     });
 
+    // A line of a packing group is one workorder of the group. Only two states
+    // are not packable: pending (a previous operation is not finished yet) and
+    // done (already packed). Same rule as the server (packable_wos/total_qty).
+    // A workorder packed by a previous Confirm keeps package_name set locally
+    // until the next sync sends state 'done', so package_name wins here.
+    function isDone(line) {
+      return line.state === 'done' || line.state === 'cancel' ||
+             (!!line.package_name && line.package_name !== 'PACK');
+    }
+
+    function isPending(line) {
+      return !isDone(line) && line.state === 'pending';
+    }
+
+    function isPackable(line) {
+      return !isDone(line) && !isPending(line);
+    }
+
+    function anyLine(item, predicate) {
+      return !!(item && item._v && item._v.lines) &&
+             item._v.lines.some(predicate);
+    }
+
+    $scope.isDone = isDone;
+    $scope.isPending = isPending;
+    $scope.isPackable = isPackable;
+    $scope.anyPending = function (item) { return anyLine(item, isPending); };
+    $scope.anyDone = function (item) { return anyLine(item, isDone); };
+
     $scope.printAfterScan = function(item,grid, idx){
       if (!item.enablePrintAfterScan){
         return true;
@@ -86,9 +115,11 @@ angular.module('prodapps')
           }
         }, 1);
 
-        // all line scanned = done, otherwise stay on this group to scan the
-        // remaining lines
-        if (!item._v.lines.some( line => !line.package_name)) {
+        // nothing left to pack right now: leave this group immediately, as
+        // before. Lines waiting for a previous operation are not packable, so
+        // they do not keep the group on screen: when they become ready the
+        // group is sent again by the server.
+        if (!item._v.lines.some(line => isPackable(line) && !line.package_name)) {
           item.state = 'done';
           $scope.$broadcast('syncAfterDone', item);
         }
@@ -115,20 +146,28 @@ angular.module('prodapps')
       if (!scan.scanned) {
         return;
       }
+      var waitingScan = false;
       $scope.sync.current.item._v.lines.map( line => {
-        console.log(line.lot_number)
-        if (line.lot_number == scan.scanned && !line.package_name) {
-          line.package_name = 'PACK'; // placeholder
-          line.scanned = true;
-          // reset form
-          scan.scanned = '';
-          scan.error = false;
-          scan.enableConfirm = true; // alow to send the form
+        if (line.lot_number != scan.scanned)
+          return;
+        if (!isPackable(line)) {
+          // the workorder is already packed or still waiting for a previous
+          // operation: it can not go into this package
+          waitingScan = true;
+          return;
         }
+        if (line.package_name)
+          return;
+        line.package_name = 'PACK'; // placeholder
+        line.scanned = true;
+        // reset form
+        scan.scanned = '';
+        scan.error = false;
+        scan.enableConfirm = true; // alow to send the form
       })
       if (scan.scanned) {
         //nothing found, display error
-        scan.error = true;
+        scan.error = waitingScan ? 'waiting' : true;
       }
     };
 

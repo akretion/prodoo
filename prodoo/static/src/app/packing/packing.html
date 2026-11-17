@@ -49,7 +49,10 @@
                 <div ng-bind-html="sync.current.item.group_description"></div>
                 <h2>Packs</h2>
                 <input type="text" ng-model="scan.scanned" ng-change="scan.error = false" />
-                <div ng-show="scan.error">not found</div>
+                <div ng-show="scan.error">
+                    <span ng-if="scan.error === 'waiting'">Previous operation not done</span>
+                    <span ng-if="scan.error !== 'waiting'">not found</span>
+                </div>
                 <div class="btn-group">
                     <input type="reset" value="Reset package" ng-click="resetScan()" />
                 </div>
@@ -72,21 +75,35 @@
             <div>
                 <h3>Group packing</h3>
                 <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
-                    <tr ng-if="!line.package_name || line.package_name=='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
+                    <tr ng-if="isPackable(line)" ng-class="{true: 'success'}[!!line.package_name]">
                         <td>{{ line.name }}</td>
                         <td>{{ line.lot_number}} </td>
                         <td>{{ line.rack }}</td>
                         <td>{{ line.package_name }}</td>
                     </tr>
                 </table>
-                <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
-                    <tr ng-if="line.package_name && line.package_name!='PACK'" ng-class="{true: 'success'}[!!line.package_name]">
-                        <td>{{ line.name }}</td>
-                        <td>{{ line.lot_number}} </td>
-                        <td>{{ line.rack }}</td>
-                        <td>{{ line.package_name }}</td>
-                    </tr>
-                </table>
+                <div ng-if="anyPending(sync.current.item)">
+                    <h4>Waiting for a previous operation</h4>
+                    <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table draft">
+                        <tr ng-if="isPending(line)">
+                            <td>{{ line.name }}</td>
+                            <td>{{ line.lot_number}} </td>
+                            <td>{{ line.rack }}</td>
+                            <td>{{ line.state }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-if="anyDone(sync.current.item)">
+                    <h4>Packed</h4>
+                    <table ng-repeat="line in sync.current.item._v.lines track by $index" class="table">
+                        <tr ng-if="isDone(line)" class="success">
+                            <td>{{ line.name }}</td>
+                            <td>{{ line.lot_number}} </td>
+                            <td>{{ line.rack }}</td>
+                            <td>{{ line.package_name }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </ion-scroll>
     </div>
